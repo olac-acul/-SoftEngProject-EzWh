@@ -1,3 +1,7 @@
+---
+typora-root-url: Images
+---
+
 
  #Requirements Document 
 
@@ -5,10 +9,10 @@ Date: 22 march 2022
 
 Version: 0.0
 
- 
+
 | Version number | Change |
 | ----------------- |:-----------|
-| | | 
+| | |
 
 
 # Contents
@@ -48,16 +52,35 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 # Stakeholders
 
 
-| Stakeholder name  | Description | 
+| Stakeholder name  | Description |
 | ----------------- |:-----------:|
-|   Stakeholder x..     |             | 
+|   Company     |     Uses the application        |
+|   Supplier     |       Provides products      |
+|   Manager     |      Manages warehouse       |
+|   Application administrator     |      Installs the application, maintains it, defines users, assign privileges       |
+|   Inventory manager     |      Manages the inventory database       |
+|   Quality office     |      Performs quality check on the products       |
+|    Competitor   |      Provides the same kind of service      |
+|   Organizational unit   |      Orders and receives products       |
+|   Delivery unit     |      Collects, prepares and delivers items to pick up areas      |
+|   Payment system     |      Handles payments       |
+
 
 # Context Diagram and interfaces
 
 ## Context Diagram
 \<Define here Context diagram using UML use case diagram>
 
+
 \<actors are a subset of stakeholders>
+
+Supplier
+Manager
+Application administrator
+Inventory manager
+Quality office
+Organizational unit
+Payment system
 
 ## Interfaces
 \<describe here each interface in the context diagram>
@@ -66,7 +89,13 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 | Actor | Logical Interface | Physical Interface  |
 | ------------- |:-------------:| -----:|
-|   Actor x..     |  |  |
+|   Supplier     | GUI | Mouse, keyboard on PC |
+|   Manager     | GUI | Mouse, keyboard on PC |
+|   Application administrator     | GUI + command line interface | Mouse, keyboard on PC  |
+|   Inventory manager     | GUI | Mouse, keyboard on PC |
+|   Quality office     | GUI | Mouse, keyboard on PC |
+|   Organizational unit     | GUI | Mouse, keyboard on PC |
+|   Payment system     | API, see https://developer.visa.com/docs | Internet connection |
 
 # Stories and personas
 \<A Persona is a realistic impersonation of an actor. Define here a few personas and describe in plain text how a persona interacts with the system>
@@ -74,6 +103,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 \<Persona is-an-instance-of actor>
 
 \<stories will be formalized later as scenarios in use cases>
+
 
 
 # Functional and non functional requirements
@@ -85,10 +115,33 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 \<they match to high level use cases>
 
 | ID        | Description  |
-| ------------- |:-------------:| 
-|  FR1     |  |
-|  FR2     |   |
-| FRx..  | | 
+| ------------- |:-------------:|
+|  FR1     | Manage users and privileges |
+|  FR1.1     | Create a new user  |
+|  FR1.2     | Modify an existing user  |
+|  FR1.3     | Delete a user |
+|  FR2     | Manage orders |
+|  FR2.1     | Trace the status of both internal and external orders |
+|  FR2.2     | Manage internal orders |
+|  FR2.2.1    | Issue new internal orders by organizational units |
+|  FR2.2.2     | Estimate the delivery time of an internal order |
+|  FR2.2.3     | Manage deliveries to the organizational units |
+|  FR2.3     | Manage external orders |
+|  FR2.3.1     | Issue new external orders to suppliers |
+|  FR2.3.2     | Sort the list of available suppliers by price |
+|  FR2.3.3     | Sort the list of available suppliers by time |
+|  FR2.3.4     | Handle payments for external orders |
+|  FR2.3.5     | Deal with received external orders according to the result of the quality check |
+|  FR3     | Manage products |
+|  FR3.1     | Search a product and show its details |
+|  FR3.2     | Add a new type of product to the inventory |
+|  FR3.3     | Delete a specific type of product from the inventory |
+|  FR3.4     | Modify a product type (suppliers, location, etc.) |
+|  FR4     | Manage physical space |
+|  FR4.1     | Monitor the amount of available space |
+|  FR4.2     | Indicate free sections |
+|  FR5     | Manage user specified notifications |
+
 
 ## Non Functional Requirements
 
@@ -96,10 +149,10 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 | ID        | Type (efficiency, reliability, ..)           | Description  | Refers to |
 | ------------- |:-------------:| :-----:| -----:|
-|  NFR1     |   |  | |
-|  NFR2     | |  | |
-|  NFR3     | | | |
-| NFRx .. | | | | 
+|  NFR1     | Usability  | Users should be able to use the application with less than two hours of education | All FR|
+|  NFR2     | Performance | All functions should complete in less than 0.5 second |All FR|
+|  NFR3     | Portability| |All FR|
+| NFRx .. | | | |
 
 
 # Use case diagram and use cases
@@ -112,10 +165,10 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 \<next describe here each use case in the UCD>
 ### Use case 1, UC1
 | Actors Involved        |  |
-| ------------- |:-------------:| 
+| ------------- |:-------------:|
 |  Precondition     | \<Boolean expression, must evaluate to true before the UC can start> |
 |  Post condition     | \<Boolean expression, must evaluate to true after UC is finished> |
-|  Nominal Scenario     | \<Textual description of actions executed by the UC> |
+|  Nominal Scenario     | The administrator creates a new account and populates its fields |
 |  Variants     | \<other normal executions> |
 |  Exceptions     | \<exceptions, errors > |
 
@@ -130,11 +183,11 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 \<only relevant scenarios should be described>
 
 | Scenario 1.1 | |
-| ------------- |:-------------:| 
+| ------------- |:-------------:|
 |  Precondition     | \<Boolean expression, must evaluate to true before the scenario can start> |
 |  Post condition     | \<Boolean expression, must evaluate to true after scenario is finished> |
 | Step#        | Description  |
-|  1     |  |  
+|  1     |  |
 |  2     |  |
 |  ...     |  |
 
@@ -143,12 +196,58 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 ##### Scenario 1.x
 
 ### Use case 2, UC2
-..
+| Actors Involved        |  |
+| ------------- |:-------------:|
+|  Precondition     | \<Boolean expression, must evaluate to true before the UC can start> |
+|  Post condition     | \<Boolean expression, must evaluate to true after UC is finished> |
+|  Nominal Scenario     | The administrator modifies an existing user |
+|  Variants     | \<other normal executions> |
+|  Exceptions     | \<exceptions, errors > |
 
 ### Use case x, UCx
-..
+| Actors Involved        |  |
+| ------------- |:-------------:|
+|  Precondition     | \<Boolean expression, must evaluate to true before the UC can start> |
+|  Post condition     | \<Boolean expression, must evaluate to true after UC is finished> |
+|  Nominal Scenario     | The administrator deletes a user profile |
+|  Variants     | \<other normal executions> |
+|  Exceptions     | \<exceptions, errors > |
 
+### Use case x, UCx
+| Actors Involved        |  |
+| ------------- |:-------------:|
+|  Precondition     | \<Boolean expression, must evaluate to true before the UC can start> |
+|  Post condition     | \<Boolean expression, must evaluate to true after UC is finished> |
+|  Nominal Scenario     | The manager issues new order to a supplier |
+|  Variants     | \<other normal executions> |
+|  Exceptions     | \<exceptions, errors > |
 
+### Use case x, UCx
+| Actors Involved        |  |
+| ------------- |:-------------:|
+|  Precondition     | \<Boolean expression, must evaluate to true before the UC can start> |
+|  Post condition     | \<Boolean expression, must evaluate to true after UC is finished> |
+|  Nominal Scenario     | An organizational unit issues new internal order and the estimated time will be shown |
+|  Variants     | \<other normal executions> |
+|  Exceptions     | \<exceptions, errors > |
+
+### Use case x, UCx
+| Actors Involved        |  |
+| ------------- |:-------------:|
+|  Precondition     | \<Boolean expression, must evaluate to true before the UC can start> |
+|  Post condition     | \<Boolean expression, must evaluate to true after UC is finished> |
+|  Nominal Scenario     | Search the product and shows the results including the quantity and the location to the manager |
+|  Variants     | \<other normal executions> |
+|  Exceptions     | \<exceptions, errors > |
+
+### Use case x, UCx
+| Actors Involved        |  |
+| ------------- |:-------------:|
+|  Precondition     | \<Boolean expression, must evaluate to true before the UC can start> |
+|  Post condition     | \<Boolean expression, must evaluate to true after UC is finished> |
+|  Nominal Scenario     |  |
+|  Variants     | \<other normal executions> |
+|  Exceptions     | \<exceptions, errors > |
 
 # Glossary
 
