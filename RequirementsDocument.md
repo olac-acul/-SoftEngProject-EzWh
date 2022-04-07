@@ -23,17 +23,44 @@ Version: 0.0
 	+ [Context Diagram](#context-diagram)
 	+ [Interfaces](#interfaces) 
 	
+- [Contents](#contents)
+- [Informal description](#informal-description)
+- [Stakeholders](#stakeholders)
+- [Context Diagram and interfaces](#context-diagram-and-interfaces)
+	- [Context Diagram](#context-diagram)
+	- [Interfaces](#interfaces)
 - [Stories and personas](#stories-and-personas)
 - [Functional and non functional requirements](#functional-and-non-functional-requirements)
-	+ [Functional Requirements](#functional-requirements)
-	+ [Non functional requirements](#non-functional-requirements)
+	- [Functional Requirements](#functional-requirements)
+	- [Non Functional Requirements](#non-functional-requirements)
 - [Use case diagram and use cases](#use-case-diagram-and-use-cases)
-	+ [Use case diagram](#use-case-diagram)
-	+ [Use cases](#use-cases)
-    	+ [Relevant scenarios](#relevant-scenarios)
+	- [Use case diagram](#use-case-diagram)
+		- [Use case 1, UC1](#use-case-1-uc1)
+				- [Scenario 1.1](#scenario-11)
+				- [Scenario 1.2](#scenario-12)
+				- [Scenario 1.3](#scenario-13)
+		- [Use case 2, UC2](#use-case-2-uc2)
+				- [Scenario 2.1](#scenario-21)
+				- [Scenario 2.2](#scenario-22)
+				- [Scenario 2.3](#scenario-23)
+				- [Scenario 2.4](#scenario-24)
+				- [Scenario 2.5](#scenario-25)
+		- [Use case 3, UC3](#use-case-3-uc3)
+				- [Scenario 3.1](#scenario-31)
+		- [Use case 4, UC4](#use-case-4-uc4)
+				- [Scenario 4.1](#scenario-41)
+				- [Scenario 4.2](#scenario-42)
+				- [Scenario 4.3](#scenario-43)
+				- [Scenario 4.4](#scenario-44)
+		- [Use case 5, UC5](#use-case-5-uc5)
+				- [Scenario 5.1](#scenario-51)
+				- [Scenario 5.2](#scenario-52)
+		- [Use case 6, UC6](#use-case-6-uc6)
+				- [Scenario 6.1](#scenario-61)
+		- [Use case 7, UC7](#use-case-7-uc7)
 - [Glossary](#glossary)
-- [System design](#system-design)
-- [Deployment diagram](#deployment-diagram)
+- [System Design](#system-design)
+- [Deployment Diagram](#deployment-diagram)
 
 # Informal description
 Medium companies and retailers need a simple application to manage the relationship with suppliers and the inventory of physical items stocked in a physical warehouse. 
@@ -58,7 +85,6 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |   Supplier     |       Provides products      |
 |   Manager     |      Manages warehouse       |
 |   Application administrator     |      Installs the application, maintains it, defines users, assign privileges       |
-|   Inventory manager     |      Manages the inventory database       |
 |   Quality office     |      Performs quality check on the products       |
 |    Competitor   |      Provides the same kind of service      |
 |   Organizational unit   |      Orders and receives products       |
@@ -77,7 +103,6 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 Supplier
 Manager
 Application administrator
-Inventory manager
 Quality office
 Organizational unit
 Payment system
@@ -92,10 +117,10 @@ Payment system
 |   Supplier     | GUI | Mouse, keyboard on PC |
 |   Manager     | GUI | Mouse, keyboard on PC |
 |   Application administrator     | GUI + command line interface | Mouse, keyboard on PC  |
-|   Inventory manager     | GUI | Mouse, keyboard on PC |
 |   Quality office     | GUI | Mouse, keyboard on PC |
 |   Organizational unit     | GUI | Mouse, keyboard on PC |
 |   Payment system     | API, see https://developer.visa.com/docs | Internet connection |
+| Delivery Unit | GUI | Mouse, Keyboard on PC |
 
 # Stories and personas
 \<A Persona is a realistic impersonation of an actor. Define here a few personas and describe in plain text how a persona interacts with the system>
@@ -124,23 +149,23 @@ Payment system
 |  FR2.1     | Trace the status of both internal and external orders |
 |  FR2.2     | Manage internal orders |
 |  FR2.2.1    | Issue new internal orders by organizational units |
-|  FR2.2.2     | Estimate the delivery time of an internal order |
+|  FR2.2.2     | Process created order (evaluate if it's ready to be delivered) |
 |  FR2.2.3     | Manage deliveries to the organizational units |
+| FR2.2.4| Delete a order |
+| FR2.2.5| Modify a existing order |
 |  FR2.3     | Manage external orders |
 |  FR2.3.1     | Issue new external orders to suppliers |
-|  FR2.3.2     | Sort the list of available suppliers by price |
-|  FR2.3.3     | Sort the list of available suppliers by time |
-|  FR2.3.4     | Handle payments for external orders |
-|  FR2.3.5     | Deal with received external orders according to the result of the quality check |
+|  FR2.3.2     | Handle payments for external orders |
 |  FR3     | Manage products |
 |  FR3.1     | Search a product and show its details |
 |  FR3.2     | Add a new type of product to the inventory |
-|  FR3.3     | Delete a specific type of product from the inventory |
-|  FR3.4     | Modify a product type (suppliers, location, etc.) |
+|  FR3.3     | Modify a product type (suppliers, location, etc.) |
+| FR3.5 | List supplier that sell this type of product|
 |  FR4     | Manage physical space |
 |  FR4.1     | Monitor the amount of available space |
 |  FR4.2     | Indicate free sections |
-|  FR5     | Manage user specified notifications |
+|  FR5     | Manage quality check |
+|  FR5.1     | Change the quality Check state of a product |
 
 
 ## Non Functional Requirements
@@ -149,10 +174,11 @@ Payment system
 
 | ID        | Type (efficiency, reliability, ..)           | Description  | Refers to |
 | ------------- |:-------------:| :-----:| -----:|
-|  NFR1     | Usability  | Users should be able to use the application with less than two hours of education | All FR|
+|  NFR1     | Usability  | Users should be able to use the application without any education | All FR|
 |  NFR2     | Performance | All functions should complete in less than 0.5 second |All FR|
-|  NFR3     | Portability| |All FR|
-| NFRx .. | | | |
+|  NFR3     | Privacy | Suppliers cannot access company internal data |All FR|
+| NFR4 | Correctness | must guarantee not more than one error per month | All FR |
+| NFR5 | Reliability | must guarantee not more than one defects at month | All FR |	
 
 
 # Use case diagram and use cases
@@ -164,90 +190,251 @@ Payment system
 
 \<next describe here each use case in the UCD>
 ### Use case 1, UC1
-| Actors Involved        |  |
+| Actors Involved        | Administrator |
 | ------------- |:-------------:|
-|  Precondition     | \<Boolean expression, must evaluate to true before the UC can start> |
-|  Post condition     | \<Boolean expression, must evaluate to true after UC is finished> |
+|  Precondition     | Administrator A logged in |
+|  Post condition     | User Account Created |
 |  Nominal Scenario     | The administrator creates a new account and populates its fields |
-|  Variants     | \<other normal executions> |
-|  Exceptions     | \<exceptions, errors > |
+|  Variants     | Modification of fields and access rights of a user |
+|  Variants     | Delete an account |
+|  Exceptions    | Creation of an account that arleady exists |
 
 ##### Scenario 1.1 
 
-\<describe here scenarios instances of UC1>
-
-\<a scenario is a sequence of steps that corresponds to a particular execution of one use case>
-
-\<a scenario is a more formal description of a story>
-
-\<only relevant scenarios should be described>
-
-| Scenario 1.1 | |
+| Scenario 1.1 | The adminsitrator creates the new user |
 | ------------- |:-------------:|
-|  Precondition     | \<Boolean expression, must evaluate to true before the scenario can start> |
-|  Post condition     | \<Boolean expression, must evaluate to true after scenario is finished> |
-| Step#        | Description  |
-|  1     |  |
-|  2     |  |
-|  ...     |  |
+|  Precondition     | user account doesn't exist |
+|  Post condition     | User account exist |
+| Step#        |   |
+|  1     | Adimistrator defines the credentials |
+|  2     | Adimistrator defines access permissions and role into the company  |
+|  3     | Confirms the creation |
 
 ##### Scenario 1.2
 
-##### Scenario 1.x
+| Scenario 1.2 | The Administrator modify a user |
+| ------------- |:-------------:|
+|  Precondition     | User account exists |
+|  Post condition     | user account modified |
+| Step#        |  Description |
+|  1     | Selection of the user to be modified |
+|  2     | Administrator modifies credentials and/or access premission of the user   |
+| 3 | Confirm the modification |
+
+##### Scenario 1.3
+
+| Scenario 1.3 |  Delete of a user|
+| ------------- |:-------------:|
+|  Precondition     | user account exists |
+|  Post condition     | user account deleted |
+| Step#        |  Description |
+|  1     | Selection of the user to be deleted |
+|  2     | Confirm the delete |
+|  3     | Delete the user  |
 
 ### Use case 2, UC2
-| Actors Involved        |  |
+| Actors Involved        | Manager, Organizational Unit, Delivery unit |
 | ------------- |:-------------:|
-|  Precondition     | \<Boolean expression, must evaluate to true before the UC can start> |
-|  Post condition     | \<Boolean expression, must evaluate to true after UC is finished> |
-|  Nominal Scenario     | The administrator modifies an existing user |
-|  Variants     | \<other normal executions> |
-|  Exceptions     | \<exceptions, errors > |
+|  Precondition     | Organization unit logged in |
+|  Post condition     | |
+|  Nominal Scenario     | Manage internal order |
+|Variants| Modify Existing order|
+||delete existing order|
+|Exception |order doesn't exist|
 
-### Use case x, UCx
-| Actors Involved        |  |
-| ------------- |:-------------:|
-|  Precondition     | \<Boolean expression, must evaluate to true before the UC can start> |
-|  Post condition     | \<Boolean expression, must evaluate to true after UC is finished> |
-|  Nominal Scenario     | The administrator deletes a user profile |
-|  Variants     | \<other normal executions> |
-|  Exceptions     | \<exceptions, errors > |
+##### Scenario 2.1
 
-### Use case x, UCx
-| Actors Involved        |  |
+| Scenario 2.1 | Issue new internal order |
 | ------------- |:-------------:|
-|  Precondition     | \<Boolean expression, must evaluate to true before the UC can start> |
-|  Post condition     | \<Boolean expression, must evaluate to true after UC is finished> |
-|  Nominal Scenario     | The manager issues new order to a supplier |
-|  Variants     | \<other normal executions> |
-|  Exceptions     | \<exceptions, errors > |
+|  Precondition     |  |
+|  Post condition     | Order created |
+| Step#        |  Description |
+|  1     | Organizational Unit select the products required and quantity |
+|  2     | Organizational Unit confirms the order |
+| 3 | Notify manager of the creation of a new order |
+| 4 | Update free sections list |
 
-### Use case x, UCx
-| Actors Involved        |  |
-| ------------- |:-------------:|
-|  Precondition     | \<Boolean expression, must evaluate to true before the UC can start> |
-|  Post condition     | \<Boolean expression, must evaluate to true after UC is finished> |
-|  Nominal Scenario     | An organizational unit issues new internal order and the estimated time will be shown |
-|  Variants     | \<other normal executions> |
-|  Exceptions     | \<exceptions, errors > |
+##### Scenario 2.2
 
-### Use case x, UCx
-| Actors Involved        |  |
+| Scenario 2.2 | Process created order |
 | ------------- |:-------------:|
-|  Precondition     | \<Boolean expression, must evaluate to true before the UC can start> |
-|  Post condition     | \<Boolean expression, must evaluate to true after UC is finished> |
-|  Nominal Scenario     | Search the product and shows the results including the quantity and the location to the manager |
-|  Variants     | \<other normal executions> |
-|  Exceptions     | \<exceptions, errors > |
+|  Precondition     | Order is arleady created |
+|  Post condition     | Order is processed |
+| Step#        |  Description |
+|  1     | Products contained in the order are checked the availability |
+|  2     |  in case the product is available mark it as ready othrwise as not ready |
+| 3 | Notify the Delivery Unit about the state of the order |
+| 4  | Notify the Organizational unit about the state of the order | 
 
-### Use case x, UCx
-| Actors Involved        |  |
+##### Scenario 2.3
+
+| Scenario 2.3 | Manage Delivers |
 | ------------- |:-------------:|
-|  Precondition     | \<Boolean expression, must evaluate to true before the UC can start> |
-|  Post condition     | \<Boolean expression, must evaluate to true after UC is finished> |
-|  Nominal Scenario     |  |
-|  Variants     | \<other normal executions> |
-|  Exceptions     | \<exceptions, errors > |
+|  Precondition     | Order in ready status |
+|  Post condition     | Order delivered |
+| Step#        |  Description |
+|  1     | Ask the delivery unit pick-up the order |
+|  2     | NOtify the organizational unit that the order has been delivered |
+|  3     | mark the order as Completed  |
+
+##### Scenario 2.4
+
+| Scenario 2.4 | Modify a order |
+| ------------- |:-------------:|
+|  Precondition     | Order exists |
+|  Post condition     | Order is modified |
+| Step#        |  Description |
+|  1     | Select the order |
+| 2 | Check if the order has not beed arleady delivered (in this case abort the modification)|
+|  3     | Modify paramethers  |
+|  4     | Confirm the modifcation |
+
+##### Scenario 2.5
+
+| Scenario 2.5 | Delete a order |
+| ------------- |:-------------:|
+|  Precondition     | Order exists |
+|  Post condition     | Order is deleted |
+| Step#        |  Description |
+|  1     | Select the order |
+| 2 | Check if the order has not beed arleady delivered (in this case abort the delete)|
+|  3     | Modify paramethers  |
+|  4     | Confirm the delete |
+
+
+### Use case 3, UC3
+| Actors Involved        | Manager, Supplier, Payment system |
+| ------------- |:-------------:|
+|  Precondition     |  |
+|  Post condition     |  |
+|  Nominal Scenario     | Manage external order |
+|  Variants     | External order made by the manager |
+| Exceptions | Not enough space in the warehouse|
+
+##### Scenario 3.1
+
+| Scenario 3.1 | Issue a new external order |
+| ------------- |:-------------:|
+|  Precondition     | Order doesn't exist |
+|  Post condition     | Order is created |
+| Step#        |  Description |
+|  1     | Select supplier |
+| 2 | Select product and quantity|
+| 3| Check if there is enough free space for the order|
+|  4     | Confirm the order |
+|  5     | Notify the supplier of the creation of a new order |
+| 6 | Update free sections list |
+
+
+### Use case 4, UC4
+| Actors Involved        | Manager |
+| ------------- |:-------------:|
+|  Precondition     | Manager logged in |
+|  Post condition     |  |
+|  Nominal Scenario     | Manage Product |
+|Variants| delete Product|
+||modify product|
+|Exceptions| Product doesn't exists|
+
+##### Scenario 4.1
+
+| Scenario 4.1 | Search for a product |
+| ------------- |:-------------:|
+|  Precondition     | Product in the inventory |
+|  Post condition     | details shown |
+| Step#        |  Description |
+|  1     | Select a product by id/name |
+| 2 | display product characteristics |
+
+##### Scenario 4.2
+
+| Scenario 4.2 | Add new type of product to the inventory |
+| ------------- |:-------------:|
+|  Precondition     | Type of product does not exist |
+|  Post condition     | Type of product is created |
+| Step#        |  Description |
+|  1     | insert the product name, id |
+| 2 | insert other characterstics |
+| 3 | Insert the product|
+
+##### Scenario 4.3
+
+| Scenario 4.3 | Modify a Product Type |
+| ------------- |:-------------:|
+|  Precondition     | Product Type exists |
+|  Post condition     | Product Type is modified|
+| Step#        |  Description |
+|  1     | Select Product |
+| 2 | insert new characterstics |
+| 3 | modify the product|
+| 4 | Update free sections list |
+
+
+##### Scenario 4.4
+
+| Scenario 4.3 | List all Suppliers for a product type |
+| ------------- |:-------------:|
+|  Precondition     | product type exists |
+|  Post condition     | show list  |
+| Step#        |  Description |
+|  1     | Select Product Type |
+| 2 | show list of the suppliers |
+
+### Use case 5, UC5
+| Actors Involved        | Manager |
+| ------------- |:-------------:|
+|  Precondition     |  |
+|  Post condition     |  |
+|  Nominal Scenario     | Manage physical space |
+|Exceptions| no free space|
+
+##### Scenario 5.1
+
+| Scenario 3.1 | Show amount of available space |
+| ------------- |:-------------:|
+|  Precondition     | Manager logged in |
+|  Post condition     | free space amount shown |
+| Step#        |  Description |
+|  1     | Calculate free space |
+| 2 | show free space|
+| 3| Notifies manager in case of low available space|
+
+##### Scenario 5.2
+
+| Scenario 5.3 | Show free section |
+| ------------- |:-------------:|
+|  Precondition     |  |
+|  Post condition     | free section shown|
+| Step#        |  Description |
+|  1     | retrive data from free section list |
+| 2 | show free sections|
+
+### Use case 6, UC6
+| Actors Involved        | Quality office, Manager |
+| ------------- |:-------------:|
+|  Precondition     | Quality office is logged in |
+|  Post condition     | Quality office executed tests |
+|  Nominal Scenario     | Manage Quality check |
+
+##### Scenario 6.1
+
+| Scenario 6.1 | Change quality of a Product |
+| ------------- |:-------------:|
+|  Precondition     | Test on the product are done |
+|  Post condition     | check state of the product is changed|
+| Step#        |  Description |
+| 1| insert the new state|
+| 2 | update the state|
+| 3 | notify the manager in case the product doesn't pass the quality checks|
+
+
+### Use case 7, UC7
+| Actors Involved        | Payment system |
+| ------------- |:-------------:|
+|  Precondition     | The external order is not paid |
+|  Post condition     | successful payment |
+|  Nominal Scenario     | Payment to suppliers |
+|  Exceptions     | Not successful payment |
 
 # Glossary
 
