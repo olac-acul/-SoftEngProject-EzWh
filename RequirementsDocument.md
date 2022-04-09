@@ -9,11 +9,9 @@ Date: 22 march 2022
 
 Version: 0.0
 
-
 | Version number | Change |
 | ----------------- |:-----------|
 | | |
-
 
 # Contents
 
@@ -63,21 +61,19 @@ Version: 0.0
 - [Deployment Diagram](#deployment-diagram)
 
 # Informal description
-Medium companies and retailers need a simple application to manage the relationship with suppliers and the inventory of physical items stocked in a physical warehouse. 
+
+Medium companies and retailers need a simple application to manage the relationship with suppliers and the inventory of physical items stocked in a physical warehouse.
 The warehouse is supervised by a manager, who supervises the availability of items. When a certain item is in short supply, the manager issues an order to a supplier. In general the same item can be purchased by many suppliers. The warehouse keeps a list of possible suppliers per item. 
 
-After some time the items ordered to a supplier are received. The items must be quality checked and stored in specific positions in the warehouse. The quality check is performed by specific roles (quality office), who apply specific tests for item (different items are tested differently). Possibly the tests are not made at all, or made randomly on some of the items received. If an item does not pass a quality test it may be rejected and sent back to the supplier. 
+After some time the items ordered to a supplier are received. The items must be quality checked and stored in specific positions in the warehouse. The quality check is performed by specific roles (quality office), who apply specific tests for item (different items are tested differently). Possibly the tests are not made at all, or made randomly on some of the items received. If an item does not pass a quality test it may be rejected and sent back to the supplier.
 
 Storage of items in the warehouse must take into account the availability of physical space in the warehouse. Further the position of items must be traced to guide later recollection of them.
 
-The warehouse is part of a company. Other organizational units (OU) of the company may ask for items in the warehouse. This is implemented via internal orders, received by the warehouse. Upon reception of an internal order the warehouse must collect the requested item(s), prepare them and deliver them to a pick up area. When the item is collected by the other OU the internal order is completed. 
+The warehouse is part of a company. Other organizational units (OU) of the company may ask for items in the warehouse. This is implemented via internal orders, received by the warehouse. Upon reception of an internal order the warehouse must collect the requested item(s), prepare them and deliver them to a pick up area. When the item is collected by the other OU the internal order is completed.
 
 EZWH (EaSy WareHouse) is a software application to support the management of a warehouse.
 
-
-
 # Stakeholders
-
 
 | Stakeholder name  | Description |
 | ----------------- |:-----------:|
@@ -91,12 +87,11 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |   Delivery unit     |      Places items in the warehouse, collects, prepares and delivers them to pick up areas      |
 |   Payment system     |      Handles payments       |
 
-
 # Context Diagram and interfaces
 
 ## Context Diagram
-\<Define here Context diagram using UML use case diagram>
 
+\<Define here Context diagram using UML use case diagram>
 
 \<actors are a subset of stakeholders>
   
@@ -109,6 +104,7 @@ Supplier
 Payment system  
 
 ## Interfaces
+
 \<describe here each interface in the context diagram>
 
 \<GUIs will be described graphically in a separate document>
@@ -124,13 +120,12 @@ Payment system
 |   Payment system     | API, see https://developer.visa.com/docs | Internet Connection |
 
 # Stories and personas
+
 \<A Persona is a realistic impersonation of an actor. Define here a few personas and describe in plain text how a persona interacts with the system>
 
 \<Persona is-an-instance-of actor>
 
 \<stories will be formalized later as scenarios in use cases>
-
-
 
 # Functional and non functional requirements
 
@@ -148,9 +143,9 @@ Payment system
 |  FR1.3     | Delete a user |
 |  FR2     | Manage products |
 |  FR2.1     | Search a product and show its details |
-|  FR2.2     | Add a new type of product to the inventory |
-|  FR2.3     | Modify a product type (suppliers, location, etc.) |
-|  FR2.4     | Delete a specific type of product from the database |
+|  FR2.2     | Add a new product to the inventory |
+|  FR2.3     | Modify a product (suppliers, location, etc.) |
+|  FR2.4     | Delete a specific product from the database |
 |  FR3     | Manage orders |
 |  FR3.1     | Update the status of both internal and external orders |
 |  FR3.2     | Manage internal orders |
@@ -159,14 +154,15 @@ Payment system
 |  FR3.2.3     | Manage deliveries to the pickup area |
 |  FR3.3     | Manage external orders |
 |  FR3.3.1     | Issue new external orders to suppliers |
-|  FR3.3.2     | Sort the list of available suppliers by price or by time of delivery |
+|  FR3.3.2     | Display the list of available suppliers |
 |  FR3.3.3     | Handle payments for external orders |
 |  FR3.3.4     | Deal with the items received from suppliers according to the result of the quality check |
 |  FR4     | Manage physical space |
 |  FR4.1     | Monitor the amount of available space |
 |  FR4.2     | Indicate free sections |
-|  FR5     | Manage user specified notifications |
-
+|  FR5     | Manage notifications |
+|  FR5.1     | Manage user specified notifications |
+|  FR5.2     | Notify manager when the total available space is below the threshold |
 
 ## Access right, actor vs function
 
@@ -195,263 +191,321 @@ Payment system
 |  NFR2     | Performance | All functions should complete in less than 0.5 second |All FR|
 |  NFR3     | Privacy | Suppliers cannot access company internal data |All FR|
 | NFR4 | Correctness | Must guarantee not more than one error per month | All FR |
-| NFR5 | Reliability | Must guarantee not more than one defects at month | All FR |	
-
+| NFR5 | Reliability | Must guarantee not more than one defects at month | All FR |
 
 # Use case diagram and use cases
 
-
 ## Use case diagram
+
 \<define here UML Use case diagram UCD summarizing all use cases, and their relationships>
 
-
 \<next describe here each use case in the UCD>
-### Use case 1, UC1
+
+### Use case 1, UC1 - User Login
+
+| Actors Involved        | All actors |
+| ------------- |:-------------:|
+|  Precondition     | User not authenticated |
+|  Post condition     | User authenticated and logged in |
+|  Nominal Scenario     | User enters username and password |
+|  Exceptions    | Username or password is invalid |
+
+### Use case 2, UC2 - Manage Users
+
 | Actors Involved        | Administrator |
 | ------------- |:-------------:|
-|  Precondition     | Administrator A logged in |
-|  Post condition     | User Account Created |
+|  Precondition     | Administrator logged in |
+|  Post condition     | User account created or modified |
 |  Nominal Scenario     | The administrator creates a new account and populates its fields |
 |  Variants     | Modification of fields and access rights of a user |
-|  Variants     | Delete an account |
+|  Variants     | Deletion of an account |
 |  Exceptions    | Creation of an account that arleady exists |
+|  Exceptions    | Deletion of his/her own account |
 
-##### Scenario 1.1 
+##### Scenario 2.1 
 
-| Scenario 1.1 | The adminsitrator creates the new user |
+| Scenario 2.1 | The adminsitrator creates a new user |
 | ------------- |:-------------:|
 |  Precondition     | user account doesn't exist |
-|  Post condition     | User account exist |
+|  Post condition     | User account exists |
 | Step#        |   |
-|  1     | Adimistrator defines the credentials |
+|  1     | Adimistrator enters the user information |
 |  2     | Adimistrator defines access permissions and role into the company  |
-|  3     | Confirms the creation |
-
-##### Scenario 1.2
-
-| Scenario 1.2 | The Administrator modify a user |
-| ------------- |:-------------:|
-|  Precondition     | User account exists |
-|  Post condition     | user account modified |
-| Step#        |  Description |
-|  1     | Selection of the user to be modified |
-|  2     | Administrator modifies credentials and/or access premission of the user   |
-| 3 | Confirm the modification |
-
-##### Scenario 1.3
-
-| Scenario 1.3 |  Delete of a user|
-| ------------- |:-------------:|
-|  Precondition     | user account exists |
-|  Post condition     | user account deleted |
-| Step#        |  Description |
-|  1     | Selection of the user to be deleted |
-|  2     | Confirm the delete |
-|  3     | Delete the user  |
-
-### Use case 2, UC2
-| Actors Involved        | Manager, Organizational Unit, Delivery unit |
-| ------------- |:-------------:|
-|  Precondition     | Organization unit logged in |
-|  Post condition     | |
-|  Nominal Scenario     | Manage internal order |
-|Variants| Modify Existing order|
-||delete existing order|
-|Exception |order doesn't exist|
-
-##### Scenario 2.1
-
-| Scenario 2.1 | Issue new internal order |
-| ------------- |:-------------:|
-|  Precondition     |  |
-|  Post condition     | Order created |
-| Step#        |  Description |
-|  1     | Organizational Unit select the products required and quantity |
-|  2     | Organizational Unit confirms the order |
-| 3 | Notify manager of the creation of a new order |
-| 4 | Update free sections list |
+|  3     | Administrator confirms the creation |
 
 ##### Scenario 2.2
 
-| Scenario 2.2 | Process created order |
+| Scenario 2.2 | The administrator modifies a user account |
 | ------------- |:-------------:|
-|  Precondition     | Order is arleady created |
-|  Post condition     | Order is processed |
+|  Precondition     | User account exists |
+|  Post condition     | User account modified |
 | Step#        |  Description |
-|  1     | Products contained in the order are checked the availability |
-|  2     |  in case the product is available mark it as ready othrwise as not ready |
-| 3 | Notify the Delivery Unit about the state of the order |
-| 4  | Notify the Organizational unit about the state of the order | 
+|  1     | Administrator searches and selects the username to be modified |
+|  2     | Administrator modifies information and/or access premission of the user   |
+| 3 | Administrator confirms the modification |
 
 ##### Scenario 2.3
 
-| Scenario 2.3 | Manage Delivers |
+| Scenario 2.3 | The administrator deletes a user account |
 | ------------- |:-------------:|
-|  Precondition     | Order in ready status |
-|  Post condition     | Order delivered |
+|  Precondition     | User account exists |
+|  Post condition     | User account does not exist |
 | Step#        |  Description |
-|  1     | Ask the delivery unit pick-up the order |
-|  2     | NOtify the organizational unit that the order has been delivered |
-|  3     | mark the order as Completed  |
+|  1     | Administrator searches and selects the username to be deleted |
+|  2     | Administrator confirms the deletion |
 
-##### Scenario 2.4
+### Use case 3, UC3 - Manage Products
 
-| Scenario 2.4 | Modify a order |
+| Actors Involved        | Administrator |
 | ------------- |:-------------:|
-|  Precondition     | Order exists |
-|  Post condition     | Order is modified |
+|  Precondition     | Administrator logged in |
+|  Post condition     | Product added or modified |
+|  Nominal Scenario     | The administrator adds a new product and specifies its information |
+|  Variants     | Modification of a product details |
+|  Variants     | Deletion of a product |
+|  Exceptions    | Creation of a product that arleady exists |
+|  Exceptions    | Deletion of a product that its quantity in the warehouse is not zero |
+
+##### Scenario 3.1 
+
+| Scenario 3.1 | The adminsitrator adds a new product |
+| ------------- |:-------------:|
+|  Precondition     | Product doesn't exist |
+|  Post condition     | Product information registered |
+| Step#        |   |
+|  1     | Adimistrator enters the product information |
+|  2     | Administrator confirms the creation |
+
+##### Scenario 3.2
+
+| Scenario 3.2 | The administrator modifies a product details|
+| ------------- |:-------------:|
+|  Precondition     | Product information exist |
+|  Post condition     | Product information modified |
 | Step#        |  Description |
-|  1     | Select the order |
-| 2 | Check if the order has not beed arleady delivered (in this case abort the modification)|
-|  3     | Modify paramethers  |
-|  4     | Confirm the modifcation |
+|  1     | Administrator searches and selects the product to be modified |
+|  2     | Administrator modifies the details of the product   |
+| 3 | Administrator confirms the modification |
 
-##### Scenario 2.5
+##### Scenario 3.3
 
-| Scenario 2.5 | Delete a order |
+| Scenario 3.3 | The administrator deletes a product |
 | ------------- |:-------------:|
-|  Precondition     | Order exists |
-|  Post condition     | Order is deleted |
+|  Precondition     | Product information exist |
+|  Post condition     | Product information do not exist |
 | Step#        |  Description |
-|  1     | Select the order |
-| 2 | Check if the order has not beed arleady delivered (in this case abort the delete)|
-|  3     | Modify paramethers  |
-|  4     | Confirm the delete |
+|  1     | Administrator searches and selects the product to be deleted |
+|  2     | Administrator confirms the deletion |
 
+### Use case 4, UC4 - Issue New Internal Order
 
-### Use case 3, UC3
-| Actors Involved        | Manager, Supplier, Payment system |
+| Actors Involved        | Organizational unit, manager |
 | ------------- |:-------------:|
-|  Precondition     |  |
-|  Post condition     |  |
-|  Nominal Scenario     | Manage external order |
-|  Variants     | External order made by the manager |
-| Exceptions | Not enough space in the warehouse|
-
-##### Scenario 3.1
-
-| Scenario 3.1 | Issue a new external order |
-| ------------- |:-------------:|
-|  Precondition     | Order doesn't exist |
-|  Post condition     | Order is created |
-| Step#        |  Description |
-|  1     | Select supplier |
-| 2 | Select product and quantity|
-| 3| Check if there is enough free space for the order|
-|  4     | Confirm the order |
-|  5     | Notify the supplier of the creation of a new order |
-| 6 | Update free sections list |
-
-
-### Use case 4, UC4
-| Actors Involved        | Manager |
-| ------------- |:-------------:|
-|  Precondition     | Manager logged in |
-|  Post condition     |  |
-|  Nominal Scenario     | Manage Product |
-|Variants| delete Product|
-||modify product|
-|Exceptions| Product doesn't exists|
+|  Precondition     | Organizational unit logged in |
+|  Precondition     | Product already added |
+|  Post condition     | A new order created |
+|  Post condition     | Manager is notified of the creation of a new order |
+|  Nominal Scenario     | Organizational unit issues a new order and the inventory is sufficient |
+|  Variants     | The inventory is not sufficient for the order |
 
 ##### Scenario 4.1
 
-| Scenario 4.1 | Search for a product |
+| Scenario 4.1 | The inventory is sufficient |
 | ------------- |:-------------:|
-|  Precondition     | Product in the inventory |
-|  Post condition     | details shown |
+|  Precondition     | Organizational unit logged in |
+|  Post condition     | A new order created with status "New order (available)" |
+|  Post condition     | Manager is notified of the creation of a new order |
 | Step#        |  Description |
-|  1     | Select a product by id/name |
-| 2 | display product characteristics |
+|  1     | Organizational unit searches and selects the products required and their quantities |
+|  2     | The estimated delivery time is shown to the organizational unit |
+|  3     | Organizational Unit confirms the order |
 
 ##### Scenario 4.2
 
-| Scenario 4.2 | Add new type of product to the inventory |
+| Scenario 4.2 | The inventory is not sufficient |
 | ------------- |:-------------:|
-|  Precondition     | Type of product does not exist |
-|  Post condition     | Type of product is created |
+|  Precondition     | Organizational unit logged in |
+|  Post condition     | A new order created with status "New order (unavailable)" |
+|  Post condition     | Manager is notified of the creation of a new order |
 | Step#        |  Description |
-|  1     | insert the product name, id |
-| 2 | insert other characterstics |
-| 3 | Insert the product|
+|  1     | Organizational unit searches and selects the products required and their quantities |
+|  2     | The estimated delivery time is shown to the organizational unit |
+|  3     | Organizational Unit confirms the order |
 
-##### Scenario 4.3
+### Use case 5, UC5 - Issue New External Order
 
-| Scenario 4.3 | Modify a Product Type |
+| Actors Involved        | Manager, Supplier, Payment system |
 | ------------- |:-------------:|
-|  Precondition     | Product Type exists |
-|  Post condition     | Product Type is modified|
-| Step#        |  Description |
-|  1     | Select Product |
-| 2 | insert new characterstics |
-| 3 | modify the product|
-| 4 | Update free sections list |
-
-
-##### Scenario 4.4
-
-| Scenario 4.3 | List all Suppliers for a product type |
-| ------------- |:-------------:|
-|  Precondition     | product type exists |
-|  Post condition     | show list  |
-| Step#        |  Description |
-|  1     | Select Product Type |
-| 2 | show list of the suppliers |
-
-### Use case 5, UC5
-| Actors Involved        | Manager |
-| ------------- |:-------------:|
-|  Precondition     |  |
-|  Post condition     |  |
-|  Nominal Scenario     | Manage physical space |
-|Exceptions| no free space|
+|  Precondition     | Manager logged in |
+|  Post condition     | Supplier is notified of the order |
+|  Nominal Scenario     | Manager issues a new external order |
+| Exceptions | Not enough space in the warehouse |
 
 ##### Scenario 5.1
 
-| Scenario 3.1 | Show amount of available space |
+| Scenario 5.1 | Issue a new external order |
 | ------------- |:-------------:|
-|  Precondition     | Manager logged in |
-|  Post condition     | free space amount shown |
+|  Precondition     | A new order created with status "New order (unavailable)" |
+|  Post condition     | Order status updated to "Requested from the supplier" |
+|  Post condition     | Supplier is notified of the order |
 | Step#        |  Description |
-|  1     | Calculate free space |
-| 2 | show free space|
-| 3| Notifies manager in case of low available space|
+|  1     | Manager selects a supplier from the list of the product suppliers |
+| 2 | Manager determines the quantity |
+|  3     | Manager confirms the order |
+|  4     | Handle the payment |
 
-##### Scenario 5.2
+### Use case 6, UC6 - Manage Issued External Order
 
-| Scenario 5.3 | Show free section |
+| Actors Involved        | Supplier|
 | ------------- |:-------------:|
-|  Precondition     |  |
-|  Post condition     | free section shown|
-| Step#        |  Description |
-|  1     | retrive data from free section list |
-| 2 | show free sections|
-
-### Use case 6, UC6
-| Actors Involved        | Quality office, Manager |
-| ------------- |:-------------:|
-|  Precondition     | Quality office is logged in |
-|  Post condition     | Quality office executed tests |
-|  Nominal Scenario     | Manage Quality check |
+|  Precondition     | An order exists with status "Requested from the supplier" |
+|  Precondition     | Supplier is notified of the order |
+|  Post condition     | Products are sent to the warehouse |
+|  Post condition     | Order status updated to "Sent by supplier" |
+|  Nominal Scenario     | Supplier sends the items mentioned in the order |
 
 ##### Scenario 6.1
 
-| Scenario 6.1 | Change quality of a Product |
+| Scenario 6.1 | Supplier sends the items mentioned in the order |
 | ------------- |:-------------:|
-|  Precondition     | Test on the product are done |
-|  Post condition     | check state of the product is changed|
+|  Precondition     | Supplier logged in |
+|  Post condition     | Order status updated to "Sent by supplier" |
 | Step#        |  Description |
-| 1| insert the new state|
-| 2 | update the state|
-| 3 | notify the manager in case the product doesn't pass the quality checks|
+|  1     | Supplier opens the order |
+| 2 | Suppier send the products |
 
+### Use case 7, UC7 - Quality check
 
-### Use case 7, UC7
-| Actors Involved        | Payment system |
+| Actors Involved        | Manager, quality office |
 | ------------- |:-------------:|
-|  Precondition     | The external order is not paid |
-|  Post condition     | successful payment |
-|  Nominal Scenario     | Payment to suppliers |
-|  Exceptions     | Not successful payment |
+|  Precondition     | An order exists with status "Sent from the supplier" |
+|  Precondition     | The products received |
+|  Post condition     | Order status updated |
+|  Nominal Scenario     | Quality office confirms the products |
+|Variants| Quality office does not perform quality check |
+|Variants | Quality office rejects the products |
+
+##### Scenario 7.1
+
+| Scenario 7.1 | Products quality confirmed |
+| ------------- |:-------------:|
+|  Precondition     | Quality check passed |
+|  Post condition     | Order status updated to "Order received to warehouse" |
+| Step#        |  Description |
+|  1     | Quality office performs quality check on the products |
+|  2     | Order status is updated |
+| 3 | Manager is notified of the new products |
+
+##### Scenario 7.2
+
+| Scenario 7.2 | Products quality not checked |
+| ------------- |:-------------:|
+|  Precondition     | Quality check decided not neccessary |
+|  Post condition     | Order status updated to "Order received to warehouse" |
+| Step#        |  Description |
+|  1     | Quality office performs quality check on the products |
+|  2     | Order status is updated |
+| 3 | Manager is notified of the new products |
+
+##### Scenario 7.3
+
+| Scenario 7.1 | Products quality rejected |
+| ------------- |:-------------:|
+|  Precondition     | Quality check not passed |
+|  Post condition     | Order status updated to "Received products quality rejected" |
+| Step#        |  Description |
+|  1     | Quality office performs quality check on the products |
+|  2     | Order status is updated |
+| 3 | Manager is notified of the test result |
+| 4 | Manager rejects the products |
+
+### Use case 8, UC8 - Manage Received Materials
+
+| Actors Involved        | Manager, Administrator, Delivery unit |
+| ------------- |:-------------:|
+|  Precondition     | Order status updated to "Order received to warehouse" |
+|  Precondition     | Manager is notified of the new products |
+|  Post condition     | Products placed in the specified sections |
+|  Post condition     | Order status updated |
+|  Post condition     | Product details updated |
+|  Post condition     | Physical space status updated |
+|  Nominal Scenario     | Place received materials |
+
+##### Scenario 8.1
+
+| Scenario 8.1 | Place received materials |
+| ------------- |:-------------:|
+|  Precondition     | Products not included in the warehouse |
+|  Post condition     | Products included in the warehouse and the information updated |
+| Step#        |  Description |
+|  1     | Manager searches for free sections to place thr new products |
+|  1     | Manager selects a section |
+| 2 | Notify the delivery unit to transfer the products |
+| 3| Notify the administrator to update product details and space status |
+| 4| Notify manager in case of low available space|
+|  5    | Order status updated to "New products placed into the warehouse" |
+|  6    | Notify the manager that the new products have been placed |
+
+### Use case 9, UC9 - Deliver Products to Pickup Areas
+
+| Actors Involved        | Manager, Administrator, Delivery unit, Organizational unit |
+| ------------- |:-------------:|
+|  Precondition     | Organizational unit issued a new order |
+|  Precondition     | Order available in the warehouse |
+|  Post condition     | Order delivered to pickup area |
+|  Post condition     | Order status updated |
+|  Post condition     | Product details updated |
+|  Post condition     | Physical space status updated |
+|  Nominal Scenario     | No external order was needed |
+|Variants| External order was needed |
+
+##### Scenario 9.1
+
+| Scenario 9.1 | No external order was needed |
+| ------------- |:-------------:|
+|  Precondition     | An order exists with status "New order (available)" |
+|  Post condition     | Products ready to pick up |
+| Step#        |  Description |
+|  1     | Manager confirms the order |
+| 2 | Notify the delivery unit to transfer the products to pickup area |
+| 3| Notify the administrator to update product details and space status |
+|  4    | Delivery unit searches for the product to see where it is |
+|  5    | Delivery unit places the product in the pickup area |
+|  6    | Order status updated to "Products ready to pickup" |
+| 7| Notify organizational unit |
+
+##### Scenario 9.2
+
+| Scenario 9.2 | External order was needed |
+| ------------- |:-------------:|
+|  Precondition     | An order exists with status "New products placed into the warehouse" |
+|  Post condition     | Products ready to pick up |
+| Step#        |  Description |
+|  1     | Manager confirms the order |
+| 2 | Notify the delivery unit to transfer the products to pickup area |
+| 3| Notify the administrator to update product details and space status |
+|  4    | Delivery unit searches for the product to see where it is |
+|  5    | Delivery unit places the product in the pickup area |
+|  6   | Order status updated to "Products ready to pickup" |
+| 7| Notify organizational unit |
+
+### Use case 10, UC10 - Pick Up Products
+| Actors Involved        | Organizational unit |
+| ------------- |:-------------:|
+|  Precondition     | An order exists with status "Products ready to pickup" |
+|  Post condition     | Order status upsated to "Order delivered" |
+|  Nominal Scenario     | Organizational unit collects the items |
+
+##### Scenario 10.1
+
+| Scenario 9.1 |  Organizational unit collects the items |
+| ------------- |:-------------:|
+|  Precondition     | Products ready to pick up |
+  Precondition     | Organizational unit notified of the placed products |
+|  Post condition     | Order status updated to "Order delivered" |
+| Step#        |  Description |
+|  1     | The products are delivered to the organizational unit |
+| 2 | Order status updated |
 
 # Glossary
 
