@@ -99,13 +99,13 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 
 \<actors are a subset of stakeholders>
-
-Supplier  
+  
 Manager  
 Application administrator  
 Quality office  
 Organizational unit  
 Delivery unit  
+Supplier  
 Payment system  
 
 ## Interfaces
@@ -154,7 +154,7 @@ Payment system
 |  FR3     | Manage orders |
 |  FR3.1     | Update the status of both internal and external orders |
 |  FR3.2     | Manage internal orders |
-|  FR3.2.1    | Issue new internal orders by organizational units |
+|  FR3.2.1    | Issue new internal orders |
 |  FR3.2.2    | Estimate the delivery time of an internal order |
 |  FR3.2.3     | Manage deliveries to the pickup area |
 |  FR3.3     | Manage external orders |
@@ -167,6 +167,23 @@ Payment system
 |  FR4.2     | Indicate free sections |
 |  FR5     | Manage user specified notifications |
 
+
+## Access right, actor vs function
+
+| Function | Manager | Adminstrator | Quality office | Organizational units| Delivery unit | Suppliers |
+| ----- |:-----:| :-----:| :-----:|:-----:|:-----:|:-----|
+| FR1 | No | Yes | No | No | No | No |
+| FR2.1 | Yes | Yes | No | Yes | Yes | No |
+| FR2.2 | No | Yes | No | No | No | No |
+| FR2.3 | No | Yes | No | No | No | No |
+| FR2.4 | No | Yes | No | No | No | No |
+| FR3.1 | Yes | Yes | Only at specific stages | Only at specific stages | Only at specific stages | Only at specific stages |
+| FR3.2.1 | No | No | No | Yes | No | No |
+| FR3.2.3 | Yes | No | No | No | Yes | No |
+| FR3.3.1 | Yes | No | No | No | No | No |
+| FR3.3.4 | Yes | No | Yes | No | Yes | No |
+| FR4 | Yes | No | No | No | Yes | No |
+| FR5 | Yes | Yes | Yes | Yes | Yes | Yes |
 
 ## Non Functional Requirements
 
