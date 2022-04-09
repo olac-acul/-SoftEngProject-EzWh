@@ -409,7 +409,7 @@ Payment system
 
 ##### Scenario 7.3
 
-| Scenario 7.1 | Products quality rejected |
+| Scenario 7.3 | Products quality rejected |
 | ------------- |:-------------:|
 |  Precondition     | Quality check not passed |
 |  Post condition     | Order status updated to "Received products quality rejected" |
@@ -498,7 +498,7 @@ Payment system
 
 ##### Scenario 10.1
 
-| Scenario 9.1 |  Organizational unit collects the items |
+| Scenario 10.1 |  Organizational unit collects the items |
 | ------------- |:-------------:|
 |  Precondition     | Products ready to pick up |
   Precondition     | Organizational unit notified of the placed products |
