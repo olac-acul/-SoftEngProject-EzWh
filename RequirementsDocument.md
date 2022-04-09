@@ -84,11 +84,11 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 |   Company     |     Uses the application        |
 |   Supplier     |       Provides products      |
 |   Manager     |      Manages warehouse       |
-|   Application administrator     |      Installs the application, maintains it, defines users, assign privileges       |
+|   Application administrator     |      Installs the application, maintains it, defines users, assign privileges and define product types     |
 |   Quality office     |      Performs quality check on the products       |
 |    Competitor   |      Provides the same kind of service      |
 |   Organizational unit   |      Orders and receives products       |
-|   Delivery unit     |      Collects, prepares and delivers items to pick up areas      |
+|   Delivery unit     |      Places items in the warehouse, collects, prepares and delivers them to pick up areas      |
 |   Payment system     |      Handles payments       |
 
 
@@ -100,12 +100,13 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 \<actors are a subset of stakeholders>
 
-Supplier
-Manager
-Application administrator
-Quality office
-Organizational unit
-Payment system
+Supplier  
+Manager  
+Application administrator  
+Quality office  
+Organizational unit  
+Delivery unit  
+Payment system  
 
 ## Interfaces
 \<describe here each interface in the context diagram>
@@ -119,8 +120,8 @@ Payment system
 |   Application administrator     | GUI + command line interface | Mouse, keyboard on PC  |
 |   Quality office     | GUI | Mouse, keyboard on PC |
 |   Organizational unit     | GUI | Mouse, keyboard on PC |
-|   Payment system     | API, see https://developer.visa.com/docs | Internet connection |
 | Delivery Unit | GUI | Mouse, Keyboard on PC |
+|   Payment system     | API, see https://developer.visa.com/docs | Internet Connection |
 
 # Stories and personas
 \<A Persona is a realistic impersonation of an actor. Define here a few personas and describe in plain text how a persona interacts with the system>
@@ -145,27 +146,26 @@ Payment system
 |  FR1.1     | Create a new user  |
 |  FR1.2     | Modify an existing user  |
 |  FR1.3     | Delete a user |
-|  FR2     | Manage orders |
-|  FR2.1     | Trace the status of both internal and external orders |
-|  FR2.2     | Manage internal orders |
-|  FR2.2.1    | Issue new internal orders by organizational units |
-|  FR2.2.2     | Process created order (evaluate if it's ready to be delivered) |
-|  FR2.2.3     | Manage deliveries to the organizational units |
-| FR2.2.4| Delete a order |
-| FR2.2.5| Modify a existing order |
-|  FR2.3     | Manage external orders |
-|  FR2.3.1     | Issue new external orders to suppliers |
-|  FR2.3.2     | Handle payments for external orders |
-|  FR3     | Manage products |
-|  FR3.1     | Search a product and show its details |
-|  FR3.2     | Add a new type of product to the inventory |
-|  FR3.3     | Modify a product type (suppliers, location, etc.) |
-| FR3.5 | List supplier that sell this type of product|
+|  FR2     | Manage products |
+|  FR2.1     | Search a product and show its details |
+|  FR2.2     | Add a new type of product to the inventory |
+|  FR2.3     | Modify a product type (suppliers, location, etc.) |
+|  FR2.4     | Delete a specific type of product from the database |
+|  FR3     | Manage orders |
+|  FR3.1     | Update the status of both internal and external orders |
+|  FR3.2     | Manage internal orders |
+|  FR3.2.1    | Issue new internal orders by organizational units |
+|  FR3.2.2    | Estimate the delivery time of an internal order |
+|  FR3.2.3     | Manage deliveries to the pickup area |
+|  FR3.3     | Manage external orders |
+|  FR3.3.1     | Issue new external orders to suppliers |
+|  FR3.3.2     | Sort the list of available suppliers by price or by time of delivery |
+|  FR3.3.3     | Handle payments for external orders |
+|  FR3.3.4     | Deal with the items received from suppliers according to the result of the quality check |
 |  FR4     | Manage physical space |
 |  FR4.1     | Monitor the amount of available space |
 |  FR4.2     | Indicate free sections |
-|  FR5     | Manage quality check |
-|  FR5.1     | Change the quality Check state of a product |
+|  FR5     | Manage user specified notifications |
 
 
 ## Non Functional Requirements
@@ -177,8 +177,8 @@ Payment system
 |  NFR1     | Usability  | Users should be able to use the application without any education | All FR|
 |  NFR2     | Performance | All functions should complete in less than 0.5 second |All FR|
 |  NFR3     | Privacy | Suppliers cannot access company internal data |All FR|
-| NFR4 | Correctness | must guarantee not more than one error per month | All FR |
-| NFR5 | Reliability | must guarantee not more than one defects at month | All FR |	
+| NFR4 | Correctness | Must guarantee not more than one error per month | All FR |
+| NFR5 | Reliability | Must guarantee not more than one defects at month | All FR |	
 
 
 # Use case diagram and use cases
