@@ -30,32 +30,37 @@ Version: 0.0
 - [Stories and personas](#stories-and-personas)
 - [Functional and non functional requirements](#functional-and-non-functional-requirements)
 	- [Functional Requirements](#functional-requirements)
+	- [Access right, actor vs function](#access-right-actor-vs-function)
 	- [Non Functional Requirements](#non-functional-requirements)
 - [Use case diagram and use cases](#use-case-diagram-and-use-cases)
 	- [Use case diagram](#use-case-diagram)
-		- [Use case 1, UC1](#use-case-1-uc1)
-				- [Scenario 1.1](#scenario-11)
-				- [Scenario 1.2](#scenario-12)
-				- [Scenario 1.3](#scenario-13)
-		- [Use case 2, UC2](#use-case-2-uc2)
+		- [Use case 1, UC1 - User Login](#use-case-1-uc1---user-login)
+		- [Use case 2, UC2 - Manage Users](#use-case-2-uc2---manage-users)
 				- [Scenario 2.1](#scenario-21)
 				- [Scenario 2.2](#scenario-22)
 				- [Scenario 2.3](#scenario-23)
-				- [Scenario 2.4](#scenario-24)
-				- [Scenario 2.5](#scenario-25)
-		- [Use case 3, UC3](#use-case-3-uc3)
+		- [Use case 3, UC3 - Manage Products](#use-case-3-uc3---manage-products)
 				- [Scenario 3.1](#scenario-31)
-		- [Use case 4, UC4](#use-case-4-uc4)
+				- [Scenario 3.2](#scenario-32)
+				- [Scenario 3.3](#scenario-33)
+		- [Use case 4, UC4 - Issue New Internal Order](#use-case-4-uc4---issue-new-internal-order)
 				- [Scenario 4.1](#scenario-41)
 				- [Scenario 4.2](#scenario-42)
-				- [Scenario 4.3](#scenario-43)
-				- [Scenario 4.4](#scenario-44)
-		- [Use case 5, UC5](#use-case-5-uc5)
+		- [Use case 5, UC5 - Issue New External Order](#use-case-5-uc5---issue-new-external-order)
 				- [Scenario 5.1](#scenario-51)
-				- [Scenario 5.2](#scenario-52)
-		- [Use case 6, UC6](#use-case-6-uc6)
+		- [Use case 6, UC6 - Manage Issued External Order](#use-case-6-uc6---manage-issued-external-order)
 				- [Scenario 6.1](#scenario-61)
-		- [Use case 7, UC7](#use-case-7-uc7)
+		- [Use case 7, UC7 - Quality check](#use-case-7-uc7---quality-check)
+				- [Scenario 7.1](#scenario-71)
+				- [Scenario 7.2](#scenario-72)
+				- [Scenario 7.3](#scenario-73)
+		- [Use case 8, UC8 - Manage Received Materials](#use-case-8-uc8---manage-received-materials)
+				- [Scenario 8.1](#scenario-81)
+		- [Use case 9, UC9 - Deliver Products to Pickup Areas](#use-case-9-uc9---deliver-products-to-pickup-areas)
+				- [Scenario 9.1](#scenario-91)
+				- [Scenario 9.2](#scenario-92)
+		- [Use case 10, UC10 - Pick Up Products](#use-case-10-uc10---pick-up-products)
+				- [Scenario 10.1](#scenario-101)
 - [Glossary](#glossary)
 - [System Design](#system-design)
 - [Deployment Diagram](#deployment-diagram)
@@ -352,23 +357,24 @@ Payment system
 
 ### Use case 6, UC6 - Manage Issued External Order
 
-| Actors Involved        | Supplier|
+| Actors Involved        | Supplier, Manager|
 | ------------- |:-------------:|
 |  Precondition     | An order exists with status "Ordered from the supplier" |
 |  Precondition     | Supplier is notified of the order |
 |  Post condition     | Products are sent to the warehouse |
 |  Post condition     | Order status updated to "Sent by supplier" |
-|  Nominal Scenario     | Supplier sends the items mentioned in the order |
+|  Nominal Scenario     | Supplier updates the order status and send notification |
 
 ##### Scenario 6.1
 
-| Scenario 6.1 | Supplier sends the items mentioned in the order |
+| Scenario 6.1 | Supplier process the order |
 | ------------- |:-------------:|
 |  Precondition     | Supplier logged in |
 |  Post condition     | Order status updated to "Sent by supplier" |
 | Step#        |  Description |
-|  1     | Supplier opens the order |
+|  1     | Supplier recives the order |
 | 2 | Suppier send the products |
+| 3 | Supplier updates the order status |
 
 ### Use case 7, UC7 - Quality check
 
