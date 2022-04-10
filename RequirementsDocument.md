@@ -150,8 +150,7 @@ Payment system
 |  FR3.1     | Update the status of both internal and external orders |
 |  FR3.2     | Manage internal orders |
 |  FR3.2.1    | Issue new internal orders |
-|  FR3.2.2    | Estimate the delivery time of an internal order |
-|  FR3.2.3     | Manage deliveries to the pickup area |
+|  FR3.2.2     | Manage deliveries to the pickup area |
 |  FR3.3     | Manage external orders |
 |  FR3.3.1     | Issue new external orders to suppliers |
 |  FR3.3.2     | Display the list of available suppliers |
@@ -162,7 +161,7 @@ Payment system
 |  FR4.2     | Indicate free sections |
 |  FR5     | Manage notifications |
 |  FR5.1     | Manage user specified notifications |
-|  FR5.2     | Notify manager when the total available space is below the threshold |
+|  FR5.2     | Notify manager when the total available space is below the specified minimum threshold |
 
 ## Access right, actor vs function
 
@@ -317,8 +316,7 @@ Payment system
 |  Post condition     | Manager is notified of the creation of a new order |
 | Step#        |  Description |
 |  1     | Organizational unit searches and selects the products required and their quantities |
-|  2     | The estimated delivery time is shown to the organizational unit |
-|  3     | Organizational Unit confirms the order |
+|  2     | Organizational Unit confirms the order |
 
 ##### Scenario 4.2
 
@@ -329,8 +327,7 @@ Payment system
 |  Post condition     | Manager is notified of the creation of a new order |
 | Step#        |  Description |
 |  1     | Organizational unit searches and selects the products required and their quantities |
-|  2     | The estimated delivery time is shown to the organizational unit |
-|  3     | Organizational Unit confirms the order |
+|  2     | Organizational Unit confirms the order |
 
 ### Use case 5, UC5 - Issue New External Order
 
@@ -339,14 +336,13 @@ Payment system
 |  Precondition     | Manager logged in |
 |  Post condition     | Supplier is notified of the order |
 |  Nominal Scenario     | Manager issues a new external order |
-| Exceptions | Not enough space in the warehouse |
 
 ##### Scenario 5.1
 
 | Scenario 5.1 | Issue a new external order |
 | ------------- |:-------------:|
 |  Precondition     | A new order created with status "New order (unavailable)" |
-|  Post condition     | Order status updated to "Requested from the supplier" |
+|  Post condition     | Order status updated to "Ordered from the supplier" |
 |  Post condition     | Supplier is notified of the order |
 | Step#        |  Description |
 |  1     | Manager selects a supplier from the list of the product suppliers |
@@ -358,7 +354,7 @@ Payment system
 
 | Actors Involved        | Supplier|
 | ------------- |:-------------:|
-|  Precondition     | An order exists with status "Requested from the supplier" |
+|  Precondition     | An order exists with status "Ordered from the supplier" |
 |  Precondition     | Supplier is notified of the order |
 |  Post condition     | Products are sent to the warehouse |
 |  Post condition     | Order status updated to "Sent by supplier" |
@@ -423,7 +419,7 @@ Payment system
 
 | Actors Involved        | Manager, Administrator, Delivery unit |
 | ------------- |:-------------:|
-|  Precondition     | Order status updated to "Order received to warehouse" |
+|  Precondition     | Order status updated to "Order delivered to warehouse" |
 |  Precondition     | Manager is notified of the new products |
 |  Post condition     | Products placed in the specified sections |
 |  Post condition     | Order status updated |
@@ -438,10 +434,10 @@ Payment system
 |  Precondition     | Products not included in the warehouse |
 |  Post condition     | Products included in the warehouse and the information updated |
 | Step#        |  Description |
-|  1     | Manager searches for free sections to place thr new products |
+|  1     | Manager searches for free sections to place the new products |
 |  1     | Manager selects a section |
-| 2 | Notify the delivery unit to transfer the products |
-| 3| Notify the administrator to update product details and space status |
+| 2 | Notify the delivery unit to transfer the products to warehouse |
+| 3| Notify the administrator to update product details and physical space status |
 | 4| Notify manager in case of low available space|
 |  5    | Order status updated to "New products placed into the warehouse" |
 |  6    | Notify the manager that the new products have been placed |
@@ -468,10 +464,10 @@ Payment system
 | Step#        |  Description |
 |  1     | Manager confirms the order |
 | 2 | Notify the delivery unit to transfer the products to pickup area |
-| 3| Notify the administrator to update product details and space status |
+| 3| Notify the administrator to update product details and physical space status |
 |  4    | Delivery unit searches for the product to see where it is |
-|  5    | Delivery unit places the product in the pickup area |
-|  6    | Order status updated to "Products ready to pickup" |
+|  5    | Delivery unit places the product in the pick up area |
+|  6    | Order status updated to "Products ready for pick up" |
 | 7| Notify organizational unit |
 
 ##### Scenario 9.2
@@ -483,10 +479,10 @@ Payment system
 | Step#        |  Description |
 |  1     | Manager confirms the order |
 | 2 | Notify the delivery unit to transfer the products to pickup area |
-| 3| Notify the administrator to update product details and space status |
+| 3| Notify the administrator to update product details and physical space status |
 |  4    | Delivery unit searches for the product to see where it is |
-|  5    | Delivery unit places the product in the pickup area |
-|  6   | Order status updated to "Products ready to pickup" |
+|  5    | Delivery unit places the product in the pick up area |
+|  6   | Order status updated to "Products ready for pick up" |
 | 7| Notify organizational unit |
 
 ### Use case 10, UC10 - Pick Up Products
