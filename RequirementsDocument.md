@@ -357,7 +357,7 @@ Payment system
 
 ### Use case 6, UC6 - Manage Issued External Order
 
-| Actors Involved        | Supplier, Manager|
+| Actors Involved        | Supplier|
 | ------------- |:-------------:|
 |  Precondition     | An order exists with status "Ordered from the supplier" |
 |  Precondition     | Supplier is notified of the order |
@@ -392,7 +392,7 @@ Payment system
 | Scenario 7.1 | Products quality confirmed |
 | ------------- |:-------------:|
 |  Precondition     | Quality check passed |
-|  Post condition     | Order status updated to "Order received to warehouse" |
+|  Post condition     | Order status updated to "Order delivered to warehouse" |
 | Step#        |  Description |
 |  1     | Quality office performs quality check on the products |
 |  2     | Order status is updated |
@@ -402,8 +402,8 @@ Payment system
 
 | Scenario 7.2 | Products quality not checked |
 | ------------- |:-------------:|
-|  Precondition     | Quality check decided not neccessary |
-|  Post condition     | Order status updated to "Order received to warehouse" |
+|  Precondition     | Quality check decided not necessary |
+|  Post condition     | Order status updated to "Order delivered to warehouse" |
 | Step#        |  Description |
 |  1     | Quality office performs quality check on the products |
 |  2     | Order status is updated |
@@ -473,7 +473,7 @@ Payment system
 | 3| Notify the administrator to update product details and physical space status |
 |  4    | Delivery unit searches for the product to see where it is |
 |  5    | Delivery unit places the product in the pick up area |
-|  6    | Order status updated to "Products ready for pick up" |
+|  6    | Order status updated to "Products ready to pick up" |
 | 7| Notify organizational unit |
 
 ##### Scenario 9.2
@@ -488,7 +488,7 @@ Payment system
 | 3| Notify the administrator to update product details and physical space status |
 |  4    | Delivery unit searches for the product to see where it is |
 |  5    | Delivery unit places the product in the pick up area |
-|  6   | Order status updated to "Products ready for pick up" |
+|  6   | Order status updated to "Products ready to pick up" |
 | 7| Notify organizational unit |
 
 ### Use case 10, UC10 - Pick Up Products
