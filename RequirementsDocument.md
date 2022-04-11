@@ -230,11 +230,11 @@ Payment system
 
 | Scenario 2.1 | The adminsitrator creates a new user |
 | ------------- |:-------------:|
-|  Precondition     | user account doesn't exist |
+|  Precondition     | User account doesn't exist |
 |  Post condition     | User account exists |
 | Step#        |   |
 |  1     | Adimistrator enters the user information |
-|  2     | Adimistrator defines access permissions and role into the company  |
+|  2     | Adimistrator defines access permissions and role in the company  |
 |  3     | Administrator confirms the creation |
 
 ##### Scenario 2.2
@@ -303,7 +303,7 @@ Payment system
 
 ### Use case 4, UC4 - Issue New Internal Order
 
-| Actors Involved        | Organizational unit, manager |
+| Actors Involved        | Organizational unit, Manager |
 | ------------- |:-------------:|
 |  Precondition     | Organizational unit logged in |
 |  Precondition     | Product already added |
@@ -363,7 +363,7 @@ Payment system
 |  Precondition     | Supplier is notified of the order |
 |  Post condition     | Products are sent to the warehouse |
 |  Post condition     | Order status updated to "Sent by supplier" |
-|  Nominal Scenario     | Supplier updates the order status and send notification |
+|  Nominal Scenario     | Supplier updates the order status |
 
 ##### Scenario 6.1
 
@@ -372,15 +372,15 @@ Payment system
 |  Precondition     | Supplier logged in |
 |  Post condition     | Order status updated to "Sent by supplier" |
 | Step#        |  Description |
-|  1     | Supplier recives the order |
-| 2 | Suppier send the products |
+|  1     | Supplier receives the order |
+| 2 | Suppier sends the products |
 | 3 | Supplier updates the order status |
 
 ### Use case 7, UC7 - Quality check
 
-| Actors Involved        | Manager, quality office |
+| Actors Involved        | Manager, Quality office |
 | ------------- |:-------------:|
-|  Precondition     | An order exists with status "Sent from the supplier" |
+|  Precondition     | An order exists with status "Sent by the supplier" |
 |  Precondition     | The products received |
 |  Post condition     | Order status updated |
 |  Nominal Scenario     | Quality office confirms the products |
@@ -503,7 +503,7 @@ Payment system
 | Scenario 10.1 |  Organizational unit collects the items |
 | ------------- |:-------------:|
 |  Precondition     | Products ready to pick up |
-  Precondition     | Organizational unit notified of the placed products |
+|  Precondition     | Organizational unit notified of the placed products |
 |  Post condition     | Order status updated to "Order delivered" |
 | Step#        |  Description |
 |  1     | The products are delivered to the organizational unit |
@@ -516,6 +516,7 @@ Payment system
 \<concepts are used consistently all over the document, ex in use cases, requirements etc>
 
 # System Design
+
 \<describe here system design>
 
 \<must be consistent with Context diagram>
