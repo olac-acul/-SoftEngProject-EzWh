@@ -127,3 +127,63 @@ Administrator-Monitor orders:
 Administrator-Notifications:
 
 ![30](/images/GUI/30.png)
+
+Manager-Profile:
+
+![31](images/GUI/31.png)
+
+Manager-Create a new external order:
+
+![32](images/GUI/32.png)
+
+Manager-Create a new external order-Order successfully created:
+
+![33](images/GUI/33.png)
+
+Manager-Monitor orders:
+
+![34](images/GUI/34.png)
+
+Manager-Modify order status:
+
+![35](images/GUI/35.png)
+
+Manager-Modify order status(Order does not exist):
+
+![36](images/GUI/36.png)
+
+Manager-Modify order status(Order exists):
+
+![37](images/GUI/37.png)
+
+Manager-Modify order status(Order status modified):
+
+![38](images/GUI/38.png)
+
+Manager-Monitor Warehouse sections:
+
+![39](images/GUI/39.png)
+
+Manager-Monitor Warehouse sections(Selected section):
+
+![40](images/GUI/40.png)
+
+Manager-Monitor Warehouse sections(Modify):
+
+![41](images/GUI/41.png)
+
+Manager-Notifications:
+
+![42](images/GUI/42.png)
+
+Manager-Notifications-Confirm order:
+
+![43](images/GUI/43.png)
+
+Manager-Notifications-Choose section:
+
+![44](images/GUI/44.png)
+
+Manager-Notifications-Section confirmed:
+
+![45](images/GUI/45.png)
