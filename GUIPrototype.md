@@ -14,7 +14,7 @@ Home:
 
 Home-Incorrect Username or Password:
 
-![2](.\images\GUI\2.png)
+![](\images\GUI\2.png)
 
 Administrator-Profile:
 
