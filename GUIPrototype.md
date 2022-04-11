@@ -10,7 +10,7 @@ Version:
 
 Home:
 
-![1](.\images\GUI\1.png)
+![](.\images\GUI\1.png)
 
 Home-Incorrect Username or Password:
 
