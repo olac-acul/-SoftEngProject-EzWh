@@ -187,3 +187,39 @@ Manager-Notifications-Choose section:
 Manager-Notifications-Section confirmed:
 
 ![45](images/GUI/45.png)
+
+OU-Profile:
+
+![46](images/GUI/46.png)
+
+OU-Create a new order:
+
+![47](images/GUI/47.png)
+
+OU-Create a new order-Order successfully created:
+
+![48](images/GUI/48.png)
+
+OU-Monitor orders:
+
+![49](images/GUI/49.png)
+
+OU-Modify order status:
+
+![50](images/GUI/50.png)
+
+OU-Modify order status(Order does not exist):
+
+![51](images/GUI/51.png)
+
+OU-Modify order status(Order exists):
+
+![52](images/GUI/52.png)
+
+OU-Modify order status(Order status modified):
+
+![53](images/GUI/53.png)
+
+OU-Notifications:
+
+![54](images/GUI/54.png)
