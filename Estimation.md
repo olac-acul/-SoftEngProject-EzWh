@@ -37,7 +37,7 @@ Consider the EZWH  project as described in YOUR requirement document, assume tha
 | ----------- | ------------------------------- | 
 | | |
 ###
-Insert here Gantt chart with above activities
+![](images/GANTTscreen.png)
 
 # Summary
 

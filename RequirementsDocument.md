@@ -197,9 +197,7 @@ Payment system
 
 ## Use case diagram
 
-\<define here UML Use case diagram UCD summarizing all use cases, and their relationships>
-
-\<next describe here each use case in the UCD>
+![](images/usecase.png)
 
 ### Use case 1, UC1 - User Login
 
@@ -507,9 +505,7 @@ Payment system
 
 # Glossary
 
-\<use UML class diagram to define important terms, or concepts in the domain of the system, and their relationships> 
-
-\<concepts are used consistently all over the document, ex in use cases, requirements etc>
+![](images/glossary.png)
 
 # System Design
 
