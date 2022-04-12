@@ -22,6 +22,7 @@ Version: 0.0
 - [Stakeholders](#stakeholders)
 - [Context Diagram and interfaces](#context-diagram-and-interfaces)
 	- [Context Diagram](#context-diagram)
+		- [Actors](#actors)
 	- [Interfaces](#interfaces)
 - [Stories and personas](#stories-and-personas)
 - [Functional and non functional requirements](#functional-and-non-functional-requirements)
@@ -58,7 +59,6 @@ Version: 0.0
 		- [Use case 10, UC10 - Pick Up Products](#use-case-10-uc10---pick-up-products)
 				- [Scenario 10.1](#scenario-101)
 - [Glossary](#glossary)
-- [System Design](#system-design)
 - [Deployment Diagram](#deployment-diagram)
 
 # Informal description
@@ -92,9 +92,9 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 
 ## Context Diagram
 
-\<Define here Context diagram using UML use case diagram>
+![](images/contextdiagram.png)
 
-\<actors are a subset of stakeholders>
+### Actors
   
 Manager  
 Application administrator  
@@ -197,7 +197,7 @@ Payment system
 
 ## Use case diagram
 
-![](images/usecase.png)
+![](images/usecase.png	)
 
 ### Use case 1, UC1 - User Login
 
@@ -507,15 +507,10 @@ Payment system
 
 ![](images/glossary.png)
 
-# System Design
-
-\<describe here system design>
-
-\<must be consistent with Context diagram>
 
 # Deployment Diagram 
 
-\<describe here deployment diagram >
+![](images/deployment.png)
 
 
 
