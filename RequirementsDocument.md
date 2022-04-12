@@ -1,7 +1,3 @@
----
-typora-root-url: Images
----
-
 
  #Requirements Document 
 
@@ -183,7 +179,7 @@ Payment system
 | FR3.3.1 | Yes | No | No | No | No | No |
 | FR3.3.4 | Yes | No | Yes | No | Yes | No |
 | FR4 | Yes | No | No | No | Yes | No |
-| FR5 | Yes | Yes | Yes | Yes | Yes | Yes |
+| FR5 | Yes | Yes | Yes | No | Yes | Yes |
 
 ## Non Functional Requirements
 

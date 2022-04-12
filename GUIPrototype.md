@@ -223,3 +223,95 @@ OU-Modify order status(Order status modified):
 OU-Notifications:
 
 ![54](images/GUI/54.png)
+
+Supplier-Profile:
+
+![55](images/GUI/55.png)
+
+Supplier-Monitor orders:
+
+![56](images/GUI/56.png)
+
+Supplier-Modify order status:
+
+![57](images/GUI/57.png)
+
+Supplier-Modify order status(Order does not exist):
+
+![58](images/GUI/58.png)
+
+Supplier-Modify order status(Order exists):
+
+![59](images/GUI/59.png)
+
+Supplier-Modify order status(Order status modified):
+
+![60](images/GUI/60.png)
+
+Supplier-Notifications:
+
+![61](images/GUI/61.png)
+
+Quality office-Profile:
+
+![62](images/GUI/62.png)
+
+Quality office-Monitor orders:
+
+![63](images/GUI/63.png)
+
+Quality office-Modify order status:
+
+![64](images/GUI/64.png)
+
+Quality office-Modify order status(Order does not exist):
+
+![65](images/GUI/65.png)
+
+Quality office-Modify order status(Order exists):
+
+![66](images/GUI/66.png)
+
+Quality office-Modify order status(Order status modified):
+
+![67](images/GUI/67.png)
+
+Delivery unit-Profile:
+
+![68](images/GUI/68.png)
+
+Delivery unit-Monitor orders:
+
+![69](images/GUI/69.png)
+
+Delivery unit-Modify order status:
+
+![70](images/GUI/70.png)
+
+Delivery unit-Modify order status(Order does not exist):
+
+![71](images/GUI/71.png)
+
+Delivery unit-Modify order status(Order exists):
+
+![72](images/GUI/72.png)
+
+Delivery unit-Modify order status(Order status modified):
+
+![73](images/GUI/73.png)
+
+Delivery unit-Search product:
+
+![74](images/GUI/74.png)
+
+Delivery unit-Search product-Product does not exist:
+
+![75](images/GUI/75.png)
+
+Delivery unit-Search product-Product exists:
+
+![76](images/GUI/76.png)
+
+Delivery unit-Notifications:
+
+![77](images/GUI/77.png)
