@@ -95,7 +95,7 @@ EZWH (EaSy WareHouse) is a software application to support the management of a w
 ![](images/contextdiagram.png)
 
 ### Actors
-  
+
 Manager  
 Application administrator  
 Quality office  
@@ -105,10 +105,6 @@ Supplier
 Payment system  
 
 ## Interfaces
-
-\<describe here each interface in the context diagram>
-
-\<GUIs will be described graphically in a separate document>
 
 | Actor | Logical Interface | Physical Interface  |
 | ------------- |:-------------:| -----:|
@@ -122,19 +118,15 @@ Payment system
 
 # Stories and personas
 
-\<A Persona is a realistic impersonation of an actor. Define here a few personas and describe in plain text how a persona interacts with the system>
+Persona1: Male, middle age, works as the manager of the warehouse, does not have enough experience yet, really busy and might forget some trivial tasks.
 
-\<Persona is-an-instance-of actor>
+Persona2: Female, experienced, disciplined, works as the head of one of the organizational units, need to follow the state of each order to be able to plan for the unit.
 
-\<stories will be formalized later as scenarios in use cases>
+Persona3: Male, young, works as a worker in the delivery unit, carries a lot of products during the day to and from the warehouse, needs to find the products as soon as possible.
 
 # Functional and non functional requirements
 
 ## Functional Requirements
-
-\<In the form DO SOMETHING, or VERB NOUN, describe high level capabilities of the system>
-
-\<they match to high level use cases>
 
 | ID        | Description  |
 | ------------- |:-------------:|
@@ -182,8 +174,6 @@ Payment system
 | FR5 | Yes | Yes | Yes | No | Yes | Yes |
 
 ## Non Functional Requirements
-
-\<Describe constraints on functional requirements>
 
 | ID        | Type (efficiency, reliability, ..)           | Description  | Refers to |
 | ------------- |:-------------:| :-----:| -----:|
@@ -507,11 +497,6 @@ Payment system
 
 ![](images/glossary.png)
 
-
 # Deployment Diagram 
 
 ![](images/deployment.png)
-
-
-
-
