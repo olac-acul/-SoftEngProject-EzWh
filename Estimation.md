@@ -35,7 +35,11 @@ Consider the EZWH  project as described in YOUR requirement document, assume tha
 ### 
 |         Activity name    | Estimated effort (person hours)   |             
 | ----------- | ------------------------------- | 
-| | |
+| Implements Users and Privileges | 40 |
+| Implements Products | 40 |
+| Manage Orders | 50 |
+| Manage physical space | 20 |
+| Manage Notifications | 20 | 
 ###
 ![](images/GANTTscreen.png)
 
