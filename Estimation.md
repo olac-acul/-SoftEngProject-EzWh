@@ -24,7 +24,7 @@ Consider the EZWH  project as described in YOUR requirement document, assume tha
 |requirement document    | 50 |
 | GUI prototype | 30 |
 |design document | 30 |
-|code | 120 |
+|code | 160 |
 | unit tests | 40 |
 | api tests | 10 |
 | management documents  | 20 |
@@ -49,9 +49,9 @@ Report here the results of the three estimation approaches. The  estimates may d
 
 |             | Estimated effort                        |   Estimated duration |          
 | ----------- | ------------------------------- | ---------------|
-| estimate by size |  |
-| estimate by product decomposition |  | 
-| estimate by activity decomposition |  |
+| estimate by size | 300 | 80
+| estimate by product decomposition | 340 | 220
+| estimate by activity decomposition | 170 | 110
 
 
 
