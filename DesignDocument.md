@@ -45,14 +45,15 @@ The design must satisfy the Official Requirements document, notably functional a
 
 \<for each functional requirement from the requirement document, list which classes concur to implement it>
 
-
-
-
-
-
-
-
-
+| Function | Supplier | Item | TransportNote | RestockOrder | EzWh | ReturnOrder | Customer | InternalOrder | SKUItem | TestDescriptor | TestResult | Inventory | SKU | Position |
+| - | - | - | - | - | - | - | - | - | - | - | - | - | - | - |
+| FR1 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| FR2 |  |  |  |  |  |  |  |  |  |  |  | X |  |  |
+| FR3 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| FR4 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| FR5 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| FR6 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| FR7 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 
 
 # Verification sequence diagrams 
