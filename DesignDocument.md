@@ -26,6 +26,8 @@ The design must satisfy the Official Requirements document, notably functional a
 
 
 
+![highLevelDesign](/images/highLevelDesign.jpg)
+
 
 
 
@@ -35,9 +37,7 @@ The design must satisfy the Official Requirements document, notably functional a
 
 
 
-
-
-
+![lowLevelDesign](/images/lowLevelDesign.jpg)
 
 
 
@@ -45,15 +45,15 @@ The design must satisfy the Official Requirements document, notably functional a
 
 \<for each functional requirement from the requirement document, list which classes concur to implement it>
 
-| Function | Supplier | Item | TransportNote | RestockOrder | EzWh | ReturnOrder | Customer | InternalOrder | SKUItem | TestDescriptor | TestResult | Inventory | SKU | Position |
-| - | - | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| FR1 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-| FR2 |  |  |  |  |  |  |  |  |  |  |  | X |  |  |
-| FR3 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-| FR4 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-| FR5 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-| FR6 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-| FR7 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| Function | Supplier | Item | TransportNote | RestockOrder | EzWh | ReturnOrder | Customer | InternalOrder | SKUItem | TestDescriptor | TestResult | Inventory | SKU  | Position | User |
+| - | - | - | - | - | :-: | - | :-: | - | :-: | - | - | :-: | :-: | - | :-: |
+| FR1 |  |  |  |  | X |  |  |  |  |  |  |  |  |  | X |
+| FR2 |  |  |  |  |  |  |  |  |  |  |  | X |  |  |  |
+| FR3 |  |  |  |  |  |  |  |  | X |  |  | X |  |  |  |
+| FR4 |  |  |  |  | X |  | X |  |  |  |  |  |  |  |  |
+| FR5 |  |  |  |  | X |  |  |  |  |  |  | X | X |  |  |
+| FR6 |  |  |  |  | X |  |  |  |  |  |  |  | X |  |  |
+| FR7 |  |  |  |  | X |  |  |  |  |  |  |  |  |  |  |
 
 
 # Verification sequence diagrams 
