@@ -59,3 +59,18 @@ The design must satisfy the Official Requirements document, notably functional a
 # Verification sequence diagrams 
 \<select key scenarios from the requirement document. For each of them define a sequence diagram showing that the scenario can be implemented by the classes and methods in the design>
 
+
+
+![Scenario 3.1](images/Scenario 3.1.jpg)
+
+
+
+![Scenario 5.1.1](images/Scenario 5.1.1.jpg)
+
+
+
+![Scenario 10.1](images/Scenario 10.1.jpg)
+
+
+
+![Scenario 11.2](images/Scenario 11.2.jpg)
