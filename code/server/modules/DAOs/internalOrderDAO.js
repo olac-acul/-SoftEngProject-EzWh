@@ -35,7 +35,8 @@ class internalOrderDAO {
 
     getInternalOrder() {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM INTERNAL_ORDERS';
+            // duoble join, 3 tables to get the list of SKU
+            const sql = 'SELECT * FROM INTERNAL_ORDERS INNER JOIN INT_ORD_SKU ON INT_ORD_SKU.RFID == INTERNAL_ORDER.';
             this.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);
@@ -98,6 +99,35 @@ class internalOrderDAO {
                     return;
                 }
                 resolve(this.changes);
+            });
+        });
+    }
+
+    changeStateInternalOrder(id, newState) {
+        return new Promise((resolve, reject) => {
+            const sql = 'UPDATE INTERNAL_ORDERS SET INTERNAL_ORDERS.STATE = ? WHERE INTERNAL_ORDERS.ID = ?'
+            this.db.run(sql, [newState, id], (err) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(this.changes);
+
+            });
+        });
+    }
+
+    addSkuToInternalOrder(id, skuList) {
+        return new Promise((resolve, reject) => {
+            const sql = 'INSERT INTO INT_ORD_SKU(ORD_ID, RFID) VALUES(?, ?)';
+            skuList.forEach(sku => {
+                this.db.run(sql, [id, sku.rfid], (err) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    resolve(this.lastID);
+                });
             });
         });
     }
