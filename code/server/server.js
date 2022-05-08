@@ -1,6 +1,9 @@
 'use strict';
 const express = require('express');
 const ReturnOrderAPIs = require('./modules/returnOrder');
+const PositionAPIs = require('./modules/position');
+const TestDescriptorAPIs = require('./modules/testDescriptor');
+const ItemAPIs = require('./modules/item');
 
 
 // init express
@@ -19,7 +22,9 @@ app.get('/api/hello', (req, res) => {
 
 
 ReturnOrderAPIs(app);
-
+PositionAPIs(app);
+TestDescriptorAPIs(app);
+ItemAPIs(app);
 
 
 

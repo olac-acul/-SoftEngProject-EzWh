@@ -61,8 +61,8 @@ class PositionDAO {
 
     createPosition(position) {
         return new Promise((resolve, reject) => {
-            const sql = 'INSERT INTO POSITIONS(POSITIONID, AISLEID, ROW, COL, MAXWEIGHT, MAXVOLUME, OCCUPIEDWEIGHT, OCCUPIEDVOLUME) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
-            this.db.run(sql, [position.POSITIONID, position.AISLEID, position.ROW, position.COL, position.MAXWEIGHT, position.MAXVOLUME, position.OCCUPIEDWEIGHT, position.OCCUPIEDVOLUME], function(err) {
+            const sql = 'INSERT INTO POSITIONS(POSITIONID, AISLEID, ROW, COL, MAXWEIGHT, MAXVOLUME) VALUES(?, ?, ?, ?, ?, ?)';
+            this.db.run(sql, [position.POSITIONID, position.AISLEID, position.ROW, position.COL, position.MAXWEIGHT, position.MAXVOLUME], function(err) {
                 if (err) {
                     reject(err);
                     return;
