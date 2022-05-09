@@ -4,6 +4,7 @@ const ReturnOrderAPIs = require('./modules/returnOrder');
 const PositionAPIs = require('./modules/position');
 const TestDescriptorAPIs = require('./modules/testDescriptor');
 const ItemAPIs = require('./modules/item');
+const UserAPIs = require('./modules/user');
 
 
 // init express
@@ -25,6 +26,7 @@ ReturnOrderAPIs(app);
 PositionAPIs(app);
 TestDescriptorAPIs(app);
 ItemAPIs(app);
+UserAPIs(app);
 
 
 
