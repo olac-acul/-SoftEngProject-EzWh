@@ -47,8 +47,83 @@ class UserDAO {
         });
     }
 
+    showUserDetails() {
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT ID, USERNAME, NAME, SURNAME, TYPE FROM USERS';
+            this.db.get(sql, [], (err, row) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                const user = {
+                    id: row.ID,
+                    userName: row.USERNAME,
+                    name: row.NAME,
+                    surename: row.SURENAME,
+                    type: row.TYPE
+                };
+                resolve(user);
+            });
+        });
+    }
 
+    getSuppliers() {
+        return new Promise((resolve, reject) => {
+            const sql = `SELECT U.ID, U.NAME, U.SURNAME, S.EMAIL
+                         FROM USERS U, SUPPLIERS S
+                         WHERE U.ID = S.ID`;
+            this.db.all(sql, [], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                const suppliers = rows.map((r) => (
+                    {
+                        id: r.ID,
+                        name: r.NAME,
+                        surename: r.SURNAME,
+                        email: r.EMAIL
+                    }
+                ));
+                resolve(suppliers);
+            });
+        });
+    }
 
+    getUsersExceptManager() {
+        return new Promise((resolve, reject) => {
+            const sql = `SELECT U.ID, U.NAME, U.SURNAME, S.EMAIL, U.TYPE
+                         FROM USERS U
+                         LEFT JOIN SUPPLIERS S
+                         ON U.ID = S.ID
+                         WHERE U.TYPE != "manager"`;
+            this.db.all(sql, [], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                const users = rows.map((r) => {
+                    if (r.EMAIL) {
+                        return ({
+                            id: r.ID,
+                            name: r.NAME,
+                            surename: r.SURNAME,
+                            email: r.EMAIL,
+                            type: r.TYPE
+                        });
+                    } else {
+                        return ({
+                            id: r.ID,
+                            name: r.NAME,
+                            surename: r.SURNAME,
+                            type: r.TYPE
+                        });
+                    }
+                });
+                resolve(users);
+            });
+        });
+    }
 
     addUser(user) {
         return new Promise((resolve, reject) => {
@@ -72,6 +147,29 @@ class UserDAO {
                     return;
                 }
                 resolve(this.lastID);
+            });
+        });
+    }
+
+    loginUser(username, password, type) {
+        return new Promise((resolve, reject) => {
+            const sql = `SELECT ID, USERNAME, NAME 
+                         FROM USERS
+                         WHERE USERNAME = ? AND PASSWORD = ? AND TYPE = ?`;
+            this.db.get(sql, [username, password, type], (err, row) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                if (!row) resolve('Not found');
+                else {
+                    const user = {
+                        id: row.ID,
+                        userName: row.USERNAME,
+                        name: row.NAME,
+                    };
+                    resolve(user);
+                }
             });
         });
     }
