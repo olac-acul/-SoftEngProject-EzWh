@@ -39,14 +39,14 @@ function TestDescriptorAPIs(app) {
             // Check validation of request body
             if (!req.body.testDescriptor) return res.status(422).json({ error: `Validation of request body failed` }).end();
             let testDescriptor = req.body.testDescriptor;
-            if (!(testDescriptor && testDescriptor.NAME && position.PROCEDUREDESCRIPTION && testDescriptor.IDSKU))
+            if (!(testDescriptor && testDescriptor.NAME && position.PROCEDURE_DESCRIPTION && testDescriptor.IDSKU))
                 return res.status(422).json({ error: `Validation of request body failed` }).end();
             // Check number of elements of the request 
             if (Object.entries(testDescriptor).length !== 3) return res.status(422).json({ error: `Validation of request body failed` }).end();
             // Check positionID type
             // END OF VALIDATION
             await testDescriptorDAO.newTable();
-            await testDescriptorDAO.createTestDescriptor();
+            await testDescriptorDAO.createTestDescriptor(testDescriptor);
             return res.status(201).end();
 
         } catch (err) {
