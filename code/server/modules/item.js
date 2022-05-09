@@ -46,7 +46,7 @@ function ItemAPIs(app) {
             // Check positionID type
             // END OF VALIDATION
             await itemDAO.newTable();
-            await itemDAO.createItem();
+            await itemDAO.createItem(item);
             return res.status(201).end();
 
         } catch (err) {

@@ -23,14 +23,14 @@ function PositionAPIs(app) {
             // Check validation of request body
             if (!req.body.position) return res.status(422).json({ error: `Validation of request body failed` }).end();
             let position = req.body.position;
-            if (!(position && position.POSITIONID && position.AISLEID && position.ROW && position.COL && position.MAXWEIGHT && position.MAXVOLUME))
+            if (!(position && position.POSITIONID && position.AISLEID && position.ROW && position.COL && position.MAX_WEIGHT && position.MAX_VOLUME))
                 return res.status(422).json({ error: `Validation of request body failed` }).end();
             // Check number of elements of the request 
             if (Object.entries(position).length !== 6) return res.status(422).json({ error: `Validation of request body failed` }).end();
             // Check positionID type
             // END OF VALIDATION
             await positionDAO.newTable();
-            await positionDAO.createPosition();
+            await positionDAO.createPosition(position);
             return res.status(201).end();
 
         } catch (err) {

@@ -23,7 +23,7 @@ class PositionDAO {
     newTable() {
         return new Promise((resolve, reject) => {
             const sql = `CREATE TABLE IF NOT EXISTS POSITIONS(POSITIONID VARCHAR(20) PRIMARY KEY, 
-                AISLEID VARCHAR(20), ROW VARCHAR(20), COL VARCHAR(20), MAXWEIGHT INTEGER, MAXVOLUME INTEGER, OCCUPIEDWEIGHT INTEGER, OCCUPIEDVOLUME INTEGER)`;
+                AISLEID VARCHAR(20), ROW VARCHAR(20), COL VARCHAR(20), MAX_WEIGHT INTEGER, MAX_VOLUME INTEGER, OCCUPIED_WEIGHT INTEGER, OCCUPIED_VOLUME INTEGER)`;
             this.db.run(sql, function(err) {
                 if (err) {
                     reject(err);
@@ -48,10 +48,10 @@ class PositionDAO {
                         aisleID: p.AISLEID,
                         row: p.ROW,
                         col: p.COL,
-                        maxWeight: p.MAXWEIGHT,
-                        maxVolume: p.MAXVOLUME,
-                        occupiedWeight: p.OCCUPIEDWEIGHT,
-                        occupiedVolume: p.OCCUPIEDVOLUME
+                        maxWeight: p.MAX_WEIGHT,
+                        maxVolume: p.MAX_VOLUME,
+                        occupiedWeight: p.OCCUPIED_WEIGHT,
+                        occupiedVolume: p.OCCUPIED_VOLUME
                     }
                 ));
                 resolve(positions);
@@ -61,8 +61,8 @@ class PositionDAO {
 
     createPosition(position) {
         return new Promise((resolve, reject) => {
-            const sql = 'INSERT INTO POSITIONS(POSITIONID, AISLEID, ROW, COL, MAXWEIGHT, MAXVOLUME) VALUES(?, ?, ?, ?, ?, ?)';
-            this.db.run(sql, [position.POSITIONID, position.AISLEID, position.ROW, position.COL, position.MAXWEIGHT, position.MAXVOLUME], function(err) {
+            const sql = 'INSERT INTO POSITIONS(POSITIONID, AISLEID, ROW, COL, MAX_WEIGHT, MAX_VOLUME) VALUES(?, ?, ?, ?, ?, ?)';
+            this.db.run(sql, [position.POSITIONID, position.AISLEID, position.ROW, position.COL, position.MAX_WEIGHT, position.MAX_VOLUME], function(err) {
                 if (err) {
                     reject(err);
                     return;

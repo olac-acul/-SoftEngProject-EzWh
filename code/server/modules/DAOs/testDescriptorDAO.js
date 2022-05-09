@@ -23,7 +23,7 @@ class TestDescriptorDAO {
     newTable() {
         return new Promise((resolve, reject) => {
             const sql = `CREATE TABLE IF NOT EXISTS TESTDESCRIPTORS(ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                NAME VARCHAR(50), PROCEDUREDESCRIPTION VARCHAR(100), IDSKU INTEGER)`;
+                NAME VARCHAR(50), PROCEDURE_DESCRIPTION VARCHAR(100), IDSKU INTEGER)`;
             this.db.run(sql, function(err) {
                 if (err) {
                     reject(err);
@@ -46,7 +46,7 @@ class TestDescriptorDAO {
                     {
                         id: t.ID,
                         name: t.NAME,
-                        procedureDescription: t.PROCEDUREDESCRIPTION,
+                        procedureDescription: t.PROCEDURE_DESCRIPTION,
                         idSKU: t.IDSKU,
                     }
                 ));
@@ -67,7 +67,7 @@ class TestDescriptorDAO {
                 else {
                     const testDescriptor = {
                         name: row.NAME,
-                        procedureDescription: row.PROCEDUREDESCRIPTION,
+                        procedureDescription: row.PROCEDURE_DESCRIPTION,
                         idSKU: row.IDSKU,
                     };
                     resolve(testDescriptor);
@@ -78,8 +78,8 @@ class TestDescriptorDAO {
 
     createTestDescriptor(testDescriptor) {
         return new Promise((resolve, reject) => {
-            const sql = 'INSERT INTO TESTDESCRIPTORS(NAME, PROCEDUREDESCRIPTION, IDSKU) VALUES(?, ?, ?)';
-            this.db.run(sql, [testDescriptor.NAME, testDescriptor.PROCEDUREDESCRIPTION, testDescriptor.IDSKU], function(err) {
+            const sql = 'INSERT INTO TESTDESCRIPTORS(NAME, PROCEDURE_DESCRIPTION, IDSKU) VALUES(?, ?, ?)';
+            this.db.run(sql, [testDescriptor.NAME, testDescriptor.PROCEDURE_DESCRIPTION, testDescriptor.IDSKU], function(err) {
                 if (err) {
                     reject(err);
                     return;
