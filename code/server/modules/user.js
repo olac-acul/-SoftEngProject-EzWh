@@ -21,7 +21,15 @@ function UserAPIs(app) {
             // 404 Not Found (no restock order associated to restockOrderId)
             // END OF VALIDATION
             await userDAO.newUserTable();
-            await userDAO.addUser(user);
+            let userId = await userDAO.addUser(user);
+            if (user.type === 'supplier') {
+                const supplier = {
+                    id: userId,
+                    email: user.email
+                }
+                await userDAO.newSupplierTable();
+                await userDAO.addSupplier(supplier);
+            }
             return res.status(201).end();
 
         } catch (err) {
