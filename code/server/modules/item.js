@@ -39,7 +39,7 @@ function ItemAPIs(app) {
             // Check validation of request body
             if (!req.body.item) return res.status(422).json({ error: `Validation of request body failed` }).end();
             let item = req.body.item;
-            if (!(item && item.ID && item.DESCRIPTION && item.PRICE && item.SKUID && item.SUPPLIERID))
+            if (!(item && item.id && item.description && item.price && item.SKUId && item.supplierId))
                 return res.status(422).json({ error: `Validation of request body failed` }).end();
             // Check number of elements of the request 
             if (Object.entries(item).length !== 5) return res.status(422).json({ error: `Validation of request body failed` }).end();

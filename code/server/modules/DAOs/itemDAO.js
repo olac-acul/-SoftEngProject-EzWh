@@ -23,7 +23,7 @@ class ItemDAO {
     newTable() {
         return new Promise((resolve, reject) => {
             const sql = `CREATE TABLE IF NOT EXISTS ITEMS(ID INTEGER PRIMARY KEY, 
-                DESCRIPTION VARCHAR(100), PRICE DOUBLE, SKUID INTEGER, SUPPLIERID INTEGER)`;
+                DESCRIPTION VARCHAR(100), PRICE DOUBLE, SKU_ID INTEGER, SUPPLIER_ID INTEGER)`;
             this.db.run(sql, function(err) {
                 if (err) {
                     reject(err);
@@ -47,8 +47,8 @@ class ItemDAO {
                         id: i.ID,
                         description: i.DESCRIPTION,
                         price: i.PRICE,
-                        skuId: i.SKUID,
-                        supplierId: i.SUPPLIERID,
+                        skuId: i.SKU_ID,
+                        supplierId: i.SUPPLIER_ID,
                     }
                 ));
                 resolve(items);
@@ -69,8 +69,8 @@ class ItemDAO {
                     const item = {
                         description: row.DESCRIPTION,
                         price: row.PRICE,
-                        skuId: row.SKUID,
-                        supplierId: row.SUPPLIERID
+                        skuId: row.SKU_ID,
+                        supplierId: row.SUPPLIER_ID
                     };
                     resolve(item);
                 }
@@ -81,7 +81,7 @@ class ItemDAO {
     createItem(item) {
         return new Promise((resolve, reject) => {
             const sql = 'INSERT INTO ITEMS(ID, DESCRIPTION, PRICE, SKUID, SUPPLIERID) VALUES(?, ?, ?, ?, ?)';
-            this.db.run(sql, [item.ID, item.DESCRIPTION, item.PRICE, item.SKUID, item,SUPPLIERID], function(err) {
+            this.db.run(sql, [item.ID, item.DESCRIPTION, item.PRICE, item.SKU_ID, item,SUPPLIER_ID], function(err) {
                 if (err) {
                     reject(err);
                     return;

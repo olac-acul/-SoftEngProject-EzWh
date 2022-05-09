@@ -23,7 +23,7 @@ class PositionDAO {
     newTable() {
         return new Promise((resolve, reject) => {
             const sql = `CREATE TABLE IF NOT EXISTS POSITIONS(POSITIONID VARCHAR(20) PRIMARY KEY, 
-                AISLEID VARCHAR(20), ROW VARCHAR(20), COL VARCHAR(20), MAX_WEIGHT INTEGER, MAX_VOLUME INTEGER, OCCUPIED_WEIGHT INTEGER, OCCUPIED_VOLUME INTEGER)`;
+                AISLE_ID VARCHAR(20), ROW VARCHAR(20), COL VARCHAR(20), MAX_WEIGHT INTEGER, MAX_VOLUME INTEGER, OCCUPIED_WEIGHT INTEGER, OCCUPIED_VOLUME INTEGER)`;
             this.db.run(sql, function(err) {
                 if (err) {
                     reject(err);
@@ -44,8 +44,8 @@ class PositionDAO {
                 }
                 const positions = rows.map((p) => (
                     {
-                        positionID: p.POSITIONID,
-                        aisleID: p.AISLEID,
+                        positionID: p.POSITION_ID,
+                        aisleID: p.AISLE_ID,
                         row: p.ROW,
                         col: p.COL,
                         maxWeight: p.MAX_WEIGHT,
@@ -61,8 +61,8 @@ class PositionDAO {
 
     createPosition(position) {
         return new Promise((resolve, reject) => {
-            const sql = 'INSERT INTO POSITIONS(POSITIONID, AISLEID, ROW, COL, MAX_WEIGHT, MAX_VOLUME) VALUES(?, ?, ?, ?, ?, ?)';
-            this.db.run(sql, [position.POSITIONID, position.AISLEID, position.ROW, position.COL, position.MAX_WEIGHT, position.MAX_VOLUME], function(err) {
+            const sql = 'INSERT INTO POSITIONS(POSITION_ID, AISLE_ID, ROW, COL, MAX_WEIGHT, MAX_VOLUME) VALUES(?, ?, ?, ?, ?, ?)';
+            this.db.run(sql, [position.POSITION_ID, position.AISLE_ID, position.ROW, position.COL, position.MAX_WEIGHT, position.MAX_VOLUME], function(err) {
                 if (err) {
                     reject(err);
                     return;
@@ -74,10 +74,10 @@ class PositionDAO {
 
     
 
-    deletePosition(positionID) {
+    deletePosition(POSITION_ID) {
         return new Promise((resolve, reject) => {
-            const sql = 'DELETE FROM POSITIONS WHERE POSITIONS.POSITIONID = ?';
-            this.db.run(sql, [positionID], function(err) {
+            const sql = 'DELETE FROM POSITIONS WHERE POSITIONS.POSITION_ID = ?';
+            this.db.run(sql, [POSITION_ID], function(err) {
                 if (err) {
                     reject(err);
                     return;

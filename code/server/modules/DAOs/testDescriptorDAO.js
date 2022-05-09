@@ -9,7 +9,7 @@ class TestDescriptorDAO {
 
     dropTable() {
         return new Promise((resolve, reject) => {
-            const sql = 'DROP TABLE IF EXISTS TESTDESCRIPTORS';
+            const sql = 'DROP TABLE IF EXISTS TEST_DESCRIPTORS';
             this.db.run(sql, function(err) {
                 if (err) {
                     reject(err);
@@ -22,8 +22,8 @@ class TestDescriptorDAO {
 
     newTable() {
         return new Promise((resolve, reject) => {
-            const sql = `CREATE TABLE IF NOT EXISTS TESTDESCRIPTORS(ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                NAME VARCHAR(50), PROCEDURE_DESCRIPTION VARCHAR(100), IDSKU INTEGER)`;
+            const sql = `CREATE TABLE IF NOT EXISTS TEST_DESCRIPTORS(ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+                NAME VARCHAR(50), PROCEDURE_DESCRIPTION VARCHAR(100), ID_SKU INTEGER)`;
             this.db.run(sql, function(err) {
                 if (err) {
                     reject(err);
@@ -36,7 +36,7 @@ class TestDescriptorDAO {
 
     getTestDescriptors() {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM TESTDESCRIPTORS';
+            const sql = 'SELECT * FROM TEST_DESCRIPTORS';
             this.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);
@@ -47,7 +47,7 @@ class TestDescriptorDAO {
                         id: t.ID,
                         name: t.NAME,
                         procedureDescription: t.PROCEDURE_DESCRIPTION,
-                        idSKU: t.IDSKU,
+                        idSKU: t.ID_SKU,
                     }
                 ));
                 resolve(testDescriptors);
@@ -57,7 +57,7 @@ class TestDescriptorDAO {
 
     getTestDescriptorById(id) {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM TESTDESCRIPTORS WHERE TESTDESCRIPTORS.ID = ?';
+            const sql = 'SELECT * FROM TEST_DESCRIPTORS WHERE TESTDESCRIPTORS.ID = ?';
             this.db.get(sql, [id], (err, row) => {
                 if (err) {
                     reject(err);
@@ -68,7 +68,7 @@ class TestDescriptorDAO {
                     const testDescriptor = {
                         name: row.NAME,
                         procedureDescription: row.PROCEDURE_DESCRIPTION,
-                        idSKU: row.IDSKU,
+                        idSKU: row.ID_SKU,
                     };
                     resolve(testDescriptor);
                 }
@@ -78,8 +78,8 @@ class TestDescriptorDAO {
 
     createTestDescriptor(testDescriptor) {
         return new Promise((resolve, reject) => {
-            const sql = 'INSERT INTO TESTDESCRIPTORS(NAME, PROCEDURE_DESCRIPTION, IDSKU) VALUES(?, ?, ?)';
-            this.db.run(sql, [testDescriptor.NAME, testDescriptor.PROCEDURE_DESCRIPTION, testDescriptor.IDSKU], function(err) {
+            const sql = 'INSERT INTO TEST_DESCRIPTORS(NAME, PROCEDURE_DESCRIPTION, ID_SKU) VALUES(?, ?, ?)';
+            this.db.run(sql, [testDescriptor.NAME, testDescriptor.PROCEDURE_DESCRIPTION, testDescriptor.ID_SKU], function(err) {
                 if (err) {
                     reject(err);
                     return;
@@ -93,7 +93,7 @@ class TestDescriptorDAO {
 
     deleteTestDescriptor(id) {
         return new Promise((resolve, reject) => {
-            const sql = 'DELETE FROM TESTDESCRIPTORS WHERE TESTDESCRIPTORS.ID = ?';
+            const sql = 'DELETE FROM TEST_DESCRIPTORS WHERE TESTDESCRIPTORS.ID = ?';
             this.db.run(sql, [id], function(err) {
                 if (err) {
                     reject(err);

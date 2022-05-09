@@ -39,7 +39,7 @@ function TestDescriptorAPIs(app) {
             // Check validation of request body
             if (!req.body.testDescriptor) return res.status(422).json({ error: `Validation of request body failed` }).end();
             let testDescriptor = req.body.testDescriptor;
-            if (!(testDescriptor && testDescriptor.NAME && position.PROCEDURE_DESCRIPTION && testDescriptor.IDSKU))
+            if (!(testDescriptor && testDescriptor.name && position.procedureDescription && testDescriptor.idSKU))
                 return res.status(422).json({ error: `Validation of request body failed` }).end();
             // Check number of elements of the request 
             if (Object.entries(testDescriptor).length !== 3) return res.status(422).json({ error: `Validation of request body failed` }).end();
