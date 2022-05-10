@@ -36,40 +36,87 @@ class internalOrderDAO {
     getInternalOrder() {
         return new Promise((resolve, reject) => {
             // duoble join, 3 tables to get the list of SKU
-            const sql = `SELECT IO.ISSUE_DATE ISSUE_DATE, IO.ID ID, IO.STATE STATE, IO.CUSTOMER_ID CUSTOMER_ID PR.DESCRIPTION DESCRIPTION, PR.PRICE AS PRICE, PR.SKU_ID SKU_ID
-                FROM INTERNAL_ORDERS IO, 
-                (SELECT I.SKU_ID SKU_ID, I.DESCRIPTION DESCRIPTION, I.PRICE PRICE, I.CUSTOMER_ID CUSTOMER_ID
-                FROM ITEMS I, INTERNAL_ORDER_ITEMS S
-                WHERE I.SKU_ID = S.ITEM_ID) PR`;
+            const sql = `SELECT IO.ISSUE_DATE ISSUE_DATE, IO.ID ID, IO.STATE STATE, IO.CUSTOMER_ID CUSTOMER_ID, PR.DESCRIPTION DESCRIPTION, PR.PRICE PRICE, PR.SKU_ID SKU_ID
+            FROM INTERNAL_ORDERS AS IO, 
+            (SELECT I.SKU_ID SKU_ID, I.DESCRIPTION DESCRIPTION, I.PRICE PRICE, S.INTERNAL_ORDER_ID INTERNAL_ORDER_ID
+            FROM ITEMS I, INTERNAL_ORDER_PRODUCTS S
+            WHERE I.SKU_ID = S.SKU_ID) AS PR
+            WHERE IO.ID = PR.INTERNAL_ORDER_ID`;
             this.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);
                     return;
                 }
+                const internalOrders = [];
+                let products = [];
                 let id;
                 let issueDate;
                 let state;
                 let customerId;
-                let products = rows.map(r => {
-                    id = r.ID;
-                    issueDate = r.ISSUE_DATE;
-                    state = r.STATE;
-                    customerId = r.CUSTOMER_ID;
-                    return (
-                        {
+                for (r in rows) {
+                    if (id === 0) {
+                        id = r.ID;
+                        issueDate = r.ISSUE_DATE;
+                        customerId = r.CUSTOMER_ID;
+                        state = r.STATE;
+                        products.push({
                             SKUId: r.SKU_ID,
                             description: r.DESCRIPTION,
                             price: r.PRICE
                         });
-                });
-                const internalOrders =
-                {
-                    id: id,
-                    issueDate: issueDate,
-                    state: state,
-                    products: products,
-                    customerId: customerId
+                    }
+                    else if (id === r.ID) {
+                        products.push({
+                            SKUId: r.SKU_ID,
+                            description: r.DESCRIPTION,
+                            price: r.PRICE
+                        });
+                    }
+                    else if (id !== r.ID) {
+                        internalOrders.push({
+                            id: id,
+                            issueDate: issueDate,
+                            state: state,
+                            products: products,
+                            customerId: customerId
+                        });
+                        products = [];
+                        id = r.ID;
+                        issueDate = r.ISSUE_DATE;
+                        customerId = r.CUSTOMER_ID;
+                        state = r.STATE;
+                        products.push({
+                            SKUId: r.SKU_ID,
+                            description: r.DESCRIPTION,
+                            price: r.PRICE
+                        });
+                    }
+                    internalOrders.push({
+                        id: id,
+                        issueDate: issueDate,
+                        state: state,
+                        products: products,
+                        customerId: customerId
+                    });
+
                 }
+                // let id;
+                // let issueDate;
+                // let state;
+                // let customerId;
+                // let products = rows.map(r => {
+                //     id = r.ID;
+                //     issueDate = r.ISSUE_DATE;
+                //     state = r.STATE;
+                //     customerId = r.CUSTOMER_ID;
+                //     return (
+                //         {
+                //             SKUId: r.SKU_ID,
+                //             description: r.DESCRIPTION,
+                //             price: r.PRICE
+                //         });
+                // });
+
                 resolve(internalOrders);
             });
         });
@@ -78,7 +125,7 @@ class internalOrderDAO {
     getInternalOrderById(id) {
         return new Promise((resolve, reject) => {
             const sql = 'SELECT * FROM INTERNAL_ORDERS WHERE INTERNAL_ORDERS.ID = ?';
-            this.db.get(sql, [id], (err) => {
+            this.db.get(sql, [id], (err, row) => {
                 if (err) {
                     reject(err);
                     return;
