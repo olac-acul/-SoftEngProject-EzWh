@@ -47,7 +47,7 @@ class ItemDAO {
                         id: i.ID,
                         description: i.DESCRIPTION,
                         price: i.PRICE,
-                        skuId: i.SKU_ID,
+                        SKUId: i.SKU_ID,
                         supplierId: i.SUPPLIER_ID,
                     }
                 ));
@@ -67,9 +67,10 @@ class ItemDAO {
                 if (!row) resolve('Not Found');
                 else {
                     const item = {
+                        id: i.ID,
                         description: row.DESCRIPTION,
                         price: row.PRICE,
-                        skuId: row.SKU_ID,
+                        SKUId: row.SKU_ID,
                         supplierId: row.SUPPLIER_ID
                     };
                     resolve(item);
@@ -80,8 +81,8 @@ class ItemDAO {
 
     createItem(item) {
         return new Promise((resolve, reject) => {
-            const sql = 'INSERT INTO ITEMS(ID, DESCRIPTION, PRICE, SKUID, SUPPLIERID) VALUES(?, ?, ?, ?, ?)';
-            this.db.run(sql, [item.ID, item.DESCRIPTION, item.PRICE, item.SKU_ID, item,SUPPLIER_ID], function(err) {
+            const sql = 'INSERT INTO ITEMS(ID, DESCRIPTION, PRICE, SKU_ID, SUPPLIER_ID) VALUES(?, ?, ?, ?, ?)';
+            this.db.run(sql, [item.id, item.description, item.price, item.SKUId, item.supplierId], function(err) {
                 if (err) {
                     reject(err);
                     return;
