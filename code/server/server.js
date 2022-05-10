@@ -5,6 +5,7 @@ const PositionAPIs = require('./modules/position');
 const TestDescriptorAPIs = require('./modules/testDescriptor');
 const ItemAPIs = require('./modules/item');
 const UserAPIs = require('./modules/user');
+const InternalOrder = require('./modules/internalOrder');
 
 
 // init express
@@ -27,6 +28,7 @@ PositionAPIs(app);
 TestDescriptorAPIs(app);
 ItemAPIs(app);
 UserAPIs(app);
+InternalOrder(app);
 
 
 
