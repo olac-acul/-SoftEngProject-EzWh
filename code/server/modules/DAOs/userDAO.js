@@ -174,6 +174,21 @@ class UserDAO {
         });
     }
 
+    modifyUserRights(username, oldType, newType) {
+        return new Promise((resolve, reject) => {
+            const sql = `UPDATE USERS
+                         SET TYPE = ?
+                         WHERE TYPE = ? AND USERNAME = ?`;
+            this.db.run(sql, [newType, oldType, username], function (err) {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(this.changes);
+            });
+        });
+    }
+
 }
 
 module.exports = UserDAO;

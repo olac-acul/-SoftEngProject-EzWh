@@ -46,7 +46,7 @@ function UserAPIs(app) {
             // 401 Unauthorized (not logged in or wrong permissions)
             // Check validation of request body
             if (!req.body.user) return res.status(422).json({ error: `Validation of request body failed` }).end();
-            let user = req.body.user;
+            const user = req.body.user;
             // if (!(returnOrder && returnOrder.returnDate && returnOrder.products && returnOrder.restockOrderId))
             //     return res.status(422).json({ error: `Validation of request body failed` }).end();
             // Check number of elements of the request 
@@ -54,7 +54,7 @@ function UserAPIs(app) {
             // 404 Not Found (no restock order associated to restockOrderId)
             // END OF VALIDATION
             await userDAO.newUserTable();
-            let userId = await userDAO.addUser(user);
+            const userId = await userDAO.addUser(user);
             if (user.type === 'supplier') {
                 const supplier = {
                     id: userId,
@@ -72,9 +72,9 @@ function UserAPIs(app) {
 
     app.post('/api/managerSessions', async (req, res) => {
         try {
-            let username = req.body.username;
-            let password = req.body.password;
-            let user = await userDAO.loginUser(username, password, 'manager');
+            const username = req.body.username;
+            const password = req.body.password;
+            const user = await userDAO.loginUser(username, password, 'manager');
             if (user === 'Not found') return res.status(401).json({ error: `Wrong username and/or password` }).end();
             // END OF VALIDATION
             return res.status(200).json(user);
@@ -85,9 +85,9 @@ function UserAPIs(app) {
 
     app.post('/api/customerSessions', async (req, res) => {
         try {
-            let username = req.body.username;
-            let password = req.body.password;
-            let user = await userDAO.loginUser(username, password, 'customer');
+            const username = req.body.username;
+            const password = req.body.password;
+            const user = await userDAO.loginUser(username, password, 'customer');
             if (user === 'Not found') return res.status(401).json({ error: `Wrong username and/or password` }).end();
             // END OF VALIDATION
             return res.status(200).json(user);
@@ -98,9 +98,9 @@ function UserAPIs(app) {
 
     app.post('/api/supplierSessions', async (req, res) => {
         try {
-            let username = req.body.username;
-            let password = req.body.password;
-            let user = await userDAO.loginUser(username, password, 'supplier');
+            const username = req.body.username;
+            const password = req.body.password;
+            const user = await userDAO.loginUser(username, password, 'supplier');
             if (user === 'Not found') return res.status(401).json({ error: `Wrong username and/or password` }).end();
             // END OF VALIDATION
             return res.status(200).json(user);
@@ -111,9 +111,9 @@ function UserAPIs(app) {
 
     app.post('/api/clerkSessions', async (req, res) => {
         try {
-            let username = req.body.username;
-            let password = req.body.password;
-            let user = await userDAO.loginUser(username, password, 'clerk');
+            const username = req.body.username;
+            const password = req.body.password;
+            const user = await userDAO.loginUser(username, password, 'clerk');
             if (user === 'Not found') return res.status(401).json({ error: `Wrong username and/or password` }).end();
             // END OF VALIDATION
             return res.status(200).json(user);
@@ -124,9 +124,9 @@ function UserAPIs(app) {
 
     app.post('/api/qualityEmployeeSessions', async (req, res) => {
         try {
-            let username = req.body.username;
-            let password = req.body.password;
-            let user = await userDAO.loginUser(username, password, 'qualityEmployee');
+            const username = req.body.username;
+            const password = req.body.password;
+            const user = await userDAO.loginUser(username, password, 'qualityEmployee');
             if (user === 'Not found') return res.status(401).json({ error: `Wrong username and/or password` }).end();
             // END OF VALIDATION
             return res.status(200).json(user);
@@ -137,14 +137,30 @@ function UserAPIs(app) {
 
     app.post('/api/deliveryEmployeeSessions', async (req, res) => {
         try {
-            let username = req.body.username;
-            let password = req.body.password;
-            let user = await userDAO.loginUser(username, password, 'deliveryEmployee');
+            const username = req.body.username;
+            const password = req.body.password;
+            const user = await userDAO.loginUser(username, password, 'deliveryEmployee');
             if (user === 'Not found') return res.status(401).json({ error: `Wrong username and/or password` }).end();
             // END OF VALIDATION
             return res.status(200).json(user);
         } catch (err) {
             res.status(500).json({ error: `Generic error` }).end();
+        }
+    });
+
+
+    // PUT
+    app.put('/api/users/:username', async (req, res) => {
+        try {
+            const username = req.params.username;
+            const oldType = req.body.oldType;
+            const newType = req.body.newType;
+            // check it is not manager
+            result = await userDAO.modifyUserRights(username, oldType, newType);
+            if (result === 0) return res.status(404).json({ error: `Wrong username or oldType fields or user doesn't exist` }).end();
+            return res.status(200).json(user);
+        } catch (err) {
+            res.status(503).json({ error: `Generic error` }).end();
         }
     });
 
