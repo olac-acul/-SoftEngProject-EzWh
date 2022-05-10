@@ -57,7 +57,7 @@ class TestDescriptorDAO {
 
     getTestDescriptorById(id) {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM TEST_DESCRIPTORS WHERE TESTDESCRIPTORS.ID = ?';
+            const sql = 'SELECT * FROM TEST_DESCRIPTORS WHERE TEST_DESCRIPTORS.ID = ?';
             this.db.get(sql, [id], (err, row) => {
                 if (err) {
                     reject(err);
@@ -93,7 +93,7 @@ class TestDescriptorDAO {
 
     deleteTestDescriptor(id) {
         return new Promise((resolve, reject) => {
-            const sql = 'DELETE FROM TEST_DESCRIPTORS WHERE TESTDESCRIPTORS.ID = ?';
+            const sql = 'DELETE FROM TEST_DESCRIPTORS WHERE TEST_DESCRIPTORS.ID = ?';
             this.db.run(sql, [id], function(err) {
                 if (err) {
                     reject(err);
