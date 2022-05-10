@@ -23,7 +23,7 @@ class UserDAO {
     newUserTable() {
         return new Promise((resolve, reject) => {
             const sql = `CREATE TABLE IF NOT EXISTS USERS(ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                USERNAME VARCHAR(50), NAME VARCHAR(50), SURNAME VARCHAR(50), PASSWORD VARCHAR(50), TYPE VARCHAR(20))`;
+                EMAIL VARCHAR(50), NAME VARCHAR(50), SURNAME VARCHAR(50), PASSWORD VARCHAR(50), TYPE VARCHAR(20))`;
             this.db.run(sql, function (err) {
                 if (err) {
                     reject(err);
@@ -34,22 +34,22 @@ class UserDAO {
         });
     }
 
-    newSupplierTable() {
-        return new Promise((resolve, reject) => {
-            const sql = `CREATE TABLE IF NOT EXISTS SUPPLIERS(USERNAME VARCHAR(50) PRIMARY KEY, EMAIL VARCHAR(50))`;
-            this.db.run(sql, function (err) {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                resolve(this.lastID);
-            });
-        });
-    }
+    // newSupplierTable() {
+    //     return new Promise((resolve, reject) => {
+    //         const sql = `CREATE TABLE IF NOT EXISTS SUPPLIERS(USERNAME VARCHAR(50) PRIMARY KEY, EMAIL VARCHAR(50))`;
+    //         this.db.run(sql, function (err) {
+    //             if (err) {
+    //                 reject(err);
+    //                 return;
+    //             }
+    //             resolve(this.lastID);
+    //         });
+    //     });
+    // }
 
     showUserDetails() {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT ID, USERNAME, NAME, SURNAME, TYPE FROM USERS';
+            const sql = 'SELECT ID, EMAIL, NAME, SURNAME, TYPE FROM USERS';
             this.db.get(sql, [], (err, row) => {
                 if (err) {
                     reject(err);
@@ -57,7 +57,7 @@ class UserDAO {
                 }
                 const user = {
                     id: row.ID,
-                    userName: row.USERNAME,
+                    email: row.EMAIL,
                     name: row.NAME,
                     surename: row.SURENAME,
                     type: row.TYPE
@@ -69,9 +69,9 @@ class UserDAO {
 
     getSuppliers() {
         return new Promise((resolve, reject) => {
-            const sql = `SELECT U.ID, U.NAME, U.SURNAME, S.EMAIL
-                         FROM USERS U, SUPPLIERS S
-                         WHERE U.USERNAME = S.USERNAME`;
+            const sql = `SELECT U.ID, U.NAME, U.SURNAME, U.EMAIL
+                         FROM USERS U
+                         WHERE U.TYPE = "supplier"`;
             this.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);
@@ -92,10 +92,8 @@ class UserDAO {
 
     getUsersExceptManager() {
         return new Promise((resolve, reject) => {
-            const sql = `SELECT U.ID, U.NAME, U.SURNAME, S.EMAIL, U.TYPE
+            const sql = `SELECT U.ID, U.NAME, U.SURNAME, U.EMAIL, U.TYPE
                          FROM USERS U
-                         LEFT JOIN SUPPLIERS S
-                         ON U.USERNAME = S.USERNAME
                          WHERE U.TYPE != "manager"`;
             this.db.all(sql, [], (err, rows) => {
                 if (err) {
@@ -103,7 +101,6 @@ class UserDAO {
                     return;
                 }
                 const users = rows.map((r) => {
-                    if (r.EMAIL) {
                         return ({
                             id: r.ID,
                             name: r.NAME,
@@ -111,14 +108,6 @@ class UserDAO {
                             email: r.EMAIL,
                             type: r.TYPE
                         });
-                    } else {
-                        return ({
-                            id: r.ID,
-                            name: r.NAME,
-                            surename: r.SURNAME,
-                            type: r.TYPE
-                        });
-                    }
                 });
                 resolve(users);
             });
@@ -127,8 +116,8 @@ class UserDAO {
 
     addUser(user) {
         return new Promise((resolve, reject) => {
-            const sql = 'INSERT INTO USERS(USERNAME, NAME, SURNAME, PASSWORD, TYPE) VALUES(?, ?, ?, ?, ?)';
-            this.db.run(sql, [user.username, user.name, user.surname, user.password, user.type], function (err) {
+            const sql = 'INSERT INTO USERS(EMAIL, NAME, SURNAME, PASSWORD, TYPE) VALUES(?, ?, ?, ?, ?)';
+            this.db.run(sql, [user.email, user.name, user.surname, user.password, user.type], function (err) {
                 if (err) {
                     reject(err);
                     return;
@@ -138,25 +127,25 @@ class UserDAO {
         });
     }
 
-    addSupplier(supplier) {
-        return new Promise((resolve, reject) => {
-            const sql = 'INSERT INTO SUPPLIERS(USERNAME, EMAIL) VALUES(?, ?)';
-            this.db.run(sql, [supplier.username, supplier.email], function (err) {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                resolve(this.lastID);
-            });
-        });
-    }
+    // addSupplier(supplier) {
+    //     return new Promise((resolve, reject) => {
+    //         const sql = 'INSERT INTO SUPPLIERS(USERNAME, EMAIL) VALUES(?, ?)';
+    //         this.db.run(sql, [supplier.username, supplier.email], function (err) {
+    //             if (err) {
+    //                 reject(err);
+    //                 return;
+    //             }
+    //             resolve(this.lastID);
+    //         });
+    //     });
+    // }
 
-    loginUser(username, password, type) {
+    loginUser(email, password, type) {
         return new Promise((resolve, reject) => {
-            const sql = `SELECT ID, USERNAME, NAME 
+            const sql = `SELECT ID, EMAIL, NAME 
                          FROM USERS
-                         WHERE USERNAME = ? AND PASSWORD = ? AND TYPE = ?`;
-            this.db.get(sql, [username, password, type], (err, row) => {
+                         WHERE EMAIL = ? AND PASSWORD = ? AND TYPE = ?`;
+            this.db.get(sql, [email, password, type], (err, row) => {
                 if (err) {
                     reject(err);
                     return;
@@ -165,7 +154,7 @@ class UserDAO {
                 else {
                     const user = {
                         id: row.ID,
-                        userName: row.USERNAME,
+                        email: row.EMAIL,
                         name: row.NAME,
                     };
                     resolve(user);
@@ -174,12 +163,12 @@ class UserDAO {
         });
     }
 
-    modifyUserRights(username, oldType, newType) {
+    modifyUserRights(email, oldType, newType) {
         return new Promise((resolve, reject) => {
             const sql = `UPDATE USERS
                          SET TYPE = ?
-                         WHERE TYPE = ? AND USERNAME = ?`;
-            this.db.run(sql, [newType, oldType, username], function (err) {
+                         WHERE TYPE = ? AND EMAIL = ?`;
+            this.db.run(sql, [newType, oldType, email], function (err) {
                 if (err) {
                     reject(err);
                     return;
@@ -189,9 +178,9 @@ class UserDAO {
         });
     }
 
-    deleteUser(username, type) {
+    deleteUser(email, type) {
         return new Promise((resolve, reject) => {
-            const sql = 'DELETE FROM USERS WHERE USERNAME = ? AND TYPE = ?';
+            const sql = 'DELETE FROM USERS WHERE EMAIL = ? AND TYPE = ?';
             this.db.run(sql, [username, type], function (err) {
                 if (err) {
                     reject(err);
@@ -202,18 +191,18 @@ class UserDAO {
         });
     }
 
-    deleteSupplier(username) {
-        return new Promise((resolve, reject) => {
-            const sql = 'DELETE FROM SUPPLIERS WHERE USERNAME = ?';
-            this.db.run(sql, [username], function (err) {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                resolve(this.changes);
-            });
-        });
-    }
+    // deleteSupplier(username) {
+    //     return new Promise((resolve, reject) => {
+    //         const sql = 'DELETE FROM SUPPLIERS WHERE USERNAME = ?';
+    //         this.db.run(sql, [username], function (err) {
+    //             if (err) {
+    //                 reject(err);
+    //                 return;
+    //             }
+    //             resolve(this.changes);
+    //         });
+    //     });
+    // }
 
 }
 
