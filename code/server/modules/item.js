@@ -56,7 +56,7 @@ function ItemAPIs(app) {
 
 
     //DELETE
-    app.delete('/api/item/:id', async (req, res) => {
+    app.delete('/api/items/:id', async (req, res) => {
         let id = Number(req.params.id);
         try {
             // 401 Unauthorized (not logged in or wrong permissions)

@@ -44,14 +44,14 @@ class PositionDAO {
                 }
                 const positions = rows.map((p) => (
                     {
-                        POSITION_ID: p.POSITION_ID,
-                        AISLE_ID: p.AISLE_ID,
-                        ROW: p.ROW,
-                        COL: p.COL,
-                        MAX_WEIGHT: p.MAX_WEIGHT,
-                        MAX_VOLUME: p.MAX_VOLUME,
-                        OCCUPIED_WEIGHT: p.OCCUPIED_WEIGHT,
-                        OCCUPIED_VOLUME: p.OCCUPIED_VOLUME
+                        positionID: p.POSITION_ID,
+                        aisleID: p.AISLE_ID,
+                        row: p.ROW,
+                        col: p.COL,
+                        maxWeight: p.MAX_WEIGHT,
+                        maxVolume: p.MAX_VOLUME,
+                        occupiedWeight: p.OCCUPIED_WEIGHT,
+                        occupiedVolume: p.OCCUPIED_VOLUME
                     }
                 ));
                 resolve(positions);
