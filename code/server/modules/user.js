@@ -54,10 +54,10 @@ function UserAPIs(app) {
             // 404 Not Found (no restock order associated to restockOrderId)
             // END OF VALIDATION
             await userDAO.newUserTable();
-            const userId = await userDAO.addUser(user);
+            await userDAO.addUser(user);
             if (user.type === 'supplier') {
                 const supplier = {
-                    id: userId,
+                    username: user.username,
                     email: user.email
                 }
                 await userDAO.newSupplierTable();
@@ -151,13 +151,25 @@ function UserAPIs(app) {
 
     // PUT
     app.put('/api/users/:username', async (req, res) => {
+        const username = req.params.username;
+        const oldType = req.body.oldType;
+        const newType = req.body.newType;
+        // check it is not manager
         try {
-            const username = req.params.username;
-            const oldType = req.body.oldType;
-            const newType = req.body.newType;
-            // check it is not manager
-            result = await userDAO.modifyUserRights(username, oldType, newType);
-            if (result === 0) return res.status(404).json({ error: `Wrong username or oldType fields or user doesn't exist` }).end();
+            updatedElements = await userDAO.modifyUserRights(username, oldType, newType);
+            if (updatedElements === 0) return res.status(404).json({ error: `Wrong username or oldType fields or user doesn't exist` }).end();
+            if (oldType === 'supplier') {
+                const deletedSuppliers = await userDAO.deleteSupplier(username);
+                if (deletedSuppliers === 0) return res.status(404).json({ error: `Wrong username or oldType fields or user doesn't exist` }).end();
+            }
+            if (newType === 'supplier') {
+                const supplier = {
+                    username: username,
+                    email: ''
+                };
+                await userDAO.newSupplierTable();
+                await userDAO.addSupplier(supplier);
+            }
             return res.status(200).end();
         } catch (err) {
             res.status(503).json({ error: `Generic error` }).end();
@@ -165,7 +177,26 @@ function UserAPIs(app) {
     });
 
 
-
+    //DELETE
+    app.delete('/api/users/:username/:type', async (req, res) => {
+        const username = req.params.username;
+        const type = req.params.type;
+        // check it is not manager
+        try {
+            // 401 Unauthorized (not logged in or wrong permissions)
+            const deletedUsers = await userDAO.deleteUser(username, type);
+            // Check id validation
+            if (deletedUsers === 0) res.status(422).json({ error: `Validation of username or of type failed or attempt to delete a manager/administrator` }).end();
+            if (type === 'supplier') {
+                const deletedSuppliers = await userDAO.deleteSupplier(username);
+                if (deletedSuppliers === 0) res.status(422).json({ error: `Validation of username or of type failed or attempt to delete a manager/administrator` }).end();
+            }
+            // END OF VALIDATION
+            res.status(204).end();
+        } catch (err) {
+            res.status(503).json({ error: `Generic error` }).end();
+        }
+    });
 
 }
 

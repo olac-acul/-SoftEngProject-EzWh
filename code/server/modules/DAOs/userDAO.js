@@ -36,7 +36,7 @@ class UserDAO {
 
     newSupplierTable() {
         return new Promise((resolve, reject) => {
-            const sql = `CREATE TABLE IF NOT EXISTS SUPPLIERS(ID INTEGER PRIMARY KEY, EMAIL VARCHAR(50))`;
+            const sql = `CREATE TABLE IF NOT EXISTS SUPPLIERS(USERNAME VARCHAR(50) PRIMARY KEY, EMAIL VARCHAR(50))`;
             this.db.run(sql, function (err) {
                 if (err) {
                     reject(err);
@@ -71,7 +71,7 @@ class UserDAO {
         return new Promise((resolve, reject) => {
             const sql = `SELECT U.ID, U.NAME, U.SURNAME, S.EMAIL
                          FROM USERS U, SUPPLIERS S
-                         WHERE U.ID = S.ID`;
+                         WHERE U.USERNAME = S.USERNAME`;
             this.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);
@@ -95,7 +95,7 @@ class UserDAO {
             const sql = `SELECT U.ID, U.NAME, U.SURNAME, S.EMAIL, U.TYPE
                          FROM USERS U
                          LEFT JOIN SUPPLIERS S
-                         ON U.ID = S.ID
+                         ON U.USERNAME = S.USERNAME
                          WHERE U.TYPE != "manager"`;
             this.db.all(sql, [], (err, rows) => {
                 if (err) {
@@ -140,8 +140,8 @@ class UserDAO {
 
     addSupplier(supplier) {
         return new Promise((resolve, reject) => {
-            const sql = 'INSERT INTO SUPPLIERS(ID, EMAIL) VALUES(?, ?)';
-            this.db.run(sql, [supplier.id, supplier.email], function (err) {
+            const sql = 'INSERT INTO SUPPLIERS(USERNAME, EMAIL) VALUES(?, ?)';
+            this.db.run(sql, [supplier.username, supplier.email], function (err) {
                 if (err) {
                     reject(err);
                     return;
@@ -180,6 +180,32 @@ class UserDAO {
                          SET TYPE = ?
                          WHERE TYPE = ? AND USERNAME = ?`;
             this.db.run(sql, [newType, oldType, username], function (err) {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(this.changes);
+            });
+        });
+    }
+
+    deleteUser(username, type) {
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM USERS WHERE USERNAME = ? AND TYPE = ?';
+            this.db.run(sql, [username, type], function (err) {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(this.changes);
+            });
+        });
+    }
+
+    deleteSupplier(username) {
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM SUPPLIERS WHERE USERNAME = ?';
+            this.db.run(sql, [username], function (err) {
                 if (err) {
                     reject(err);
                     return;
