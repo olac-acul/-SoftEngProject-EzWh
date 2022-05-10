@@ -158,7 +158,7 @@ function UserAPIs(app) {
             // check it is not manager
             result = await userDAO.modifyUserRights(username, oldType, newType);
             if (result === 0) return res.status(404).json({ error: `Wrong username or oldType fields or user doesn't exist` }).end();
-            return res.status(200).json(user);
+            return res.status(200).end();
         } catch (err) {
             res.status(503).json({ error: `Generic error` }).end();
         }
