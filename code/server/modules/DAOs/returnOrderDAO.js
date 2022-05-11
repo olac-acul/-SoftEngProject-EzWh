@@ -34,33 +34,6 @@ class ReturnOrderDAO {
     //     });
     // }
 
-    // newSKUItemTable() {
-    //     return new Promise((resolve, reject) => {
-    //         const sql = `CREATE TABLE IF NOT EXISTS SKU_ITEMS(RFID VARCHAR(32) PRIMARY KEY, 
-    //         SKU_ID INTEGER, AVAILABLE BOOL, DATE_OF_STOCK DATETIME)`;
-    //         this.db.run(sql, function (err) {
-    //             if (err) {
-    //                 reject(err);
-    //                 return;
-    //             }
-    //             resolve(this.lastID);
-    //         });
-    //     });
-    // }
-
-    // createSKUItem() {
-    //     return new Promise((resolve, reject) => {
-    //         const sql = 'INSERT INTO SKU_ITEMS(RFID, SKU_ID, AVAILABLE) VALUES("12345678901234567890123456789018", 180, 0)';
-    //         this.db.run(sql, [], function (err) {
-    //             if (err) {
-    //                 reject(err);
-    //                 return;
-    //             }
-    //             resolve(this.lastID);
-    //         });
-    //     });
-    // }
-
     dropTable() {
         return new Promise((resolve, reject) => {
             const sql = 'DROP TABLE IF EXISTS RETURN_ORDERS';
