@@ -1,6 +1,6 @@
 function RestockOrderAPIs(app) {
     const dayjs = require('dayjs');
-    const RestockOrderDAO = require('./DAOs/restockOrderDAO');
+    const restockOrderDAO = require('./DAOs/restockOrderDAO');
 
     dayjs().format();
     const restockOrderDAO = new restockOrderDAO();
@@ -84,15 +84,60 @@ function RestockOrderAPIs(app) {
 
     // PUT 
     app.put('/api/restockOrder/:id', async (req, res) => {
-        //Change state to delivered given a id
+        try {
+            let id = Number(req.params.id);
+
+            if (id <= 0)
+                res.status(422).json({ error: 'Generic error' });
+            const order = await restockOrderDAO.getRestockOrderById(id);
+            if (order === 'not found')
+                res.status(404).json({ error: 'Generic error' }).end();
+
+            if (req.body.newState === "DELIVERED") {
+
+            }
+            await restockOrderDAO.changeStateRestockOrder(req.body.newState, id);
+        } catch (error) {
+            res.status(503).json({ error: `Generic error` }).end();
+        }
     })
 
     app.put('/api/restockOrder/:id/skuItems', async (req, res) => {
-        // add a non Empty list of skuitems to the given restockOrder
+        try {
+            let id = Number(req.params.id);
+
+            if (id <= 0)
+                res.status(422).json({ error: 'Generic error' });
+            const order = await restockOrderDAO.getRestockOrderById(id);
+            if (order === 'not found')
+                res.status(404).json({ error: 'Generic error' }).end();
+
+            if (req.body.newState === "COMPLETED") {
+
+            }
+            await restockOrderDAO.addSkuItemsList(req.body.skuItems, id);
+        } catch (error) {
+            res.status(503).json({ error: `Generic error` }).end();
+        }
     })
 
     app.put('/api/restockOrder/:id/transportNote', async (req, res) => {
-        // add a transport Note
+        try {
+            let id = Number(req.params.id);
+
+            if (id <= 0)
+                res.status(422).json({ error: 'Generic error' });
+            const order = await restockOrderDAO.getInternalRestockById(id);
+            if (order === 'not found')
+                res.status(404).json({ error: 'Generic error' }).end();
+
+            if (req.body.newState === "COMPLETED") {
+
+            }
+            await restockOrderDAO.addTransportNoteRestockOrder(req.body.transportNote, id);
+        } catch (error) {
+            res.status(503).json({ error: `Generic error` }).end();
+        }
     })
 
     //DELETE
