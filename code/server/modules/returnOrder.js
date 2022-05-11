@@ -22,8 +22,8 @@ function ReturnOrderAPIs(app) {
     });
 
     app.get('/api/returnOrders/:id', async (req, res) => {
-        let id = Number(req.params.id);
         try {
+            const id = Number(req.params.id);
             // 401 Unauthorized (not logged in or wrong permissions)
             const returnOrder = await returnOrderDAO.getReturnOrderById(id);
             // Check validation of id
@@ -41,12 +41,16 @@ function ReturnOrderAPIs(app) {
         try {
             // 401 Unauthorized (not logged in or wrong permissions)
             // Check validation of request body
-            if (!req.body.returnOrder) return res.status(422).json({ error: `Validation of request body failed` }).end();
-            let returnOrder = req.body.returnOrder;
+            if (!req.body) return res.status(422).json({ error: `Validation of request body failed` }).end();
+            const returnOrder = {
+                returnDate: req.body.returnDate,
+                products: req.body.products,
+                restockOrderId: req.body.restockOrderId
+            };
             // if (!(returnOrder && returnOrder.returnDate && returnOrder.products && returnOrder.restockOrderId))
             //     return res.status(422).json({ error: `Validation of request body failed` }).end();
             // Check number of elements of the request 
-            if (Object.entries(returnOrder).length !== 3) return res.status(422).json({ error: `Validation of request body failed` }).end();
+            // if (Object.entries(returnOrder).length !== 3) return res.status(422).json({ error: `Validation of request body failed` }).end();
             // Check date validation
             if (!dayjs(returnOrder.returnDate).isValid()) return res.status(422).json({ error: `Validation of request body failed` }).end();
             // Check length of the list of products
@@ -57,7 +61,7 @@ function ReturnOrderAPIs(app) {
             // END OF VALIDATION
             await returnOrderDAO.newReturnOrderTable();
             await returnOrderDAO.newReturnOrder_join_ProductTable();
-            let returnOrderId = await returnOrderDAO.createReturnOrder(returnOrder);
+            const returnOrderId = await returnOrderDAO.createReturnOrder(returnOrder);
             for (let i of returnOrder.products) {
                 await returnOrderDAO.createReturnOrder_join_Product(i.SKUId, returnOrderId)
             }
@@ -71,11 +75,11 @@ function ReturnOrderAPIs(app) {
 
     //DELETE
     app.delete('/api/returnOrder/:id', async (req, res) => {
-        let id = Number(req.params.id);
         try {
+            const id = Number(req.params.id);
             // 401 Unauthorized (not logged in or wrong permissions)
-            let deletedElelements = await returnOrderDAO.deleteReturnOrder(id);
-            let deletedJoins = await returnOrderDAO.deleteReturnOrder_join_Product(id);
+            const deletedElelements = await returnOrderDAO.deleteReturnOrder(id);
+            const deletedJoins = await returnOrderDAO.deleteReturnOrder_join_Product(id);
             // Check id validation
             if (deletedElelements === 0 || deletedJoins === 0) res.status(422).json({ error: `Validation of id failed` }).end();
             // END OF VALIDATION

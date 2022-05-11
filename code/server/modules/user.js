@@ -45,8 +45,14 @@ function UserAPIs(app) {
         try {
             // 401 Unauthorized (not logged in or wrong permissions)
             // Check validation of request body
-            if (!req.body.user) return res.status(422).json({ error: `Validation of request body failed` }).end();
-            const user = req.body.user;
+            if (!req.body) return res.status(422).json({ error: `Validation of request body failed` }).end();
+            const user = {
+                username: req.body.username,
+                name: req.body.name,
+                surname: req.body.surname,
+                password: req.body.password,
+                type: req.body.type
+            };
             // if (!(returnOrder && returnOrder.returnDate && returnOrder.products && returnOrder.restockOrderId))
             //     return res.status(422).json({ error: `Validation of request body failed` }).end();
             // Check number of elements of the request 
@@ -143,11 +149,11 @@ function UserAPIs(app) {
 
     // PUT
     app.put('/api/users/:username', async (req, res) => {
-        const username = req.params.username;
-        const oldType = req.body.oldType;
-        const newType = req.body.newType;
         // check it is not manager
         try {
+            const username = req.params.username;
+            const oldType = req.body.oldType;
+            const newType = req.body.newType;
             updatedElements = await userDAO.modifyUserRights(username, oldType, newType);
             if (updatedElements === 0) return res.status(404).json({ error: `Wrong username or oldType fields or user doesn't exist` }).end();
             return res.status(200).end();
@@ -159,10 +165,10 @@ function UserAPIs(app) {
 
     //DELETE
     app.delete('/api/users/:username/:type', async (req, res) => {
-        const username = req.params.username;
-        const type = req.params.type;
         // check it is not manager
         try {
+            const username = req.params.username;
+            const type = req.params.type;
             // 401 Unauthorized (not logged in or wrong permissions)
             const deletedUsers = await userDAO.deleteUser(username, type);
             // Check id validation
