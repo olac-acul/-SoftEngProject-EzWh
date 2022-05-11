@@ -49,30 +49,30 @@ class internalOrderDAO {
                 }
                 const internalOrders = [];
                 let products = [];
-                let id;
+                let id = 0;
                 let issueDate;
                 let state;
                 let customerId;
-                for (r in rows) {
+                for (let r in rows) {
                     if (id === 0) {
                         id = r.ID;
-                        issueDate = r.ISSUE_DATE;
-                        customerId = r.CUSTOMER_ID;
-                        state = r.STATE;
+                        issueDate = rows[r].ISSUE_DATE;
+                        customerId = rows[r].CUSTOMER_ID;
+                        state = rows[r].STATE;
                         products.push({
-                            SKUId: r.SKU_ID,
-                            description: r.DESCRIPTION,
-                            price: r.PRICE
+                            SKUId: rows[r].SKU_ID,
+                            description: rows[r].DESCRIPTION,
+                            price: rows[r].PRICE
                         });
                     }
-                    else if (id === r.ID) {
+                    else if (id === rows[r].ID) {
                         products.push({
-                            SKUId: r.SKU_ID,
-                            description: r.DESCRIPTION,
-                            price: r.PRICE
+                            SKUId: rows[r].SKU_ID,
+                            description: rows[r].DESCRIPTION,
+                            price: rows[r].PRICE
                         });
                     }
-                    else if (id !== r.ID) {
+                    else if (id !== rows[r].ID) {
                         internalOrders.push({
                             id: id,
                             issueDate: issueDate,
@@ -81,41 +81,24 @@ class internalOrderDAO {
                             customerId: customerId
                         });
                         products = [];
-                        id = r.ID;
-                        issueDate = r.ISSUE_DATE;
-                        customerId = r.CUSTOMER_ID;
-                        state = r.STATE;
+                        id = rows[r].ID;
+                        issueDate = rows[r].ISSUE_DATE;
+                        customerId = rows[r].CUSTOMER_ID;
+                        state = rows[r].STATE;
                         products.push({
-                            SKUId: r.SKU_ID,
-                            description: r.DESCRIPTION,
-                            price: r.PRICE
+                            SKUId: rows[r].SKU_ID,
+                            description: rows[r].DESCRIPTION,
+                            price: rows[r].PRICE
                         });
                     }
-                    internalOrders.push({
-                        id: id,
-                        issueDate: issueDate,
-                        state: state,
-                        products: products,
-                        customerId: customerId
-                    });
-
                 }
-                // let id;
-                // let issueDate;
-                // let state;
-                // let customerId;
-                // let products = rows.map(r => {
-                //     id = r.ID;
-                //     issueDate = r.ISSUE_DATE;
-                //     state = r.STATE;
-                //     customerId = r.CUSTOMER_ID;
-                //     return (
-                //         {
-                //             SKUId: r.SKU_ID,
-                //             description: r.DESCRIPTION,
-                //             price: r.PRICE
-                //         });
-                // });
+                internalOrders.push({
+                    id: id,
+                    issueDate: issueDate,
+                    state: state,
+                    products: products,
+                    customerId: customerId
+                });
 
                 resolve(internalOrders);
             });
