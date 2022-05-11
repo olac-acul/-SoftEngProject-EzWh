@@ -44,7 +44,6 @@ function UserAPIs(app) {
     app.post('/api/newUser', async (req, res) => {
         try {
             // 401 Unauthorized (not logged in or wrong permissions)
-            // Check validation of request body
             if (!req.body) return res.status(422).json({ error: `Validation of request body failed` }).end();
             const user = {
                 username: req.body.username,
@@ -53,11 +52,17 @@ function UserAPIs(app) {
                 password: req.body.password,
                 type: req.body.type
             };
-            // if (!(returnOrder && returnOrder.returnDate && returnOrder.products && returnOrder.restockOrderId))
-            //     return res.status(422).json({ error: `Validation of request body failed` }).end();
-            // Check number of elements of the request 
-            // if (Object.entries(user).length !== 3) return res.status(422).json({ error: `Validation of request body failed` }).end();
-            // 404 Not Found (no restock order associated to restockOrderId)
+            // 422 Unprocessable Entity
+            if (!(user.username && user.name && user.surname && user.password && user.type) ||
+                user.password.length < 8 ||
+                !user.username.includes('@') ||
+                user.type === 'manager') return res.status(422).json({ error: `Validation of request body failed or attempt to create manager or administrator accounts` }).end();
+            // 409 Conflict
+            const users = await userDAO.getUsersExceptManager();
+            for (let i of users) {
+                if (i.email === user.username && i.type === user.type) return res.status(409).json({ error: `User with same mail and type already exists` }).end();
+            }
+
             // END OF VALIDATION
             await userDAO.newUserTable();
             await userDAO.addUser(user);
@@ -70,6 +75,7 @@ function UserAPIs(app) {
 
     app.post('/api/managerSessions', async (req, res) => {
         try {
+            // 401 Unauthorized (not logged in or wrong permissions)
             const username = req.body.username;
             const password = req.body.password;
             const user = await userDAO.loginUser(username, password, 'manager');
@@ -83,6 +89,7 @@ function UserAPIs(app) {
 
     app.post('/api/customerSessions', async (req, res) => {
         try {
+            // 401 Unauthorized (not logged in or wrong permissions)
             const username = req.body.username;
             const password = req.body.password;
             const user = await userDAO.loginUser(username, password, 'customer');
@@ -96,6 +103,7 @@ function UserAPIs(app) {
 
     app.post('/api/supplierSessions', async (req, res) => {
         try {
+            // 401 Unauthorized (not logged in or wrong permissions)
             const username = req.body.username;
             const password = req.body.password;
             const user = await userDAO.loginUser(username, password, 'supplier');
@@ -109,6 +117,7 @@ function UserAPIs(app) {
 
     app.post('/api/clerkSessions', async (req, res) => {
         try {
+            // 401 Unauthorized (not logged in or wrong permissions)
             const username = req.body.username;
             const password = req.body.password;
             const user = await userDAO.loginUser(username, password, 'clerk');
@@ -122,6 +131,7 @@ function UserAPIs(app) {
 
     app.post('/api/qualityEmployeeSessions', async (req, res) => {
         try {
+            // 401 Unauthorized (not logged in or wrong permissions)
             const username = req.body.username;
             const password = req.body.password;
             const user = await userDAO.loginUser(username, password, 'qualityEmployee');
@@ -135,6 +145,7 @@ function UserAPIs(app) {
 
     app.post('/api/deliveryEmployeeSessions', async (req, res) => {
         try {
+            // 401 Unauthorized (not logged in or wrong permissions)
             const username = req.body.username;
             const password = req.body.password;
             const user = await userDAO.loginUser(username, password, 'deliveryEmployee');
@@ -149,12 +160,16 @@ function UserAPIs(app) {
 
     // PUT
     app.put('/api/users/:username', async (req, res) => {
-        // check it is not manager
+        // 401 Unauthorized (not logged in or wrong permissions)
         try {
             const username = req.params.username;
             const oldType = req.body.oldType;
             const newType = req.body.newType;
+            // 422 Unprocessable Entity
+            if (!(username && oldType && newType) || oldType === 'manager' || newType === 'manager')
+                return res.status(422).json({ error: `Validation of request body or of username failed or attempt to modify rights to administrator or manager` }).end();
             updatedElements = await userDAO.modifyUserRights(username, oldType, newType);
+            // 404 Not found
             if (updatedElements === 0) return res.status(404).json({ error: `Wrong username or oldType fields or user doesn't exist` }).end();
             return res.status(200).end();
         } catch (err) {
@@ -165,13 +180,14 @@ function UserAPIs(app) {
 
     //DELETE
     app.delete('/api/users/:username/:type', async (req, res) => {
-        // check it is not manager
+        // 401 Unauthorized (not logged in or wrong permissions)
         try {
             const username = req.params.username;
             const type = req.params.type;
-            // 401 Unauthorized (not logged in or wrong permissions)
+            // 422 Unprocessable Entity
+            if (!(username && type) || type === 'manager')
+                return res.status(422).json({ error: `Validation of username or of type failed or attempt to delete a manager/administrator` }).end();
             const deletedUsers = await userDAO.deleteUser(username, type);
-            // Check id validation
             if (deletedUsers === 0) res.status(422).json({ error: `Validation of username or of type failed or attempt to delete a manager/administrator` }).end();
             // END OF VALIDATION
             res.status(204).end();
