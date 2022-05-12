@@ -7,6 +7,7 @@ const ItemAPIs = require('./modules/item');
 const UserAPIs = require('./modules/user');
 const InternalOrder = require('./modules/internalOrder');
 const SKUItemAPIs = require('./modules/SKUItem');
+const SKUAPIs = require('./modules/SKU');
 
 
 // init express
@@ -31,6 +32,7 @@ ItemAPIs(app);
 UserAPIs(app);
 InternalOrder(app);
 SKUItemAPIs(app);
+SKUAPIs(app);
 
 
 
