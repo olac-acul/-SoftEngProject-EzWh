@@ -1,7 +1,7 @@
 const positionDAO = require('../modules/positionDAO');
 
 describe('testPositionDao', () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
         await positionDAO.deletePositions();
     });
 
