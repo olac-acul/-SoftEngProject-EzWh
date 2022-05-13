@@ -91,7 +91,7 @@ class PositionDAO {
 
 deletePositions = () => {
     return new Promise((resolve, reject) => {
-      const sql = 'DELETE FROM Positions';
+      const sql = 'DELETE FROM POSITIONS';
       db.run(sql, [], function (err) {
         if (err) {
           reject(err);
