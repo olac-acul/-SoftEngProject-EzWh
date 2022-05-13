@@ -1,56 +1,52 @@
 function RestockOrderAPIs(app) {
     const dayjs = require('dayjs');
-    const restockOrderDAO = require('./DAOs/restockOrderDAO');
+    const RestockOrderDAO = require('./DAOs/restockOrderDAO');
 
     dayjs().format();
-    const restockOrderDAO = new restockOrderDAO();
+    const restockOrd = new RestockOrderDAO();
 
     //GET
-    app.get('/api/RestockOrders', async (req, res) => {
+    app.get('/api/restockOrders', async (req, res) => {
         try {
             // 401 Unauthorized (not logged in or wrong permissions)
-            const RestockOrders = [];
-            const orders = await restockOrderDAO.getRestockOrders();
-            for (let i of orders) {
-                let RestockOrder = await restockOrderDAO.getRestockOrderById(i.id);
-                RestockOrders.push(RestockOrder);
-            }
-            res.status(200).json(RestockOrders);
+            const orders = await restockOrd.getRestockOrders();
+            res.status(200).json(orders);
         } catch (err) {
-            res.status(500).json({ error: `Generic error` }).end();
+            res.status(500).json({ error: `Internal Server Error` }).end();
         }
     });
 
     app.get('/api/restockOrdersIssued', async (req, res) => {
         try {
-            const RestockOrders = [];
-            const orders = await restockOrderDAO.getRestockOrdersIssued();
-            for (let i of orders) {
-                let RestockOrder = await restockOrderDAO.getRestockOrderById(i.id);
-                RestockOrders.push(RestockOrder);
+            const orders = await restockOrd.getRestockOrdersIssued();
+            const restockOrdersIssued = [];
+            for (ord of orders) {
+                if (ord.state === "ISSUED")
+                    restockOrdersIssued.push(ord);
             }
+            resolve(restockOrdersIssued);
         } catch (err) {
-            res.status(500).json({ error: `Generic error` }).end();
+            res.status(500).json({ error: `Internal Server Error` }).end();
         }
     });
 
-    app.get('/api/RestockOrders/:id', async (req, res) => {
+    app.get('/api/restockOrders/:id', async (req, res) => {
         let id = Number(req.params.id);
         try {
             // 401 Unauthorized (not logged in or wrong permissions)
-            const RestockOrder = await restockOrderDAO.getRestockOrderById(id);
+            const RestockOrder = await restockOrd.getRestockOrderById(id);
             // Check validation of id
             if (RestockOrder === 'Not Found') res.status(404).json({ error: `No Restock order associated to id` }).end();
             // 422 Unprocessable Entity (validation of id failed)
             // END OF VALIDATION
             res.status(200).json(RestockOrder);
         } catch (err) {
-            res.status(500).json({ error: `Generic error` }).end();
+            res.status(500).json({ error: `Internal Server Error` }).end();
         }
     });
 
     //POST
-    app.post('/api/RestockOrder', async (req, res) => {
+    app.post('/api/restockOrder', async (req, res) => {
         try {
             // 401 Unauthorized (not logged in or wrong permissions)
             // Check validation of request body
@@ -68,17 +64,17 @@ function RestockOrderAPIs(app) {
             // Check restockOrderId type
             // 404 Not Found (no restock order associated to restockOrderId)
             // END OF VALIDATION
-            await restockOrderDAO.newRestockOrderTable();
-            await restockOrderDAO.newRestockOrder_join_ProductTable();
-            let RestockOrderId = await restockOrderDAO.createRestockOrder(RestockOrder);
+            await restockOrd.newRestockOrderTable();
+            await restockOrd.newRestockOrder_join_ProductTable();
+            let RestockOrderId = await restockOrd.createRestockOrder(RestockOrder);
             for (let i of RestockOrder.products) {
-                await restockOrderDAO.createRestockOrder_join_Product(i.SKUId, RestockOrderId)
+                await restockOrd.createRestockOrder_join_Product(i.SKUId, RestockOrderId)
             }
             // revert in case if order created but join not
             return res.status(201).end();
 
         } catch (err) {
-            res.status(503).json({ error: `Generic error` }).end();
+            res.status(503).json({ error: `Internal Server Error` }).end();
         }
     });
 
@@ -88,17 +84,14 @@ function RestockOrderAPIs(app) {
             let id = Number(req.params.id);
 
             if (id <= 0)
-                res.status(422).json({ error: 'Generic error' });
-            const order = await restockOrderDAO.getRestockOrderById(id);
+                res.status(422).json({ error: 'Unprocessable Entity' });
+            const order = await restockOrd.getRestockOrderById(id);
             if (order === 'not found')
-                res.status(404).json({ error: 'Generic error' }).end();
+                res.status(404).json({ error: 'Not Found' }).end();
 
-            if (req.body.newState === "DELIVERED") {
-
-            }
-            await restockOrderDAO.changeStateRestockOrder(req.body.newState, id);
+            await restockOrd.changeStateRestockOrder(id, req.body.newState);
         } catch (error) {
-            res.status(503).json({ error: `Generic error` }).end();
+            res.status(503).json({ error: `Internal Server Entity` }).end();
         }
     })
 
@@ -107,17 +100,17 @@ function RestockOrderAPIs(app) {
             let id = Number(req.params.id);
 
             if (id <= 0)
-                res.status(422).json({ error: 'Generic error' });
-            const order = await restockOrderDAO.getRestockOrderById(id);
+                res.status(422).json({ error: 'Unprocessable Entity' });
+            const order = await restockOrd.getRestockOrderById(id);
             if (order === 'not found')
-                res.status(404).json({ error: 'Generic error' }).end();
+                res.status(404).json({ error: 'Not Found' }).end();
 
             if (req.body.newState === "COMPLETED") {
 
             }
-            await restockOrderDAO.addSkuItemsList(req.body.skuItems, id);
+            await restockOrd.addSkuItemsList(req.body.skuItems, id);
         } catch (error) {
-            res.status(503).json({ error: `Generic error` }).end();
+            res.status(503).json({ error: `Service Unavailable` }).end();
         }
     })
 
@@ -126,33 +119,34 @@ function RestockOrderAPIs(app) {
             let id = Number(req.params.id);
 
             if (id <= 0)
-                res.status(422).json({ error: 'Generic error' });
-            const order = await restockOrderDAO.getInternalRestockById(id);
+                res.status(422).json({ error: 'Unprocessable Entity' });
+            const order = await restockOrd.getInternalRestockById(id);
             if (order === 'not found')
-                res.status(404).json({ error: 'Generic error' }).end();
-
+                res.status(404).json({ error: 'Not Found' }).end();
+            await restockOrd.addTransportNoteRestockOrder(id, req.body.transportNote.deliveryDate)
             if (req.body.newState === "COMPLETED") {
 
             }
-            await restockOrderDAO.addTransportNoteRestockOrder(req.body.transportNote, id);
+            await restockOrd.addTransportNoteRestockOrder(req.body.transportNote, id);
         } catch (error) {
-            res.status(503).json({ error: `Generic error` }).end();
+            res.status(503).json({ error: `Service Unavailable` }).end();
         }
     })
 
     //DELETE
-    app.delete('/api/RestockOrder/:id', async (req, res) => {
+    app.delete('/api/restockOrder/:id', async (req, res) => {
         let id = Number(req.params.id);
         try {
             // 401 Unauthorized (not logged in or wrong permissions)
-            let deletedElelements = await restockOrderDAO.deleteRestockOrder(id);
-            let deletedJoins = await restockOrderDAO.deleteRestockOrder_join_Product(id);
+            let deletedElelements = await restockOrd.deleteRestockOrder(id);
+            let deletedJoin1 = await restockOrd.deleteRestockOrderJoinSkuItems(id);
+            let deletedJoins = await restockOrd.deleteRestockOrderJoinItems(id);
             // Check id validation
-            if (deletedElelements === 0 || deletedJoins === 0) res.status(422).json({ error: `Validation of id failed` }).end();
+            if (deletedElelements === 0 || deletedJoins === 0 || deletedJoin1 === 0) res.status(422).json({ error: `Validation of id failed` }).end();
             // END OF VALIDATION
             res.status(204).end();
         } catch (err) {
-            res.status(503).json({ error: `Generic error` }).end();
+            res.status(500).json({ error: `Service Unavailable` }).end();
         }
     });
 
