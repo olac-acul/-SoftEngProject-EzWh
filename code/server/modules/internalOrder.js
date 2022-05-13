@@ -9,7 +9,7 @@ function InternalOrderAPI(app) {
             const internalOrders = await internalOrd.getInternalOrder();
             res.status(200).json(internalOrders);
         } catch (err) {
-            res.status(500).json({ error: `Generic error` }).end();
+            res.status(500).json({ error: `Internal Server Error` }).end();
         }
     });
 
@@ -21,7 +21,7 @@ function InternalOrderAPI(app) {
             res.status(200).json(filteredInternalORders);
 
         } catch (err) {
-            res.status(500).json({ error: `Generic error` }).end();
+            res.status(500).json({ error: `Internal Server Error` }).end();
         }
     });
 
@@ -32,7 +32,7 @@ function InternalOrderAPI(app) {
             res.status(200).json(filteredInternalORders);
 
         } catch (err) {
-            res.status(500).json({ error: `Generic error` }).end();
+            res.status(500).json({ error: `Internal Server Error` }).end();
         }
     });
 
@@ -41,13 +41,13 @@ function InternalOrderAPI(app) {
         try {
             const id = Number(req.params.id);
             if (id <= 0)
-                res.status(422).json({ error: 'Generic error' });
+                res.status(422).json({ error: 'Unprocessable Entity' });
             const order = await internalOrd.getInternalOrderById(id);
             if (order === 'not found')
-                res.status(404).json({ error: 'Generic error' }).end();
+                res.status(404).json({ error: 'NOt Found' }).end();
             res.status(200).json(order);
         } catch (error) {
-            res.status(500).json({ error: `Generic error` }).end();
+            res.status(500).json({ error: `Internal Server Error` }).end();
         }
     });
 
@@ -70,14 +70,18 @@ function InternalOrderAPI(app) {
             let intOrd =
             {
                 issueDate: internalOrder.issueDate,
-                customerId: internalOrder.customerId,
-                state: "ISSUED"
+                state: "ISSUED",
+                customerId: internalOrder.customerId
             }
             // await internalOrderDAO();
             await internalOrderDAO.createInternalOrder(intOrd);
+            await internalOrderDAO.changeStateInternalOrder(req.body.newState, id);
+            for (j of req.body.products) {
+                await internalOrderDAO.createJoinProduct(j);
+            }
             return res.status(201).end();
         } catch (err) {
-            res.status(503).json({ error: `Generic error` }).end();
+            res.status(503).json({ error: `Service Unavailable` }).end();
         }
     });
 
@@ -88,17 +92,19 @@ function InternalOrderAPI(app) {
             let id = Number(req.params.id);
 
             if (id <= 0)
-                res.status(422).json({ error: 'Generic error' });
+                res.status(422).json({ error: 'Unprocessable Entity' });
             const order = await internalOrd.getInternalOrderById(id);
             if (order === 'not found')
-                res.status(404).json({ error: 'Generic error' }).end();
+                res.status(404).json({ error: 'Not Found' }).end();
 
             if (req.body.newState === "COMPLETED") {
-
+                for (j of req.body.products) {
+                    await internalOrderDAO.createJoinProduct(j);
+                }
             }
-            await internalOrderDAO.changeStateInternalOrder(req.body.newState, id);
+
         } catch (error) {
-            res.status(503).json({ error: `Generic error` }).end();
+            res.status(503).json({ error: `Service Unavailable` }).end();
         }
 
     })
@@ -108,10 +114,11 @@ function InternalOrderAPI(app) {
         let id = Number(req.params.id);
         try {
             let deletedElelements = await internalOrderDAO.deleteInternalOrder(id);
+            await internalOrderDAO.deleteJoinProduct(id);
             if (deletedElelements === 0) res.status(422).json({ error: `Validation of id failed` }).end();
             res.status(204).end();
         } catch (err) {
-            res.status(503).json({ error: `Generic error` }).end();
+            res.status(503).json({ error: `Service Unavailable` }).end();
         }
     });
 }
