@@ -151,8 +151,22 @@ class internalOrderDAO {
 
     createInternalOrder(internalOrder) {
         return new Promise((resolve, reject) => {
-            const sql = 'INSERT INTO INTERNAL_ORDERS(CUSTOMER_ID, STATE, ISSUE_DATE) VALUES(?, ? ,?)';
-            this.db.run(sql, [internalOrder.customerId, internalOrder.state, internalOrder.issueDate], (err) => {
+            const sql = 'INSERT INTO INTERNAL_ORDERS(STATE, ISSUE_DATE, CUSTOMER_ID) VALUES(? ,?, ?)';
+            this.db.run(sql, [internalOrder.state, internalOrder.issueDate, internalOrder.customerId], (err) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(this.lastID);
+            });
+        });
+    }
+
+    createJoinProduct(joinIOP) {
+        return new Promise((resolve, reject) => {
+            const sql = `INSERT INTO INTERNAL_ORDER_PRODUCTS(INTERNAL_ORDER_ID, SKU_ID, QUANTITY) VALUES(?, ?, ?)`;
+
+            this.db.run(sql, [joinIOP.internalOrder_id, joinIOP.skuId, joinIOP.quantity], (err) => {
                 if (err) {
                     reject(err);
                     return;
@@ -172,6 +186,19 @@ class internalOrderDAO {
                 }
                 resolve(this.changes);
             });
+        });
+    }
+
+    deleteJoinProduct(id) {
+        return new Promise((resole, reject) => {
+            const sql = `DELETE FROM INTERNAL_ORDER_PRODUCTS WHERE INTERNAL_ORDER_PRODUCTS.INTERNAL_ORDER_ID = ?`
+            this.db.run(sql, [id], (err) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(this.changes);
+            })
         });
     }
 
