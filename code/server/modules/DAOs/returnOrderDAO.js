@@ -112,7 +112,8 @@ class ReturnOrderDAO {
                     reject(err);
                     return;
                 }
-                if (!rows) resolve('Not Found');
+                if (rows.returnDate == null) resolve('Not Found');
+                else if (rows.restockOrderId == null) resolve('Not Found');
                 else {
                     let returnDate;
                     let restockOrderId;

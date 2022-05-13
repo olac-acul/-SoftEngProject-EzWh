@@ -8,6 +8,7 @@ function SKUItemAPIs(app) {
         try {
             // 401 Unauthorized (not logged in or wrong permissions)
             const SKUItems = await skuItemDAO.getAllSKUItems();
+            // END OF VALIDATION
             res.status(200).json(SKUItems);
         } catch (err) {
             res.status(500).json({ error: `Generic error` }).end();
@@ -16,9 +17,14 @@ function SKUItemAPIs(app) {
 
     app.get('/api/skuitems/sku/:id', async (req, res) => {
         try {
-            const id = req.params.id;
             // 401 Unauthorized (not logged in or wrong permissions)
+            const id = req.params.id;
+            // 422 Unprocessable Entity
+            if (!id) return res.status(422).json({ error: `Validation of ID failed` }).end();
             const SKUItems = await skuItemDAO.getAllAvailableSKUItems(id);
+            // 404 Not Found
+            if (!SKUItems) return res.status(404).json({ error: `No SKU associated to ID` }).end();
+            // END OF VALIDATION
             res.status(200).json(SKUItems);
         } catch (err) {
             res.status(500).json({ error: `Generic error` }).end();
@@ -27,9 +33,14 @@ function SKUItemAPIs(app) {
 
     app.get('/api/skuitems/:rfid', async (req, res) => {
         try {
-            const RFID = req.params.rfid;
             // 401 Unauthorized (not logged in or wrong permissions)
+            const RFID = req.params.rfid;
+            // 422 Unprocessable Entity
+            if (!RFID) return res.status(422).json({ error: `Validation of RFID failed` }).end();
             const SKUItem = await skuItemDAO.getSKUItem(RFID);
+            // 404 Not Found
+            if (!RFID) return res.status(404).json({ error: `No SKU associated to RFID` }).end();
+            // END OF VALIDATION
             res.status(200).json(SKUItem);
         } catch (err) {
             res.status(500).json({ error: `Generic error` }).end();
@@ -41,14 +52,12 @@ function SKUItemAPIs(app) {
     app.post('/api/skuitem', async (req, res) => {
         try {
             // 401 Unauthorized (not logged in or wrong permissions)
-            // Check validation of request body
+            // 422 Unprocessable Entity
             if (!req.body) return res.status(422).json({ error: `Validation of request body failed` }).end();
             const SKUItem = req.body;
-            // if (!(returnOrder && returnOrder.returnDate && returnOrder.products && returnOrder.restockOrderId))
-            //     return res.status(422).json({ error: `Validation of request body failed` }).end();
-            // Check number of elements of the request 
-            // if (Object.entries(user).length !== 3) return res.status(422).json({ error: `Validation of request body failed` }).end();
-            // 404 Not Found (no restock order associated to restockOrderId)
+            if (!(SKUItem.RFID && SKUItem.SKUId)) return res.status(422).json({ error: `Validation of request body failed` }).end();
+            // 404 Not Found
+            
             // END OF VALIDATION
             await skuItemDAO.newSKUItemTable();
             await skuItemDAO.addSKUItem(SKUItem);
