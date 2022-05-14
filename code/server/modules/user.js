@@ -1,7 +1,9 @@
 function UserAPIs(app) {
     const UserDAO = require('./DAOs/userDAO');
-
+    const validator = require('validator')
     const userDAO = new UserDAO();
+
+    const availableUsersList = ["customer", "qualityEmployee", "clerk", "deliveryEmployee", "supplier"];
 
     //GET
     // app.get('/api/userinfo', async (req, res) => {
@@ -44,7 +46,14 @@ function UserAPIs(app) {
     app.post('/api/newUser', async (req, res) => {
         try {
             // 401 Unauthorized (not logged in or wrong permissions)
-            if (!req.body) return res.status(422).json({ error: `Validation of request body failed` }).end();
+            if (Object.keys(req.body).length !== 5)
+                res.status(422).json({ error: `Validation of request body failed or attempt to create manager or administrator accounts` }).end();
+            if (!availableUsersList.includes(req.body.type))
+                res.status(422).json({ error: `Validation of request body failed or attempt to create manager or administrator accounts` }).end();
+            if (!validator.isEmail(req.body.username))
+                res.status(422).json({ error: `Username must be an email` }).end();
+            if (req.body.password.length < 8)
+                res.status(422).json({ error: `Password must have at least 8 characters` }).end();
             const user = {
                 username: req.body.username,
                 name: req.body.name,
@@ -52,18 +61,12 @@ function UserAPIs(app) {
                 password: req.body.password,
                 type: req.body.type
             };
-            // 422 Unprocessable Entity
-            if (!(user.username && user.name && user.surname && user.password && user.type) ||
-                user.password.length < 8 ||
-                !user.username.includes('@') ||
-                user.type === 'manager') return res.status(422).json({ error: `Validation of request body failed or attempt to create manager or administrator accounts` }).end();
-            // 409 Conflict
             const users = await userDAO.getUsersExceptManager();
             for (let i of users) {
-                if (i.email === user.username && i.type === user.type) return res.status(409).json({ error: `User with same mail and type already exists` }).end();
+                if (i.email === user.username && i.type === user.type)
+                    return res.status(409).json({ error: `User with same mail and type already exists` }).end();
             }
-
-            // END OF VALIDATION
+            // // END OF VALIDATION
             await userDAO.newUserTable();
             await userDAO.addUser(user);
             return res.status(201).end();
@@ -76,6 +79,8 @@ function UserAPIs(app) {
     app.post('/api/managerSessions', async (req, res) => {
         try {
             // 401 Unauthorized (not logged in or wrong permissions)
+            if (!validator.isEmail(req.body.username))
+                res.status(422).json({ error: `Username must be an email` }).end();
             const username = req.body.username;
             const password = req.body.password;
             const user = await userDAO.loginUser(username, password, 'manager');
@@ -90,6 +95,8 @@ function UserAPIs(app) {
     app.post('/api/customerSessions', async (req, res) => {
         try {
             // 401 Unauthorized (not logged in or wrong permissions)
+            if (!validator.isEmail(req.body.username))
+                res.status(422).json({ error: `Username must be an email` }).end();
             const username = req.body.username;
             const password = req.body.password;
             const user = await userDAO.loginUser(username, password, 'customer');
@@ -104,6 +111,8 @@ function UserAPIs(app) {
     app.post('/api/supplierSessions', async (req, res) => {
         try {
             // 401 Unauthorized (not logged in or wrong permissions)
+            if (!validator.isEmail(req.body.username))
+                res.status(422).json({ error: `Username must be an email` }).end();
             const username = req.body.username;
             const password = req.body.password;
             const user = await userDAO.loginUser(username, password, 'supplier');
@@ -118,6 +127,8 @@ function UserAPIs(app) {
     app.post('/api/clerkSessions', async (req, res) => {
         try {
             // 401 Unauthorized (not logged in or wrong permissions)
+            if (!validator.isEmail(req.body.username))
+                res.status(422).json({ error: `Username must be an email` }).end();
             const username = req.body.username;
             const password = req.body.password;
             const user = await userDAO.loginUser(username, password, 'clerk');
@@ -132,6 +143,8 @@ function UserAPIs(app) {
     app.post('/api/qualityEmployeeSessions', async (req, res) => {
         try {
             // 401 Unauthorized (not logged in or wrong permissions)
+            if (!validator.isEmail(req.body.username))
+                res.status(422).json({ error: `Username must be an email` }).end();
             const username = req.body.username;
             const password = req.body.password;
             const user = await userDAO.loginUser(username, password, 'qualityEmployee');
@@ -146,6 +159,8 @@ function UserAPIs(app) {
     app.post('/api/deliveryEmployeeSessions', async (req, res) => {
         try {
             // 401 Unauthorized (not logged in or wrong permissions)
+            if (!validator.isEmail(req.body.username))
+                res.status(422).json({ error: `Username must be an email` }).end();
             const username = req.body.username;
             const password = req.body.password;
             const user = await userDAO.loginUser(username, password, 'deliveryEmployee');
@@ -162,14 +177,18 @@ function UserAPIs(app) {
     app.put('/api/users/:username', async (req, res) => {
         // 401 Unauthorized (not logged in or wrong permissions)
         try {
+            if (!validator.isEmail(req.params.username))
+                res.status(422).json({ error: `Validation of request body or of username failed or attempt to modify rights to administrator or manager` }).end();
+            if (Object.keys(req.body).length !== 2)
+                res.status(422).json({ error: `Validation of request body or of username failed or attempt to modify rights to administrator or manager` }).end();
+            if (!availableUsersList.includes(req.body.oldType))
+                res.status(422).json({ error: `Validation of request body failed or attempt to create manager or administrator accounts` }).end();
+            if (!availableUsersList.includes(req.body.newType))
+                res.status(422).json({ error: `Validation of request body failed or attempt to create manager or administrator accounts` }).end();
             const username = req.params.username;
             const oldType = req.body.oldType;
             const newType = req.body.newType;
-            // 422 Unprocessable Entity
-            if (!(username && oldType && newType) || oldType === 'manager' || newType === 'manager')
-                return res.status(422).json({ error: `Validation of request body or of username failed or attempt to modify rights to administrator or manager` }).end();
             updatedElements = await userDAO.modifyUserRights(username, oldType, newType);
-            // 404 Not found
             if (updatedElements === 0) return res.status(404).json({ error: `Wrong username or oldType fields or user doesn't exist` }).end();
             return res.status(200).end();
         } catch (err) {
@@ -182,13 +201,14 @@ function UserAPIs(app) {
     app.delete('/api/users/:username/:type', async (req, res) => {
         // 401 Unauthorized (not logged in or wrong permissions)
         try {
+            if (!validator.isEmail(req.params.username))
+                res.status(422).json({ error: `Validation of username or of type failed or attempt to delete a manager/administrator` }).end();
+            if (!availableUsersList.includes(req.params.type))
+                res.status(422).json({ error: `Validation of username or of type failed or attempt to delete a manager/administrator` }).end();
             const username = req.params.username;
             const type = req.params.type;
-            // 422 Unprocessable Entity
-            if (!(username && type) || type === 'manager')
-                return res.status(422).json({ error: `Validation of username or of type failed or attempt to delete a manager/administrator` }).end();
-            const deletedUsers = await userDAO.deleteUser(username, type);
-            if (deletedUsers === 0) res.status(422).json({ error: `Validation of username or of type failed or attempt to delete a manager/administrator` }).end();
+            // const deletedUsers = await userDAO.deleteUser(username, type);
+            // if (deletedUsers === 0) res.status(422).json({ error: `Validation of username or of type failed or attempt to delete a manager/administrator` }).end();
             // END OF VALIDATION
             res.status(204).end();
         } catch (err) {
