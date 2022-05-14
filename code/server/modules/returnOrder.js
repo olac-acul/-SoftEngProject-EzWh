@@ -56,17 +56,18 @@ function ReturnOrderAPIs(app) {
                 if (Object.keys(i).length !== 4)
                     res.status(422).json({ error: `Validation of request body failed` }).end();
             }
-            if (typeof (returnOrder.restockOrderId) !== Number || returnOrder.restockOrderId <= 0)
+            if (typeof returnOrder.restockOrderId != "number" || returnOrder.restockOrderId <= 0)
                 res.status(422).json({ error: `Validation of request body failed` }).end();
-            // 404 Not Found (no restock order associated to restockOrderId)
+            const restockOrder = await returnOrderDAO.getRestockOrderById(returnOrder.restockOrderId);
+            if (!restockOrder)
+                res.status(404).json({ error: `No restock order associated to restockOrderId` }).end();
+            await returnOrderDAO.newReturnOrderTable();
+            await returnOrderDAO.newReturnOrder_join_ProductTable();
+            const returnOrderId = await returnOrderDAO.createReturnOrder(returnOrder);
             // END OF VALIDATION
-            // await returnOrderDAO.newReturnOrderTable();
-            // await returnOrderDAO.newReturnOrder_join_ProductTable();
-            // const returnOrderId = await returnOrderDAO.createReturnOrder(returnOrder);
-            // for (let i of returnOrder.products) {
-            //     await returnOrderDAO.createReturnOrder_join_Product(i.SKUId, returnOrderId)
-            // }
-            // revert in case if order created but join not
+            for (let i of returnOrder.products) {
+                await returnOrderDAO.createReturnOrder_join_Product(i.SKUId, returnOrderId)
+            }
             return res.status(201).end();
         } catch (err) {
             res.status(503).json({ error: `Generic error` }).end();
@@ -76,13 +77,14 @@ function ReturnOrderAPIs(app) {
     //DELETE
     app.delete('/api/returnOrder/:id', async (req, res) => {
         try {
+            if (!validator.isNumeric(req.params.id))
+                res.status(422).json({ error: `Validation of ID failed` }).end();
             const id = Number(req.params.id);
             // 401 Unauthorized (not logged in or wrong permissions)
             const deletedElelements = await returnOrderDAO.deleteReturnOrder(id);
-            const deletedJoins = await returnOrderDAO.deleteReturnOrder_join_Product(id);
-            // Check id validation
-            if (deletedElelements === 0 || deletedJoins === 0) res.status(422).json({ error: `Validation of id failed` }).end();
+            if (deletedElelements == 0) res.status(422).json({ error: `Validation of ID failed` }).end();
             // END OF VALIDATION
+            await returnOrderDAO.deleteReturnOrder_join_Product(id);
             res.status(204).end();
         } catch (err) {
             res.status(503).json({ error: `Generic error` }).end();

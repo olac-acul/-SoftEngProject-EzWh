@@ -95,6 +95,20 @@ class ReturnOrderDAO {
         });
     }
 
+    getRestockOrderById(id) {
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM RESTOCK_ORDERS WHERE ID = ?';
+            this.db.get(sql, [id], (err, row) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                const restockOrder = row
+                resolve(restockOrder);
+            });
+        });
+    }
+
     getReturnOrderById(id) {
         return new Promise((resolve, reject) => {
             const sql = `SELECT RO.RETURN_DATE RETURN_DATE, PR.SKU_ID, PR.DESCRIPTION, PR.PRICE, PR.RFID RFID, RO.RESTOCK_ORDER_ID RESTOCK_ORDER_ID
