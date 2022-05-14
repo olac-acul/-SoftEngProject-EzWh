@@ -1,9 +1,9 @@
 'use strict';
 const express = require('express');
 
-const ReturnOrderAPIs = require('./modules/returnOrder');
+const returnOrderRouter = require('./modules/routers/returnOrderRouter');
 const positionRouter = require('./modules/routers/positionRouter');
-const TestDescriptorAPIs = require('./modules/testDescriptor');
+const testDescriptorRouter = require('./modules/routers/testDescriptorRouter');
 const ItemAPIs = require('./modules/item');
 const UserAPIs = require('./modules/user');
 const InternalOrder = require('./modules/internalOrder');
@@ -16,7 +16,10 @@ const app = new express();
 const port = 3001;
 
 app.use(express.json());
+app.use('/api', returnOrderRouter);
 app.use('/api', positionRouter);
+app.use('/api', testDescriptorRouter);
+
 
 //GET /api/test
 app.get('/api/hello', (req, res) => {
@@ -27,8 +30,6 @@ app.get('/api/hello', (req, res) => {
 });
 
 
-ReturnOrderAPIs(app);
-TestDescriptorAPIs(app);
 ItemAPIs(app);
 UserAPIs(app);
 InternalOrder(app);
