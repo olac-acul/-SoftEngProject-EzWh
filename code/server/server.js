@@ -1,7 +1,8 @@
 'use strict';
 const express = require('express');
+
 const ReturnOrderAPIs = require('./modules/returnOrder');
-const PositionAPIs = require('./modules/position');
+const positionRouter = require('./modules/routers/positionRouter');
 const TestDescriptorAPIs = require('./modules/testDescriptor');
 const ItemAPIs = require('./modules/item');
 const UserAPIs = require('./modules/user');
@@ -15,6 +16,7 @@ const app = new express();
 const port = 3001;
 
 app.use(express.json());
+app.use('/api', positionRouter);
 
 //GET /api/test
 app.get('/api/hello', (req, res) => {
@@ -26,7 +28,6 @@ app.get('/api/hello', (req, res) => {
 
 
 ReturnOrderAPIs(app);
-PositionAPIs(app);
 TestDescriptorAPIs(app);
 ItemAPIs(app);
 UserAPIs(app);
