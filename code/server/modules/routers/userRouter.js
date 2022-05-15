@@ -163,15 +163,7 @@ router.put('/users/:username', async (req, res) => {
 //DELETE
 router.delete('/users/:username/:type', async (req, res) => {
     try {
-        // if (!validator.isEmail(req.params.username))
-        //     res.status(422).json({ error: `Validation of username or of type failed or attempt to delete a manager/administrator` }).end();
-        // if (!availableUsersList.includes(req.params.type))
-        //     res.status(422).json({ error: `Validation of username or of type failed or attempt to delete a manager/administrator` }).end();
-        // const username = req.params.username;
-        // const type = req.params.type;
         const status = await userService.deleteUser(req.params.username, req.params.type);
-        // if (deletedUsers === 0) res.status(422).json({ error: `Validation of username or of type failed or attempt to delete a manager/administrator` }).end();
-        // END OF VALIDATION
         if (status === '422')
             res.status(422).json({ error: `Validation of username or of type failed or attempt to delete a manager/administrator` }).end();
         else if (status === '204')
