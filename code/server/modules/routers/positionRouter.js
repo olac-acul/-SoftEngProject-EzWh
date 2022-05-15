@@ -11,7 +11,6 @@ const router = express.Router();
 //GET
 router.get('/positions', async (req, res) => {
     try {
-        // 401 Unauthorized (not logged in or wrong permissions)
         const positions = await positionService.getPositions();
         res.status(200).json(positions);
     } catch (err) {
@@ -23,20 +22,47 @@ router.get('/positions', async (req, res) => {
 //POST
 router.post('/position', async (req, res) => {
     try {
-        // 401 Unauthorized (not logged in or wrong permissions)
-        // Check validation of request body
-        if (!req.body.position) return res.status(422).json({ error: `Validation of request body failed` }).end();
-        let position = req.body.position;
-        if (!(position && position.positionID && position.aisleID && position.row && position.col && position.maxWeight && position.maxVolume))
+        const position = req.body;
+        const status = await positionService.createPosition(position);
+        if (status === '422')
             return res.status(422).json({ error: `Validation of request body failed` }).end();
-        // Check number of elements of the request 
-        if (Object.entries(position).length !== 6) return res.status(422).json({ error: `Validation of request body failed` }).end();
-        // Check positionID type
-        // END OF VALIDATION
-        // await positionService.newTable();
-        await positionService.createPosition(position);
-        return res.status(201).end();
+        else if (status === '201')
+            return res.status(201).end();
 
+    } catch (err) {
+        res.status(503).json({ error: `Generic error` }).end();
+    }
+});
+
+
+// PUT
+router.put('/position/:positionID', async (req, res) => {
+    try {
+        const oldPositionID = req.params.positionID;
+        const position = req.body;
+        const status = await positionService.modifyPosition(oldPositionID, position);
+        if (status === '422')
+            return res.status(422).json({ error: `Validation of request body or of positionID failed` }).end();
+        if (status === '404')
+            return res.status(404).json({ error: `No position associated to positionID` }).end();
+        else if (status === '200')
+            return res.status(200).end();
+    } catch (err) {
+        res.status(503).json({ error: `Generic error` }).end();
+    }
+});
+
+router.put('/position/:positionID/changeID', async (req, res) => {
+    try {
+        const oldPositionId = req.params.positionID;
+        const newPositionId = req.body;
+        const status = await positionService.changePositionId(oldPositionId, newPositionId);
+        if (status === '422')
+            return res.status(422).json({ error: `Validation of request body or of positionID failed` }).end();
+        if (status === '404')
+            return res.status(404).json({ error: `No position associated to positionID` }).end();
+        else if (status === '200')
+            return res.status(200).end();
     } catch (err) {
         res.status(503).json({ error: `Generic error` }).end();
     }
@@ -45,14 +71,15 @@ router.post('/position', async (req, res) => {
 
 //DELETE
 router.delete('/position/:id', async (req, res) => {
-    let id = String(req.params.id);
     try {
-        // 401 Unauthorized (not logged in or wrong permissions)
-        let deletedElelements = await positionService.deletePosition(id);
-        // Check id validation
-        if (deletedElelements === 0) res.status(422).json({ error: `Validation of id failed` }).end();
-        // END OF VALIDATION
-        res.status(204).end();
+        const id = req.params.id;
+        const status = await positionService.deletePosition(id);
+        if (status === '422')
+            return res.status(422).json({ error: `Validation of positionID failed` }).end();
+        if (status === '404')
+            return res.status(404).json({ error: `No position associated to positionID` }).end();
+        else if (status === '204')
+            res.status(204).end();
     } catch (err) {
         res.status(503).json({ error: `Generic error` }).end();
     }

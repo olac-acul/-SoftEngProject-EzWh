@@ -59,7 +59,7 @@ exports.getPositions = () => {
 
 exports.createPosition = (position) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO POSITIONS(POSITION_ID, AISLE_ID, ROW, COL, MAX_WEIGHT, MAX_VOLUME) VALUES(?, ?, ?, ?, ?, ?)';
+        const sql = 'INSERT INTO POSITIONS(POSITION_ID, AISLE_ID, ROW, COL, MAX_WEIGHT, MAX_VOLUME, OCCUPIED_WEIGHT, OCCUPIED_VOLUME) VALUES(?, ?, ?, ?, ?, ?, 0, 0)';
         db.run(sql, [position.positionID, position.aisleID, position.row, position.col, position.maxWeight, position.maxVolume], function (err) {
             if (err) {
                 reject(err);
@@ -70,7 +70,35 @@ exports.createPosition = (position) => {
     });
 }
 
+exports.modifyPosition = (oldPositionID, newPositionID, position) => {
+    return new Promise((resolve, reject) => {
+        const sql = `UPDATE POSITIONS
+                     SET POSITION_ID = ?, AISLE_ID = ?, ROW = ?, COL = ?, MAX_WEIGHT = ?, MAX_VOLUME = ?, OCCUPIED_WEIGHT = ?, OCCUPIED_VOLUME = ? 
+                     WHERE POSITION_ID = ?`;
+        db.run(sql, [newPositionID, position.newAisleID, position.newRow, position.newCol, position.newMaxWeight, position.newMaxVolume, position.newOccupiedWeight, position.newOccupiedVolume, oldPositionID], function (err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(this.changes);
+        });
+    });
+}
 
+exports.changePositionId = (oldPositionId, newAisleID, newRow, newCol, newPositionId) => {
+    return new Promise((resolve, reject) => {
+        const sql = `UPDATE POSITIONS
+                     SET POSITION_ID = ?, AISLE_ID = ?, ROW = ?, COL = ?
+                     WHERE POSITION_ID = ?`;
+        db.run(sql, [newPositionId, newAisleID, newRow, newCol, oldPositionId], function (err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(this.changes);
+        });
+    });
+}
 
 exports.deletePosition = (POSITION_ID) => {
     return new Promise((resolve, reject) => {
