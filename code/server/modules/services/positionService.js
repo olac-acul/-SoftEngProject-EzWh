@@ -5,8 +5,6 @@ class PositionService {
         this.dao = dao;
     }
 
-    validator = require('validator');
-
     getPositions = async () => {
         // 401 Unauthorized (not logged in or wrong permissions)
         const positions = await this.dao.getPositions();

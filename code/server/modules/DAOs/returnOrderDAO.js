@@ -75,7 +75,27 @@ exports.getRestockOrderById = (id) => {
                 return;
             }
             const restockOrder = row
-            resolve(restockOrder);
+            if (restockOrder == undefined)
+                resolve('404');
+            else
+                resolve(restockOrder);
+        });
+    });
+}
+
+exports.getItemById = (SKUId) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM ITEMS WHERE SKU_ID = ?';
+        db.get(sql, [SKUId], (err, row) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            const item = row
+            if (item == undefined)
+                resolve('404');
+            else
+                resolve(item);
         });
     });
 }
@@ -100,8 +120,6 @@ exports.getReturnOrderById = (id) => {
             let returnDate;
             let restockOrderId;
             const products = rows.map(r => {
-                if (r.RETURN_DATE === undefined) resolve('Not Found');
-                else if (r.RESTOCK_ORDER_ID === undefined) resolve('Not Found');
                 returnDate = r.RETURN_DATE;
                 restockOrderId = r.RESTOCK_ORDER_ID;
                 return (
@@ -112,6 +130,8 @@ exports.getReturnOrderById = (id) => {
                         RFID: r.RFID
                     });
             });
+            if (returnDate === undefined) resolve('Not Found');
+            else if (restockOrderId === undefined) resolve('Not Found');
             const returnOrder =
             {
                 returnDate: returnDate,
