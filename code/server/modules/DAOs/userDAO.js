@@ -122,7 +122,8 @@ exports.loginUser = (email, password, type) => {
                 reject(err);
                 return;
             }
-            if (!row) resolve('Not found');
+            if (row == undefined)
+                resolve('Not found');
             else {
                 const user = {
                     id: row.ID,

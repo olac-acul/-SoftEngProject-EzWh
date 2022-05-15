@@ -41,8 +41,8 @@ router.post('/testDescriptor', async (req, res) => {
     try {
         // 401 Unauthorized (not logged in or wrong permissions)
         // Check validation of request body
-        if (!req.body.testDescriptor) return res.status(422).json({ error: `Validation of request body failed` }).end();
-        let testDescriptor = req.body.testDescriptor;
+        if (!req.body) return res.status(422).json({ error: `Validation of request body failed` }).end();
+        let testDescriptor = req.body;
         if (!(testDescriptor && testDescriptor.name && testDescriptor.procedureDescription && testDescriptor.idSKU))
             return res.status(422).json({ error: `Validation of request body failed` }).end();
         // Check number of elements of the request 
