@@ -113,17 +113,16 @@ exports.deletePosition = (POSITION_ID) => {
     });
 }
 
-// }
 
-// deletePositions = () => {
-//     return new Promise((resolve, reject) => {
-//       const sql = 'DELETE FROM POSITIONS';
-//       db.run(sql, [], function (err) {
-//         if (err) {
-//           reject(err);
-//           return;
-//         }
-//         resolve(true);
-//       })
-//     })
-//   };
+deletePositions = () => {
+    return new Promise((resolve, reject) => {
+      const sql = 'DELETE FROM POSITIONS';
+      db.run(sql, [], function (err) {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(true);
+      })
+    })
+  };
