@@ -103,7 +103,7 @@ exports.deleteTestDescriptor = (id) => {
 }
 
 
-deleteTestDescriptors = () => {
+exports.deleteTestDescriptors = () => {
     return new Promise((resolve, reject) => {
       const sql = 'DELETE FROM TEST_DESCRIPTORS';
       db.run(sql, [], function (err) {

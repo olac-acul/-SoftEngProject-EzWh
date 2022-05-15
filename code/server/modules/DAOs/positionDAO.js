@@ -114,7 +114,7 @@ exports.deletePosition = (POSITION_ID) => {
 }
 
 
-deletePositions = () => {
+exports.deletePositions = () => {
     return new Promise((resolve, reject) => {
       const sql = 'DELETE FROM POSITIONS';
       db.run(sql, [], function (err) {

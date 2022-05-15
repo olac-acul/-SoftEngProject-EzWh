@@ -6,7 +6,7 @@ const positionRouter = require('./modules/routers/positionRouter');
 const testDescriptorRouter = require('./modules/routers/testDescriptorRouter');
 const itemRouter = require('./modules/routers/itemRouter');
 const userRouter = require('./modules/routers/userRouter');
-const InternalOrder = require('./modules/internalOrder');
+const internalOrderService = require('./modules/routers/internalOrderRouter');
 const skuItemRouter = require('./modules/routers/SKUItemRouter');
 const SKUAPIs = require('./modules/SKU');
 
@@ -21,6 +21,7 @@ app.use('/api', positionRouter);
 app.use('/api', testDescriptorRouter);
 app.use('/api', itemRouter);
 app.use('/api', userRouter);
+app.use('/api', internalOrderService);
 app.use('/api', skuItemRouter);
 
 
@@ -33,7 +34,6 @@ app.get('/api/hello', (req, res) => {
 });
 
 
-InternalOrder(app);
 SKUAPIs(app);
 
 
