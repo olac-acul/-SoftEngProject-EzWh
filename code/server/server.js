@@ -4,10 +4,10 @@ const express = require('express');
 const returnOrderRouter = require('./modules/routers/returnOrderRouter');
 const positionRouter = require('./modules/routers/positionRouter');
 const testDescriptorRouter = require('./modules/routers/testDescriptorRouter');
-const ItemAPIs = require('./modules/item');
-const UserAPIs = require('./modules/user');
+const itemRouter = require('./modules/routers/itemRouter');
+const userRouter = require('./modules/routers/userRouter');
 const InternalOrder = require('./modules/internalOrder');
-const SKUItemAPIs = require('./modules/SKUItem');
+const skuItemRouter = require('./modules/routers/SKUItemRouter');
 const SKUAPIs = require('./modules/SKU');
 
 
@@ -19,6 +19,9 @@ app.use(express.json());
 app.use('/api', returnOrderRouter);
 app.use('/api', positionRouter);
 app.use('/api', testDescriptorRouter);
+app.use('/api', itemRouter);
+app.use('/api', userRouter);
+app.use('/api', skuItemRouter);
 
 
 //GET /api/test
@@ -30,10 +33,7 @@ app.get('/api/hello', (req, res) => {
 });
 
 
-ItemAPIs(app);
-UserAPIs(app);
 InternalOrder(app);
-SKUItemAPIs(app);
 SKUAPIs(app);
 
 
