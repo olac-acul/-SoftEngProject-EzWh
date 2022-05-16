@@ -108,6 +108,36 @@ class SKUDAO{
         });
     }
 
+    modifySKU(id, newDescription, newWeight, newVolume, newPrice, newAvailableQuantity){
+        return new Promise((resolve, reject) => {
+            const sql = `UPDATE SKU
+                             SET DESCRIPTION = ?, WEIGHT = ?, VOLUME = ?, PRICE = ?, AVAILABLE_QUANTITY = ?
+                             WHERE ID = ?`;
+            db.run(sql, [newDescription, newWeight, newVolume, newPrice, newAvailableQuantity, id], function (err) {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(this.changes);
+            });
+        });
+    }
+
+    modifySKUposition(id, newPosition){
+        return new Promise((resolve, reject) => {
+            const sql = `UPDATE SKU
+                             SET POSITION = ?
+                             WHERE ID = ?`;
+            db.run(sql, [newPosition, id], function (err) {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(this.changes);
+            });
+        });
+    }
+
     deleteSKU(ID) {
         return new Promise((resolve, reject) => {
             const sql = 'DELETE FROM SKU WHERE ID = ?';

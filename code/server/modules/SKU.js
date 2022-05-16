@@ -1,7 +1,9 @@
 function SKUAPIs(app){
     const SKUDAO = require('./DAOs/SKUDAO');
+    // const PositionDAO = require('./DAOs/positionDAO');
 
     const skuDAO = new SKUDAO();
+    // const positionDAO = new PositionDAO();
 
     // GET
     app.get('/api/skus', async (req, res) => {
@@ -43,6 +45,45 @@ function SKUAPIs(app){
             res.status(503).json({ error: `Generic error` }).end();
         }
     });
+
+    // PUT
+    // app.put('/api/sku/:id', async (req, res) => {
+    //     try {
+    //         const id = req.params.id;
+    //         const sku = skuDAO.getSKU(id);
+    //         const pos = sku.position;
+    //         const newDescription = req.body.newDescription;
+    //         const newWeight = req.body.newWeight;
+    //         const newVolume = req.body.newVolume;
+    //         const newPrice = req.body.newPrice;
+    //         const newAvailableQuantity = req.body.newAvailableQuantity;
+    //         const newOccupiedWeight = newAvailableQuantity * newWeight;
+    //         const newOccupiedVolume = newAvailableQuantity * newVolume;
+    //         if (pos) updatedPosition = await positionDAO.updatePosition(pos, newOccupiedWeight, newOccupiedVolume);
+    //         updatedElements = await skuDAO.modifySKU(id, newDescription, newWeight, newVolume, newPrice, newAvailableQuantity);
+    //         if (updatedElements === 0) return res.status(404).json({ error: `No SKU associated to ID` }).end();
+    //         return res.status(200).end();
+    //     } catch (err) {
+    //         res.status(503).json({ error: `Generic error` }).end();
+    //     }
+    // });
+
+    // app.put('/api/sku/:id/position', async (req, res) => {
+    //     try {
+    //         const id = req.params.id;
+    //         const sku = skuDAO.getSKU(id);
+    //         const newPos = req.body.position;
+    //         const newAvailableQuantity = sku.availableQuantity;
+    //         const newOccupiedWeight = newAvailableQuantity * newWeight;
+    //         const newOccupiedVolume = newAvailableQuantity * newVolume;
+    //         updatedElements = await skuDAO.modifySKUposition(id, newPos);
+    //         updatedPosition = await positionDAO.updatePosition(newPos, newOccupiedWeight, newOccupiedVolume);
+    //         if (updatedElements === 0) return res.status(404).json({ error: `No SKU associated to ID` }).end();
+    //         return res.status(200).end();
+    //     } catch (err) {
+    //         res.status(503).json({ error: `Generic error` }).end();
+    //     }
+    // });
 
     //DELETE
     app.delete('/api/skus/:id', async (req, res) => {

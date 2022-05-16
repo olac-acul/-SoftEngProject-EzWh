@@ -9,7 +9,7 @@ const userRouter = require('./modules/routers/userRouter');
 const internalOrderService = require('./modules/routers/internalOrderRouter');
 const skuItemRouter = require('./modules/routers/SKUItemRouter');
 const SKUAPIs = require('./modules/SKU');
-
+const TestResultAPIs = require('./modules/testResult');
 
 // init express
 const app = new express();
@@ -35,6 +35,7 @@ app.get('/api/hello', (req, res) => {
 
 
 SKUAPIs(app);
+TestResultAPIs(app);
 
 
 
