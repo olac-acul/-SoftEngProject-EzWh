@@ -62,10 +62,11 @@ exports.getItemById = (id) => {
                 reject(err);
                 return;
             }
-            if (!row) resolve('Not Found');
+            if (row == undefined)
+                resolve('404');
             else {
                 const item = {
-                    id: i.ID,
+                    id: row.ID,
                     description: row.DESCRIPTION,
                     price: row.PRICE,
                     SKUId: row.SKU_ID,
@@ -73,6 +74,38 @@ exports.getItemById = (id) => {
                 };
                 resolve(item);
             }
+        });
+    });
+}
+
+exports.validateSKUId = (SKUId, supplierId) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM ITEMS WHERE ITEMS.SKU_ID = ? AND ITEMS.SUPPLIER_ID = ?';
+        db.get(sql, [SKUId, supplierId], (err, row) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            if (row == undefined)
+                resolve(true);
+            else 
+                resolve(false);
+        });
+    });
+}
+
+exports.searchSKU = (id) => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM SKU WHERE ID = ?`;
+        db.get(sql, [id], (err, row) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            if (row == undefined)
+                resolve(false);
+            else 
+                resolve(true);
         });
     });
 }
@@ -90,7 +123,20 @@ exports.createItem = (item) => {
     });
 }
 
-
+exports.modifyItem = (id, newStatus) => {
+    return new Promise((resolve, reject) => {
+        const sql = `UPDATE ITEMS
+                     SET DESCRIPTION = ?, PRICE = ?
+                     WHERE ID = ?`;
+        db.run(sql, [newStatus.newDescription, newStatus.newPrice, id], function (err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(this.changes);
+        });
+    });
+}
 
 exports.deleteItem = (id) => {
     return new Promise((resolve, reject) => {
