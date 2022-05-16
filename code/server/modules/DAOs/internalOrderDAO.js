@@ -5,7 +5,6 @@ const db = new sqlite.Database('EzWh', (err) => {
     if (err) throw err;
 });
 
-
 exports.dropTable = () => {
     return new Promise((resolve, reject) => {
         const sql = 'DROP TABLE IF EXIST INTERNAL_ORDERS';
