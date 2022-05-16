@@ -70,7 +70,10 @@ exports.getAllAvailableSKUItems = (id) => {
                     dateOfStock: r.DATE_OF_STOCK
                 }
             ));
-            resolve(SKUItems);
+            if (SKUItems.length === 0)
+                resolve('404');
+            else
+                resolve(SKUItems);
         });
     });
 }
@@ -83,13 +86,33 @@ exports.getSKUItem = (RFID) => {
                 reject(err);
                 return;
             }
-            const SKUItem = {
-                RFID: row.RFID,
-                SKUId: row.SKU_ID,
-                available: row.AVAILABLE,
-                dateOfStock: row.DATE_OF_STOCK
-            };
-            resolve(SKUItem);
+            if (row == undefined)
+                resolve('404');
+            else {
+                const SKUItem = {
+                    RFID: row.RFID,
+                    SKUId: row.SKU_ID,
+                    available: row.AVAILABLE,
+                    dateOfStock: row.DATE_OF_STOCK
+                };
+                resolve(SKUItem);
+            }
+        });
+    });
+}
+
+exports.searchSKU = (id) => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM SKU WHERE ID = ?`;
+        db.get(sql, [id], (err, row) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            if (row == undefined)
+                resolve(false);
+            else 
+                resolve(true);
         });
     });
 }
@@ -107,12 +130,12 @@ exports.addSKUItem = (SKUItem) => {
     });
 }
 
-exports.modifySKUItem = (oldRFID, newRFID, newAvailable, newDateOfStock) => {
+exports.modifySKUItem = (oldRFID, newStatus) => {
     return new Promise((resolve, reject) => {
         const sql = `UPDATE SKU_ITEMS
                          SET RFID = ?, AVAILABLE = ?, DATE_OF_STOCK = ?
                          WHERE RFID = ?`;
-        db.run(sql, [newRFID, newAvailable, newDateOfStock, oldRFID], function (err) {
+        db.run(sql, [newStatus.newRFID, newStatus.newAvailable, newStatus.newDateOfStock, oldRFID], function (err) {
             if (err) {
                 reject(err);
                 return;

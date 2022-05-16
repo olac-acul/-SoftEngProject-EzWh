@@ -49,7 +49,7 @@ class ReturnOrderService {
             products: returnOrder.products,
             restockOrderId: returnOrder.restockOrderId
         };
-        if (!dayjs(validatedReturnOrder.returnDate).isValid())
+        if (!dayjs(validatedReturnOrder.returnDate).isValid() || (validatedReturnOrder.returnDate.length !== 10 && validatedReturnOrder.returnDate.length !== 16))
             return '422';
         if (validatedReturnOrder.products.length == 0)
             return '422';

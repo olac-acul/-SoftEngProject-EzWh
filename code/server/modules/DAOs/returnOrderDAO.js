@@ -74,7 +74,7 @@ exports.getRestockOrderById = (id) => {
                 reject(err);
                 return;
             }
-            const restockOrder = row
+            const restockOrder = row;
             if (restockOrder == undefined)
                 resolve('404');
             else
@@ -91,7 +91,7 @@ exports.getItemById = (SKUId) => {
                 reject(err);
                 return;
             }
-            const item = row
+            const item = row;
             if (item == undefined)
                 resolve('404');
             else

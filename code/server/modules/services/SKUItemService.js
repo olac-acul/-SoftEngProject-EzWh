@@ -1,3 +1,5 @@
+const dayjs = require('dayjs');
+dayjs().format();
 class SKUItemService {
     dao;
 
@@ -13,33 +15,92 @@ class SKUItemService {
 
     getAllAvailableSKUItems = async (id) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        const SKUItems = await this.dao.getAllAvailableSKUItems(id);
-        return SKUItems;
+        if (isNaN(id))
+            return '422';
+        if (Number(id) <= 0)
+            return '422';
+        const validatedId = Number(id);
+        const SKUItems = await this.dao.getAllAvailableSKUItems(validatedId);
+        if (SKUItems === '404')
+            return '404';
+        else
+            return SKUItems;
     }
 
     getSKUItem = async (RFID) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        const SKUItem = await this.dao.getSKUItem(RFID);
-        return SKUItem;
+        if (isNaN(RFID))
+            return '422';
+        if (RFID.length !== 32)
+            return '422';
+        const validatedRFID = RFID;
+        const SKUItem = await this.dao.getSKUItem(validatedRFID);
+        if (SKUItem === '404')
+            return '404';
+        else
+            return SKUItem;
     }
 
     addSKUItem = async (SKUItem) => {
         // 401 Unauthorized (not logged in or wrong permissions)
+        if (Object.keys(SKUItem).length !== 3)
+            return '422';
+        if (SKUItem.RFID === undefined || SKUItem.SKUId === undefined || SKUItem.DateOfStock === undefined)
+            return '422';
+        if (isNaN(SKUItem.RFID) || SKUItem.RFID.length !== 32)
+            return '422';
+        if (typeof SKUItem.SKUId != "number" || SKUItem.SKUId <= 0)
+            return '422';
+        if (SKUItem.DateOfStock !== null) {
+            if (!dayjs(SKUItem.DateOfStock).isValid() || (SKUItem.DateOfStock.length !== 10 && SKUItem.DateOfStock.length !== 16))
+                return '422';
+        }
+        const validatedSKUItem = {
+            RFID: SKUItem.RFID,
+            SKUId: SKUItem.SKUId,
+            DateOfStock: SKUItem.DateOfStock
+        };
+        const status = await this.dao.searchSKU(validatedSKUItem.SKUId);
+        if (status === false)
+            return '404';
         await this.dao.newSKUItemTable();
-        const status = await this.dao.addSKUItem(SKUItem);
-        return status;
+        await this.dao.addSKUItem(validatedSKUItem);
+        return;
     }
 
-    modifySKUItem = async (oldRFID, newRFID, newAvailable, newDateOfStock) => {
+    modifySKUItem = async (oldRFID, newStatus) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        const updatedElements = await this.dao.modifySKUItem(oldRFID, newRFID, newAvailable, newDateOfStock);
+        if (isNaN(oldRFID) || oldRFID.length !== 32)
+            return '422';
+        if (Object.keys(newStatus).length !== 3)
+            return '422';
+        if (newStatus.newRFID === undefined || newStatus.newAvailable === undefined || newStatus.newDateOfStock === undefined)
+            return '422';
+        if (isNaN(newStatus.newRFID) || newStatus.newRFID.length !== 32)
+            return '422';
+        if (newStatus.newAvailable !== 0 && newStatus.newAvailable !== 1)
+            return '422';
+        if (newStatus.newDateOfStock !== null) {
+            if (!dayjs(newStatus.newDateOfStock).isValid() || (newStatus.newDateOfStock.length !== 10 && newStatus.newDateOfStock.length !== 16))
+                return '422';
+        }
+        const validatedNewStatus = {
+            newRFID: newStatus.newRFID,
+            newAvailable: newStatus.newAvailable,
+            newDateOfStock: newStatus.newDateOfStock
+        };
+        const updatedElements = await this.dao.modifySKUItem(oldRFID, validatedNewStatus);
         return updatedElements;
     }
 
     deleteSKUItem = async (RFID) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        const deletedSKUItems = await this.dao.deleteSKUItem(RFID);
-        return deletedSKUItems;
+        if (isNaN(RFID) || RFID.length !== 32)
+            return '422';
+        const validatedRFID = RFID;
+        const deletedSKUItems = await this.dao.deleteSKUItem(validatedRFID);
+        if (deletedSKUItems === 0)
+            return '422';
     }
 }
 
