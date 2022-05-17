@@ -7,11 +7,9 @@ const testDescriptorService = new TestDescriptorService(db);
 
 const router = express.Router();
 
-
 //GET
 router.get('/testDescriptors', async (req, res) => {
     try {
-        // 401 Unauthorized (not logged in or wrong permissions)
         const testDescriptors = await testDescriptorService.getTestDescriptors();
         res.status(200).json(testDescriptors);
     } catch (err) {
@@ -19,17 +17,15 @@ router.get('/testDescriptors', async (req, res) => {
     }
 });
 
-
 router.get('/testDescriptors/:id', async (req, res) => {
-    let id = Number(req.params.id);
     try {
-        // 401 Unauthorized (not logged in or wrong permissions)
-        const testDescriptor = await testDescriptorService.getTestDescriptorById(id);
-        // Check validation of id
-        if (testDescriptor === 'Not Found') res.status(404).json({ error: `No test descriptor associated to id` }).end();
-        // 422 Unprocessable Entity (validation of id failed)
-        // END OF VALIDATION
-        res.status(200).json(testDescriptor);
+        const testDescriptor = await testDescriptorService.getTestDescriptorById(req.params.id);
+        if (testDescriptor === '422')
+            return res.status(422).json({ error: `validation of id failed` }).end();
+        if (testDescriptor === '404')
+            return res.status(404).json({ error: `no test descriptor associated id` }).end();
+        else
+            res.status(200).json(testDescriptor);
     } catch (err) {
         res.status(500).json({ error: `Generic error` }).end();
     }
@@ -39,19 +35,29 @@ router.get('/testDescriptors/:id', async (req, res) => {
 //POST
 router.post('/testDescriptor', async (req, res) => {
     try {
-        // 401 Unauthorized (not logged in or wrong permissions)
-        // Check validation of request body
-        if (!req.body) return res.status(422).json({ error: `Validation of request body failed` }).end();
-        let testDescriptor = req.body;
-        if (!(testDescriptor && testDescriptor.name && testDescriptor.procedureDescription && testDescriptor.idSKU))
-            return res.status(422).json({ error: `Validation of request body failed` }).end();
-        // Check number of elements of the request 
-        if (Object.entries(testDescriptor).length !== 3) return res.status(422).json({ error: `Validation of request body failed` }).end();
-        // Check positionID type
-        // END OF VALIDATION
-        await testDescriptorService.createTestDescriptor(testDescriptor);
-        return res.status(201).end();
+        const status = await testDescriptorService.createTestDescriptor(req.body);
+        if (status === '422')
+            return res.status(422).json({ error: `validation of request body failed` }).end();
+        if (status === '404')
+            return res.status(404).json({ error: `no sku associated idSKU` }).end();
+        else
+            return res.status(201).end();
+    } catch (err) {
+        res.status(503).json({ error: `Generic error` }).end();
+    }
+});
 
+
+// PUT
+router.put('/testDescriptor/:id', async (req, res) => {
+    try {
+        const status = await testDescriptorService.modifyTestDescriptor(req.params.id, req.body);
+        if (status === '422')
+            res.status(422).json({ error: `validation of request body or of id failed` }).end();
+        else if (status === '404')
+            res.status(404).json({ error: `no test descriptor associated id or no sku associated to IDSku` }).end();
+        else
+            return res.status(200).end();
     } catch (err) {
         res.status(503).json({ error: `Generic error` }).end();
     }
@@ -60,14 +66,12 @@ router.post('/testDescriptor', async (req, res) => {
 
 //DELETE
 router.delete('/testDescriptor/:id', async (req, res) => {
-    let id = Number(req.params.id);
     try {
-        // 401 Unauthorized (not logged in or wrong permissions)
-        let deletedElelements = await testDescriptorService.deleteTestDescriptor(id);
-        // Check id validation
-        if (deletedElelements === 0) res.status(422).json({ error: `Validation of id failed` }).end();
-        // END OF VALIDATION
-        res.status(204).end();
+        const status = await testDescriptorService.deleteTestDescriptor(req.params.id);
+        if (status === '422')
+            res.status(422).json({ error: `validation of id failed` }).end();
+        else
+            res.status(204).end();
     } catch (err) {
         res.status(503).json({ error: `Generic error` }).end();
     }

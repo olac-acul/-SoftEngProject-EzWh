@@ -79,7 +79,7 @@ class PositionService {
         // END OF VALIDATION
         const deletedElements = await this.dao.deletePosition(id);
         if (deletedElements === 0)
-            return '404';
+            return '422';
         else
             return '204';
     }

@@ -72,10 +72,6 @@ router.delete('/returnOrder/:id', async (req, res) => {
         const status = await returnOrderService.deleteReturnOrder(req.params.id);
         if (status === '422')
             return res.status(422).json({ error: `Validation of ID failed` }).end();
-        else if (status === '404')
-            return res.status(404).json({ error: `No return order associated to id` }).end()
-        // END OF VALIDATION
-        await returnOrderService.deleteReturnOrder_join_Product(req.params.id);
         res.status(204).end();
     } catch (err) {
         res.status(503).json({ error: `Generic error` }).end();

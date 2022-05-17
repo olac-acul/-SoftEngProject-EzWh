@@ -76,13 +76,8 @@ class ReturnOrderService {
         const deletedElements = await this.dao.deleteReturnOrder(validatedId);
         if (deletedElements === 0)
             return '422';
-        else
-            return '204';
-    }
-
-    deleteReturnOrder_join_Product = async (id) => {
-        const validatedId = Number(id);
         await this.dao.deleteReturnOrder_join_Product(validatedId);
+        return '204';
     }
 }
 

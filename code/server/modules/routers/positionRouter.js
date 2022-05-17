@@ -76,8 +76,6 @@ router.delete('/position/:id', async (req, res) => {
         const status = await positionService.deletePosition(id);
         if (status === '422')
             return res.status(422).json({ error: `Validation of positionID failed` }).end();
-        if (status === '404')
-            return res.status(404).json({ error: `No position associated to positionID` }).end();
         else if (status === '204')
             res.status(204).end();
     } catch (err) {
