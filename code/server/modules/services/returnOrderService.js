@@ -9,21 +9,29 @@ class ReturnOrderService {
 
     getReturnOrders = async () => {
         // 401 Unauthorized (not logged in or wrong permissions)
+        const returnOrders = [];
         const orders = await this.dao.getReturnOrders();
-        return orders;
+        for (let i of orders) {
+            let returnOrder = await this.dao.getReturnOrderById(i.id);
+            returnOrders.push(returnOrder);
+        }
+        return returnOrders;
     }
 
     getReturnOrderById = async (id) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        if (isNaN(id))
+        if (isNaN(id) || Number(id) <= 0)
             return '422';
         const validatedId = Number(id);
         const returnOrder = await this.dao.getReturnOrderById(validatedId);
         if (returnOrder === 'Not Found')
             return '404';
-        // END OF VALIDATION
-        else
-            return returnOrder;
+        const filterId = {
+            returnDate: returnOrder.returnDate,
+            products: returnOrder.products,
+            restockOrderId: returnOrder.restockOrderId
+        }
+        return filterId;
     }
 
     getRestockOrderById = async (id) => {
@@ -56,6 +64,16 @@ class ReturnOrderService {
         for (let i of validatedReturnOrder.products) {
             if (Object.keys(i).length !== 4)
                 return '422';
+            if (i.SKUId === undefined || i.description === undefined || i.price === undefined || i.RFID === undefined)
+                return '422';
+            if (typeof i.SKUId != "number" || i.SKUId <= 0)
+                return '422';
+            if (typeof i.description != "string")
+                return '422';
+            if (typeof i.price != "number" || i.price <= 0)
+                return '422';
+            if (isNaN(i.RFID) || i.RFID.length !== 32)
+                return '422';
         }
         // END OF VALIDATION
         await this.dao.newReturnOrderTable();
@@ -70,7 +88,7 @@ class ReturnOrderService {
 
     deleteReturnOrder = async (id) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        if (isNaN(id))
+        if (isNaN(id) || Number(id) <= 0)
             return '422';
         const validatedId = Number(id);
         const deletedElements = await this.dao.deleteReturnOrder(validatedId);

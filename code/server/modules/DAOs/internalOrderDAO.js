@@ -18,7 +18,7 @@ exports.dropTable = () => {
     });
 }
 
-exports.newTable = () => {
+exports.newInternalOrdersTable = () => {
     return new Promise((resolve, reject) => {
         const sql = `CREATE TABLE IF NOT EXISTS INTERNAL_ORDERS(ID INTEGER PRIMARY KEY AUTOINCREMENT, CUSTOMER_ID INTEGER, STATE TEXT, ISSUE_DATE DATETIME)`;
         db.run(sql, function (err) {
@@ -31,126 +31,10 @@ exports.newTable = () => {
     });
 }
 
-exports.getInternalOrder = () => {
+exports.newInternalOrder_join_productTable = () => {
     return new Promise((resolve, reject) => {
-        // duoble join, 3 tables to get the list of SKU
-        const sql = `SELECT IO.ISSUE_DATE ISSUE_DATE, IO.ID ID, IO.STATE STATE, IO.CUSTOMER_ID CUSTOMER_ID, PR.DESCRIPTION DESCRIPTION, PR.PRICE PRICE, PR.SKU_ID SKU_ID
-            FROM INTERNAL_ORDERS AS IO, 
-            (SELECT I.SKU_ID SKU_ID, I.DESCRIPTION DESCRIPTION, I.PRICE PRICE, S.INTERNAL_ORDER_ID INTERNAL_ORDER_ID
-            FROM ITEMS I, INTERNAL_ORDER_PRODUCTS S
-            WHERE I.SKU_ID = S.SKU_ID) AS PR
-            WHERE IO.ID = PR.INTERNAL_ORDER_ID`;
-        db.all(sql, [], (err, rows) => {
-            if (err) {
-                reject(err);
-                return;
-            }
-            const internalOrders = [];
-            let products = [];
-            let id = 0;
-            let issueDate;
-            let state;
-            let customerId;
-            for (let r in rows) {
-                if (id === 0) {
-                    id = rows[r].ID;
-                    issueDate = rows[r].ISSUE_DATE;
-                    customerId = rows[r].CUSTOMER_ID;
-                    state = rows[r].STATE;
-                    products.push({
-                        SKUId: rows[r].SKU_ID,
-                        description: rows[r].DESCRIPTION,
-                        price: rows[r].PRICE
-                    });
-                }
-                else if (id === rows[r].ID) {
-                    products.push({
-                        SKUId: rows[r].SKU_ID,
-                        description: rows[r].DESCRIPTION,
-                        price: rows[r].PRICE
-                    });
-                }
-                else if (id !== rows[r].ID) {
-                    internalOrders.push({
-                        id: id,
-                        issueDate: issueDate,
-                        state: state,
-                        products: products,
-                        customerId: customerId
-                    });
-                    products = [];
-                    id = rows[r].ID;
-                    issueDate = rows[r].ISSUE_DATE;
-                    customerId = rows[r].CUSTOMER_ID;
-                    state = rows[r].STATE;
-                    products.push({
-                        SKUId: rows[r].SKU_ID,
-                        description: rows[r].DESCRIPTION,
-                        price: rows[r].PRICE
-                    });
-                }
-            }
-            internalOrders.push({
-                id: id,
-                issueDate: issueDate,
-                state: state,
-                products: products,
-                customerId: customerId
-            });
-
-            resolve(internalOrders);
-        });
-    });
-}
-
-exports.getInternalOrderById = (id) => {
-    return new Promise((resolve, reject) => {
-        // duoble join, 3 tables to get the list of SKU
-        const sql = `SELECT IO.ISSUE_DATE ISSUE_DATE, IO.ID ID, IO.STATE STATE, IO.CUSTOMER_ID CUSTOMER_ID, PR.DESCRIPTION DESCRIPTION, PR.PRICE PRICE, PR.SKU_ID SKU_ID
-            FROM INTERNAL_ORDERS AS IO, 
-            (SELECT I.SKU_ID SKU_ID, I.DESCRIPTION DESCRIPTION, I.PRICE PRICE, S.INTERNAL_ORDER_ID INTERNAL_ORDER_ID
-            FROM ITEMS I, INTERNAL_ORDER_PRODUCTS S
-            WHERE I.SKU_ID = S.SKU_ID) AS PR
-            WHERE IO.ID = PR.INTERNAL_ORDER_ID AND IO.ID = ?`;
-        db.all(sql, [id], (err, rows) => {
-            if (err) {
-                reject(err);
-                return;
-            }
-            let products = [];
-            let id;
-            let issueDate;
-            let state;
-            let customerId;
-            for (let r in rows) {
-                id = rows[r].ID;
-                issueDate = rows[r].ISSUE_DATE;
-                state = rows[r].STATE;
-                customerId = rows[r].CUSTOMER_ID;
-                products.push({
-                    SKUId: rows[r].SKU_ID,
-                    description: rows[r].DESCRIPTION,
-                    price: rows[r].PRICE
-                });
-            }
-            const internalOrder =
-            {
-                id: id,
-                issueDate: issueDate,
-                state: state,
-                products: products,
-                customerId: customerId
-            };
-
-            resolve(internalOrder);
-        });
-    });
-}
-
-exports.createInternalOrder = (internalOrder) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO INTERNAL_ORDERS(STATE, ISSUE_DATE, CUSTOMER_ID) VALUES(? ,?, ?)';
-        db.run(sql, [internalOrder.state, internalOrder.issueDate, internalOrder.customerId], (err) => {
+        const sql = `CREATE TABLE IF NOT EXISTS INTERNAL_ORDER_PRODUCTS(INTERNAL_ORDER_ID INTEGER NOT NULL, SKU_ID INTEGER NOT NULL, QUANTITY INTEGER, PRIMARY KEY(INTERNAL_ORDER_ID, SKU_ID))`;
+        db.run(sql, function (err) {
             if (err) {
                 reject(err);
                 return;
@@ -160,11 +44,164 @@ exports.createInternalOrder = (internalOrder) => {
     });
 }
 
-exports.createJoinProduct = (joinIOP) => {
+exports.newSKUItemTable = () => {
+    return new Promise((resolve, reject) => {
+        const sql = `CREATE TABLE IF NOT EXISTS SKU_ITEMS(RFID VARCHAR(32) PRIMARY KEY, 
+            SKU_ID INTEGER, AVAILABLE BOOL, DATE_OF_STOCK DATETIME)`;
+        db.run(sql, function (err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(this.lastID);
+        });
+    });
+}
+
+exports.getInternalOrders = () => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM INTERNAL_ORDERS';
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            const returnOrders = rows.map((r) => (
+                {
+                    id: r.ID,
+                    issueDate: r.ISSUE_DATE,
+                    state: r.STATE,
+                    customerId: r.CUSTOMER_ID
+                }
+            ));
+            resolve(returnOrders);
+        });
+    });
+}
+
+exports.getInternalOrderById = (id) => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM INTERNAL_ORDERS IO WHERE IO.ID = ?`
+        db.get(sql, [id], (err, row) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            if (row == undefined)
+                resolve('404');
+            else {
+                const preInternalOrder = {
+                    id: row.ID,
+                    issueDate: row.ISSUE_DATE,
+                    state: row.STATE,
+                    customerId: row.CUSTOMER_ID
+                }
+                if (preInternalOrder.state === 'COMPLETED') {
+                    const completedSql = `SELECT S.ID SKU_ID, S.DESCRIPTION, S.PRICE, SI.RFID
+                                            FROM SKU S, SKU_ITEMS SI, INTERNAL_ORDER_PRODUCTS P
+                                            WHERE P.INTERNAL_ORDER_ID = ? AND P.SKU_ID = S.ID AND S.ID = SI.SKU_ID`;
+                    db.all(completedSql, [id], (err, rows) => {
+                        if (err) {
+                            reject(err);
+                            return;
+                        }
+                        const products = rows.map(r => (
+                            {
+                                SKUId: r.SKU_ID,
+                                description: r.DESCRIPTION,
+                                price: r.PRICE,
+                                RFID: r.RFID
+                            }
+                        ));
+                        const internalOrder = {
+                            id: preInternalOrder.id,
+                            issueDate: preInternalOrder.issueDate,
+                            state: preInternalOrder.state,
+                            products: products,
+                            customerId: preInternalOrder.customerId
+                        }
+                        resolve(internalOrder);
+                    });
+                }
+                else {
+                    const notCompletedSql = `SELECT S.ID SKU_ID, S.DESCRIPTION, S.PRICE, P.QUANTITY
+                                         FROM SKU S,
+                                         (SELECT SKU_ID, QUANTITY
+                                            FROM INTERNAL_ORDER_PRODUCTS PO
+                                            WHERE PO.INTERNAL_ORDER_ID = ?) P
+                                         WHERE S.ID = P.SKU_ID`;
+                    db.all(notCompletedSql, [id], (err, rows) => {
+                        if (err) {
+                            reject(err);
+                            return;
+                        }
+                        const products = rows.map(r => (
+                            {
+                                SKUId: r.SKU_ID,
+                                description: r.DESCRIPTION,
+                                price: r.PRICE,
+                                qty: r.QUANTITY
+                            }
+                        ));
+                        const internalOrder = {
+                            id: preInternalOrder.id,
+                            issueDate: preInternalOrder.issueDate,
+                            state: preInternalOrder.state,
+                            products: products,
+                            customerId: preInternalOrder.customerId
+                        }
+                        resolve(internalOrder);
+                    });
+                }
+            }
+        });
+    });
+}
+
+exports.createInternalOrder = (internalOrder) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO INTERNAL_ORDERS(STATE, ISSUE_DATE, CUSTOMER_ID) VALUES("ISSUED" ,?, ?)';
+        db.run(sql, [internalOrder.issueDate, internalOrder.customerId], function (err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(this.lastID);
+        });
+    });
+}
+
+exports.createInternalOrder_join_Product = (id, SKUId, qty) => {
     return new Promise((resolve, reject) => {
         const sql = `INSERT INTO INTERNAL_ORDER_PRODUCTS(INTERNAL_ORDER_ID, SKU_ID, QUANTITY) VALUES(?, ?, ?)`;
+        db.run(sql, [id, SKUId, qty], function (err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(this.lastID);
+        });
+    });
+}
 
-        db.run(sql, [joinIOP.internalOrder_id, joinIOP.skuId, joinIOP.quantity], (err) => {
+exports.changeStateInternalOrder = (id, newState) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'UPDATE INTERNAL_ORDERS SET STATE = ? WHERE ID = ?'
+        db.run(sql, [newState, id], function (err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(this.changes);
+
+        });
+    });
+}
+
+exports.addSKUItem = (SKUId, RFID) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO SKU_ITEMS(RFID, SKU_ID, AVAILABLE) VALUES(?, ?, 1)';
+        db.run(sql, [RFID, SKUId], function (err) {
             if (err) {
                 reject(err);
                 return;
@@ -177,7 +214,7 @@ exports.createJoinProduct = (joinIOP) => {
 exports.deleteInternalOrder = (id) => {
     return new Promise((resolve, reject) => {
         const sql = 'DELETE FROM INTERNAL_ORDERS WHERE INTERNAL_ORDERS.ID = ?';
-        db.run(sql, [id], (err) => {
+        db.run(sql, [id], function (err) {
             if (err) {
                 reject(err);
                 return;
@@ -187,44 +224,15 @@ exports.deleteInternalOrder = (id) => {
     });
 }
 
-exports.deleteJoinProduct = (id) => {
-    return new Promise((resole, reject) => {
+exports.deleteInternalOrder_join_Product = (id) => {
+    return new Promise((resolve, reject) => {
         const sql = `DELETE FROM INTERNAL_ORDER_PRODUCTS WHERE INTERNAL_ORDER_PRODUCTS.INTERNAL_ORDER_ID = ?`
-        db.run(sql, [id], (err) => {
+        db.run(sql, [id], function (err) {
             if (err) {
                 reject(err);
                 return;
             }
             resolve(this.changes);
         })
-    });
-}
-
-exports.changeStateInternalOrder = (id, newState) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'UPDATE INTERNAL_ORDERS SET INTERNAL_ORDERS.STATE = ? WHERE INTERNAL_ORDERS.ID = ?'
-        db.run(sql, [newState, id], (err) => {
-            if (err) {
-                reject(err);
-                return;
-            }
-            resolve(this.changes);
-
-        });
-    });
-}
-
-exports.addSkuToInternalOrder = (id, skuList) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO INT_ORD_SKU(ORD_ID, RFID) VALUES(?, ?)';
-        skuList.forEach(sku => {
-            db.run(sql, [id, sku.rfid], (err) => {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                resolve(this.lastID);
-            });
-        });
     });
 }

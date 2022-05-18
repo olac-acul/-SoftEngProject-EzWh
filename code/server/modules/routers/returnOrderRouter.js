@@ -11,12 +11,7 @@ const router = express.Router();
 //GET
 router.get('/returnOrders', async (req, res) => {
     try {
-        const returnOrders = [];
-        const orders = await returnOrderService.getReturnOrders();
-        for (let i of orders) {
-            let returnOrder = await returnOrderService.getReturnOrderById(i.id);
-            returnOrders.push(returnOrder);
-        }
+        const returnOrders = await returnOrderService.getReturnOrders();
         res.status(200).json(returnOrders);
     } catch (err) {
         res.status(500).json({ error: `Generic error` }).end();
@@ -25,12 +20,11 @@ router.get('/returnOrders', async (req, res) => {
 
 router.get('/returnOrders/:id', async (req, res) => {
     try {
-        const id = req.params.id;
-        const status = await returnOrderService.getReturnOrderById(id);
+        const status = await returnOrderService.getReturnOrderById(req.params.id);
         if (status === '422')
-            return res.status(422).json({ error: `Validation of ID failed` }).end();
+            return res.status(422).json({ error: `validation of id failed` }).end();
         else if (status === '404')
-            return res.status(422).json({ error: `No return order associated to id` }).end();
+            return res.status(422).json({ error: `no return order associated to id` }).end();
         else
             res.status(200).json(status);
     } catch (err) {

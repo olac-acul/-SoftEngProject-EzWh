@@ -102,17 +102,10 @@ exports.getItemById = (SKUId) => {
 
 exports.getReturnOrderById = (id) => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT RO.RETURN_DATE RETURN_DATE, PR.SKU_ID, PR.DESCRIPTION, PR.PRICE, PR.RFID RFID, RO.RESTOCK_ORDER_ID RESTOCK_ORDER_ID
-                         FROM RETURN_ORDERS RO, 
-                         (SELECT I.SKU_ID SKU_ID, I.DESCRIPTION DESCRIPTION, I.PRICE PRICE, S.RFID RFID
-                          FROM ITEMS I, SKU_ITEMS S
-                          WHERE I.SKU_ID = S.SKU_ID
-                          AND I.SKU_ID IN
-                          (SELECT SKU_ID
-                           FROM RETURN_ORDERS_PRODUCTS AS P 
-                           WHERE P.RETURN_ORDER_ID = ?)) PR
-                         WHERE RO.ID = ?`
-        db.all(sql, [id, id], (err, rows) => {
+        const sql = `SELECT RO.RETURN_DATE, RO.RESTOCK_ORDER_ID, P.SKU_ID, S.DESCRIPTION, S.PRICE, SI.RFID
+                     FROM RETURN_ORDERS RO, RETURN_ORDERS_PRODUCTS P, SKU S, SKU_ITEMS SI
+                     WHERE RO.ID = ? AND RO.ID = P.RETURN_ORDER_ID AND P.SKU_ID = S.ID AND P.SKU_ID = SI.SKU_ID`;
+        db.all(sql, [id], (err, rows) => {
             if (err) {
                 reject(err);
                 return;
@@ -134,6 +127,7 @@ exports.getReturnOrderById = (id) => {
             else if (restockOrderId === undefined) resolve('Not Found');
             const returnOrder =
             {
+                id: id,
                 returnDate: returnDate,
                 products: products,
                 restockOrderId: restockOrderId
