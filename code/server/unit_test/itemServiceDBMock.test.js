@@ -24,7 +24,7 @@ describe("get items", () => {
 });
 
 describe("get an Item", () => {
-    itemDAO.getItem.mockReturnValue({
+    itemDAO.getItemById.mockReturnValue({
         id:12,
         description : "d1",
         price : 10.99,
@@ -33,7 +33,7 @@ describe("get an Item", () => {
     });
     test("get an item", async () => {
         const id = 12;
-        let res = await itemService.getItem(id);
+        let res = await itemService.getItemById(id);
         expect(res).toEqual({
             id:12,
             description : "d1",

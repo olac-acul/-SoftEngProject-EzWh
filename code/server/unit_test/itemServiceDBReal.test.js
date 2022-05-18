@@ -55,7 +55,7 @@ async function testCreateItem(){
             supplierId : 10
         }
         let res = await itemService.createItem(item);
-        res = await itemService.getItems();
+        res = await itemService.getItemById(id);
         expect(res).toEqual({
             id:12,
             description : "d1",

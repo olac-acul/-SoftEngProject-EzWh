@@ -19,7 +19,7 @@ describe("get testDescriptors", () => {
 });
 
 describe("get a testDescriptor", () => {
-    testDescriptorDAO.getTestDescriptor.mockReturnValue({
+    testDescriptorDAO.getTestDescriptorById.mockReturnValue({
         id: 1,
         name: "testDescriptor 1",
         procedureDescription: "PD1",
@@ -27,7 +27,7 @@ describe("get a testDescriptor", () => {
     });
     test("get a testDescriptor", async () => {
         const id = 1;
-        let res = await testDescriptorService.getTestDescriptor(id);
+        let res = await testDescriptorService.getTestDescriptorById(id);
         expect(res).toEqual({
             id: 1,
             name: "testDescriptor 1",
