@@ -5,10 +5,10 @@ const testDescriptorService = new TestDescriptorService(testDescriptorDAO);
 describe("get testDescriptors", () => {
     beforeEach(async () => {
         await testDescriptorDAO.deleteTestDescriptors();
-        await testDescriptorDAO.createTestDescriptor("testDescriptor 1", "PD1", 8);
+        await testDescriptorDAO.createTestDescriptor(["testDescriptor 1", "PD1", 8]);
     });
     testGetTestDescriptors();
-    testGetTestDescriptor();
+    testGetTestDescriptorById();
 });
 
 async function testGetTestDescriptors(){
@@ -23,10 +23,10 @@ async function testGetTestDescriptors(){
     });
 }
 
-async function testGetTestDescriptor(){
+async function testGetTestDescriptorById(){
     test("get a testDescriptor", async () => {
         const id = 1;
-        let res = await testDescriptorService.getTestDescriptor(id);
+        let res = await testDescriptorService.getTestDescriptorById(id);
         expect(res).toEqual({
             id: 1,
             name: "testDescriptor 1",
@@ -61,10 +61,37 @@ async function testCreateTestDescriptor(){
     });
 }
 
+describe("modify a testDescriptor", () => {
+    beforeEach(async () => {
+        await testDescriptorDAO.deleteTestDescriptors();
+        await testDescriptorDAO.createTestDescriptor(["testDescriptor 1", "PD1", 8]);
+    });
+    testModifyTestDescriptor();
+});
+
+async function testModifyTestDescriptor(){
+    test("modify a testDescriptor", async () => {
+        const id = 1;
+        const newStatus = {
+            newName: "testDescriptor 1",
+            newProcedureDescription: "PD2",
+            newIdSKU: 26
+        }
+        let res = await testDescriptorService.modifyTestDescriptor(id, newStatus);
+        res = await testDescriptorService.getTestDescriptorById(id);
+        expect(res).toEqual({
+            id: 1,
+            name: "testDescriptor 1",
+            procedureDescription: "PD2",
+            idSKU: 26
+        });
+    });
+}
+
 describe("delete a testDescriptor", () => {
     beforeEach(async () => {
         await testDescriptorDAO.deleteTestDescriptors();
-        await testDescriptorDAO.createTestDescriptor("testDescriptor 1", "PD1", 8);
+    await testDescriptorDAO.createTestDescriptor(["testDescriptor 1", "PD1", 8]);
     });
     testDeleteTestDescriptor();
 });
@@ -73,7 +100,7 @@ async function testDeleteTestDescriptor(){
     test("delete a testDescriptor", async () => {
         const id = 1;
         let res = await testDescriptorService.deleteTestDescriptor(id);
-        res = await testDescriptorService.getTestDescriptors();
-        //expect(res.body).toEqual(null);
+        res = await testDescriptorService.getTestDescriptorById(id);
+        expect(res.body).toEqual(null);
     });
 }

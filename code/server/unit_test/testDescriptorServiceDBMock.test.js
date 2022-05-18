@@ -19,7 +19,7 @@ describe("get testDescriptors", () => {
 });
 
 describe("get a testDescriptor", () => {
-    testDescriptorDAO.getTestDescriptor.mockReturnValue({
+    testDescriptorDAO.getTestDescriptorById.mockReturnValue({
         id: 1,
         name: "testDescriptor 1",
         procedureDescription: "PD1",
@@ -27,7 +27,7 @@ describe("get a testDescriptor", () => {
     });
     test("get a testDescriptor", async () => {
         const id = 1;
-        let res = await testDescriptorService.getTestDescriptor(id);
+        let res = await testDescriptorService.getTestDescriptorById(id);
         expect(res).toEqual({
             id: 1,
             name: "testDescriptor 1",
@@ -47,6 +47,20 @@ describe("create a testDescriptor", () => {
         await testDescriptorService.createTestDescriptor(testDescriptor);
         expect(testDescriptorDAO.createTestDescriptor.mock.call).toBe(testDescriptor);
         expect(testDescriptorDAO.createTestDescriptor.mock.call).toBe(testDescriptor);
+    });
+});
+
+describe("modify a testDescriptor", () => {
+    test("modify a testDescriptor", async () => {
+        const id = 1;
+        const newStatus = {
+            name: "testDescriptor 1",
+            procedureDescription: "PD2",
+            idSKU: 26
+        }
+        await testDescriptorService.modifyTestDescriptor(id, newStatus);
+        expect(testDescriptorDAO.modifyTestDescriptor.mock.calls[0]).toBe(id);
+        expect(testDescriptorDAO.modifyTestDescriptor.mock.calls[1]).toBe(newStatus);
     });
 });
 
