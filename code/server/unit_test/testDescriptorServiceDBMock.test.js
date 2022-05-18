@@ -50,6 +50,20 @@ describe("create a testDescriptor", () => {
     });
 });
 
+describe("modify a testDescriptor", () => {
+    test("modify a testDescriptor", async () => {
+        const id = 1;
+        const newStatus = {
+            name: "testDescriptor 1",
+            procedureDescription: "PD2",
+            idSKU: 26
+        }
+        await testDescriptorService.modifyTestDescriptor(id, newStatus);
+        expect(testDescriptorDAO.modifyTestDescriptor.mock.calls[0]).toBe(id);
+        expect(testDescriptorDAO.modifyTestDescriptor.mock.calls[1]).toBe(newStatus);
+    });
+});
+
 describe("delete a testDescriptor", () => {
     test("delete a testDescriptor", async () => {
         const id = 1;

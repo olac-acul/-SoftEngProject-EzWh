@@ -105,7 +105,7 @@ async function testChangePositionID(){
     test("change positionID", async () => {
         const oldPositionID = "800234543412";
         const newPositionID = "801234543412";
-        let res = await positionService.changePositionID(oldPositionID, newPositionID);
+        let res = await positionService.changePositionId(oldPositionID, newPositionID);
         res = await positionService.getPositions();
         expect(res).toEqual({
             positionID: "801234543412",
