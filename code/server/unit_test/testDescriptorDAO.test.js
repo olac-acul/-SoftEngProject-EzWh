@@ -29,7 +29,7 @@ function testCreateTestDescriptor_And_GetTestDescriptors_And_GetTestDescriptorBy
 }
 
 function testModifyTestDescriptor(name, procedureDescription, idSKU, id, newStatus){
-    test("search SKU", async () => {
+    test("modify a testDescriptor", async () => {
         await testDescriptorDAO.createTestDescriptor(name, procedureDescription, idSKU);
         await testDescriptorDAO.modifyTestDescriptor(id, newStatus);   
         var res = await testDescriptorDAO.getTestDescriptorById();
