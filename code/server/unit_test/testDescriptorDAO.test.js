@@ -16,9 +16,9 @@ describe('testTestDescriotorDao', () => {
 });
 
 function testCreateTestDescriptor_And_GetTestDescriptors_And_GetTestDescriptorById(id, name, procedureDescription, idSKU) {
-    test('create new testDescriptor', async () => {
+    test('create new testDescriptor and get all testDescriptors and get a testDescriptor by id', async () => {
         await testDescriptorDAO.createTestDescriptor(name, procedureDescription, idSKU);
-        var res = await testDescriptor.getTestDescriptors();
+        var res = await testDescriptorDAO.getTestDescriptors();
         expect(res.length).toStrictEqual(1);
         res = await testDescriptorDAO.getTestDescriptorById(id);
         expect(res.id).toStrictEqual(id);
@@ -32,7 +32,7 @@ function testModifyTestDescriptor(name, procedureDescription, idSKU, id, newStat
     test("modify a testDescriptor", async () => {
         await testDescriptorDAO.createTestDescriptor(name, procedureDescription, idSKU);
         await testDescriptorDAO.modifyTestDescriptor(id, newStatus);   
-        var res = await testDescriptorDAO.getTestDescriptorById();
+        var res = await testDescriptorDAO.getTestDescriptorById(id);
         expect(res.length).toStrictEqual(1);
         expect(res.id).toStrictEqual(id);
         expect(res.name).toStrictEqual(newStatus.name);

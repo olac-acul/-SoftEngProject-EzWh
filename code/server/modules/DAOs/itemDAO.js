@@ -150,3 +150,16 @@ exports.deleteItem = (id) => {
         });
     });
 }
+
+exports.deleteItems = () => {
+    return new Promise((resolve, reject) => {
+      const sql = 'DELETE FROM ITEMS';
+      db.run(sql, [], function (err) {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(true);
+      })
+    })
+  };

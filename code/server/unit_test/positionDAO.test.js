@@ -18,7 +18,7 @@ describe('testPositionDao', () => {
 });
 
 function testCreatePositionAndGetPositions(positionID, aisleID, row, col, maxWeight, maxVolume) {
-    test('create new position', async () => {
+    test('create new position and get all positions', async () => {
         await positionDAO.createPosition(positionID, aisleID, row, col, maxWeight, maxVolume);
         var res = await positionDAO.getPositions();
         expect(res.length).toStrictEqual(1);
@@ -49,7 +49,7 @@ function testModifyPosition(oldPositionID, oldPosition, newPositionID, newPositi
 }
 
 function testUpdatePosition(positionID, position, newOccupiedWeight, newOccupiedVolume){
-    test("modify a position", async () => {
+    test("update a position", async () => {
         await positionDAO.createPosition(positionID, position.aisleID, position.row, position.col, position.maxWeight, position.maxVolume);
         await positionDAO.updatePosition(positionID, newOccupiedWeight, newOccupiedVolume);   
         var res = await positionDAO.getPositions();
