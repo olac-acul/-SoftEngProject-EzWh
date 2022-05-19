@@ -90,9 +90,9 @@ class InternalOrderService {
                 if (isNaN(i.RFID) || i.RFID.length !== 32)
                     return '422';
             }
-            // const status = await this.dao.changeStateInternalOrder(validatedId, 'COMPLETED');
-            // if (status === 0)
-            //     return '404';
+            const status = await this.dao.changeStateInternalOrder(validatedId, 'COMPLETED');
+            if (status === 0)
+                return '404';
             await this.dao.newSKUItemTable();
             for (let i of newState.products) {
                 await this.dao.addSKUItem(i.SkuID, i.RFID);

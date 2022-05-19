@@ -9,17 +9,14 @@ const db = new sqlite.Database('EzWh', (err) => {
 exports.newSKUTable = () => {
     return new Promise((resolve, reject) => {
         const sql = `CREATE TABLE IF NOT EXISTS SKU (
-                ID	INTEGER NOT NULL UNIQUE,
+                ID INTEGER PRIMARY KEY AUTOINCREMENT,
                 DESCRIPTION	TEXT NOT NULL,
-                WEIGHT	INTEGER NOT NULL,
-                VOLUME	INTEGER NOT NULL,
-                NOTES	TEXT NOT NULL,
-                POSITION	TEXT,
-                AVAILABLE_QUANTITY	INTEGER NOT NULL,
-                PRICE	REAL NOT NULL,
-                TEST_DESCRIPTORS	TEXT,
-                PRIMARY KEY(ID AUTOINCREMENT)
-            )`;
+                WEIGHT INTEGER NOT NULL,
+                VOLUME INTEGER NOT NULL,
+                NOTES TEXT NOT NULL,
+                POSITION TEXT,
+                AVAILABLE_QUANTITY INTEGER NOT NULL,
+                PRICE REAL NOT NULL)`;
         db.run(sql, function (err) {
             if (err) {
                 reject(err);
@@ -77,18 +74,65 @@ exports.getSKU = (ID) => {
                 reject(err);
                 return;
             }
-            const SKU = {
-                id: row.ID,
-                description: row.DESCRIPTION,
-                weight: row.WEIGHT,
-                volume: row.VOLUME,
-                notes: row.NOTES,
-                position: row.POSITION,
-                availableQuantity: row.AVAILABLE_QUANTITY,
-                price: row.PRICE,
-                testDescriptors: row.TEST_DESCRIPTORS
-            };
-            resolve(SKU);
+            if (row == undefined)
+                resolve('404');
+            else {
+                const SKU = {
+                    id: row.ID,
+                    description: row.DESCRIPTION,
+                    weight: row.WEIGHT,
+                    volume: row.VOLUME,
+                    notes: row.NOTES,
+                    position: row.POSITION,
+                    availableQuantity: row.AVAILABLE_QUANTITY,
+                    price: row.PRICE,
+                    testDescriptors: row.TEST_DESCRIPTORS
+                };
+                resolve(SKU);
+            }
+        });
+    });
+}
+
+exports.getSKUPosition = (id) => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT POSITION FROM SKU WHERE ID = ?`;
+        db.get(sql, [id], (err, row) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            if (row === undefined)
+                resolve('404');
+            else {
+                const skuPosition = row.POSITION;
+                if (skuPosition === null)
+                    resolve('422');
+                else
+                    resolve(skuPosition);
+            }
+        });
+    });
+}
+
+exports.getPositionById = (id) => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT MAX_WEIGHT, MAX_VOLUME
+                     FROM POSITIONS WHERE POSITION_ID = ?`;
+        db.get(sql, [id], (err, row) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            if (row === undefined)
+                resolve('404');
+            else {
+                const position = {
+                    maxWeight: row.MAX_WEIGHT,
+                    maxVolume: row.MAX_VOLUME
+                };
+                resolve(position);
+            }
         });
     });
 }
@@ -106,12 +150,12 @@ exports.addSKU = (SKU) => {
     });
 }
 
-exports.modifySKU = (id, newDescription, newWeight, newVolume, newPrice, newAvailableQuantity) => {
+exports.modifySKU = (id, newState) => {
     return new Promise((resolve, reject) => {
         const sql = `UPDATE SKU
                              SET DESCRIPTION = ?, WEIGHT = ?, VOLUME = ?, PRICE = ?, AVAILABLE_QUANTITY = ?
                              WHERE ID = ?`;
-        db.run(sql, [newDescription, newWeight, newVolume, newPrice, newAvailableQuantity, id], function (err) {
+        db.run(sql, [newState.newDescription, newState.newWeight, newState.newVolume, newState.newPrice, newState.newAvailableQuantity, id], function (err) {
             if (err) {
                 reject(err);
                 return;
@@ -121,7 +165,22 @@ exports.modifySKU = (id, newDescription, newWeight, newVolume, newPrice, newAvai
     });
 }
 
-exports.modifySKUposition = (id, newPosition) => {
+exports.modifyPositionWeightVolume = (skuPosition, newWeight, newVolume) => {
+    return new Promise((resolve, reject) => {
+        const sql = `UPDATE POSITIONS
+                     SET OCCUPIED_WEIGHT = ?, OCCUPIED_VOLUME = ? 
+                     WHERE POSITION_ID = ?`;
+        db.run(sql, [newWeight, newVolume, skuPosition], function (err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(this.changes);
+        });
+    });
+}
+
+exports.modifySKUPosition = (id, newPosition) => {
     return new Promise((resolve, reject) => {
         const sql = `UPDATE SKU
                              SET POSITION = ?

@@ -85,21 +85,6 @@ exports.modifyPosition = (oldPositionID, newPositionID, position) => {
     });
 }
 
-exports.updatePosition = (positionID, newOccupiedWeight, newOccupiedVolume) => {
-    return new Promise((resolve, reject) => {
-        const sql = `UPDATE POSITIONS
-                     SET OCCUPIED_WEIGHT = ?, OCCUPIED_VOLUME = ? 
-                     WHERE POSITION_ID = ?`;
-        db.run(sql, [newOccupiedWeight, newOccupiedVolume, positionID], function (err) {
-            if (err) {
-                reject(err);
-                return;
-            }
-            resolve(this.changes);
-        });
-    });
-}
-
 exports.changePositionId = (oldPositionId, newAisleID, newRow, newCol, newPositionId) => {
     return new Promise((resolve, reject) => {
         const sql = `UPDATE POSITIONS
