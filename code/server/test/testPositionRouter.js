@@ -12,7 +12,7 @@ describe('test position APIs', () => {
         await agent.delete('/api/positions');
     })
 
-    getAllPositions(204);
+    getAllPositions(204, "800234543412", "8002", "3454", "3412", 1000, 1000);
     createPosition(201, "800234543412", "8002", "3454", "3412", 1000, 1000);
     createPosition(422);
     modifyPosition(200, "800234543412", "8012", "3454", "3412", 1000, 1000, 300, 150);

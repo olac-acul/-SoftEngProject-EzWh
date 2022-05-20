@@ -18,7 +18,7 @@ describe('testItemDao', () => {
 function testCreateItem_And_GetItems_And_GetItemById(item) {
     test('create new item and get all items and get an item by id', async () => {
         await itemDAO.createItem(item);
-        var res = await itemDAO.getTestDescriptors();
+        var res = await itemDAO.getItems();
         expect(res.length).toStrictEqual(1);
         res = await itemDAO.getItemById(item.id);
         expect(res.id).toStrictEqual(item.id);

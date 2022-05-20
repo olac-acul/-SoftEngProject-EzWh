@@ -12,7 +12,7 @@ describe('test item APIs', () => {
         await agent.delete('/api/items');
     })
 
-    getAllItems(204);
+    getAllItems(204, [12, "d1", 10.99, 8, 10]);
     getItemById(200, [12, "d1", 10.99, 8, 10]);
     getItemById(422);
     createItem(201, [12, "d1", 10.99, 8, 10]);

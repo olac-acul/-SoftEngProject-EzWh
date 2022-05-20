@@ -12,7 +12,7 @@ describe('test testDescriptor APIs', () => {
         await agent.delete('/api/testDescriptors');
     })
 
-    getAllTestDescriptors(204);
+    getAllTestDescriptors(204, 1, "testDescriptor 1", "PD1", 8);
     getTestDescriptorById(200, 1, "testDescriptor 1", "PD1", 8);
     getTestDescriptorById(422);
     createTestDescriptor(201, "testDescriptor 1", "PD1", 8);

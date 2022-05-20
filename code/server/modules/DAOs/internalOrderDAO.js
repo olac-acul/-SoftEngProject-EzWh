@@ -236,3 +236,16 @@ exports.deleteInternalOrder_join_Product = (id) => {
         })
     });
 }
+
+exports.deleteInternalOrders = () => {
+    return new Promise((resolve, reject) => {
+      const sql = 'DELETE FROM INTERNAL_ORDERS';
+      db.run(sql, [], function (err) {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(true);
+      })
+    })
+  };
