@@ -74,7 +74,7 @@ class InternalOrderService {
         if (isNaN(id) || Number(id) <= 0)
             return '422';
         const validatedId = Number(id);
-        if (Object.keys(newState).length === 1 && newState.newState !== 'COMPLETED' && availableStates.includes(newState.newState)) {
+        if ((Object.keys(newState).length === 1 || (Object.keys(newState).length === 2 && newState.products !== undefined)) && newState.newState !== 'COMPLETED' && availableStates.includes(newState.newState)) {
             const status = await this.dao.changeStateInternalOrder(validatedId, newState.newState);
             if (status === 0)
                 return '404';
