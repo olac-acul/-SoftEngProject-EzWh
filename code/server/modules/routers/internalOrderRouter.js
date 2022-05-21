@@ -1,6 +1,6 @@
 const express = require('express');
 
-const InternalOrderService = require('../services/internalOrderServer');
+const InternalOrderService = require('../services/internalOrderService');
 const db = require('../DAOs/internalOrderDAO');
 
 const internalOrderService = new InternalOrderService(db);
