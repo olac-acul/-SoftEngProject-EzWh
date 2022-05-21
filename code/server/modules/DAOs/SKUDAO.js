@@ -153,9 +153,9 @@ exports.addSKU = (SKU) => {
 exports.modifySKU = (id, newState) => {
     return new Promise((resolve, reject) => {
         const sql = `UPDATE SKU
-                             SET DESCRIPTION = ?, WEIGHT = ?, VOLUME = ?, PRICE = ?, AVAILABLE_QUANTITY = ?
+                             SET DESCRIPTION = ?, WEIGHT = ?, VOLUME = ?, NOTES = ?, PRICE = ?, AVAILABLE_QUANTITY = ?
                              WHERE ID = ?`;
-        db.run(sql, [newState.newDescription, newState.newWeight, newState.newVolume, newState.newPrice, newState.newAvailableQuantity, id], function (err) {
+        db.run(sql, [newState.newDescription, newState.newWeight, newState.newVolume, newState.newNotes, newState.newPrice, newState.newAvailableQuantity, id], function (err) {
             if (err) {
                 reject(err);
                 return;
