@@ -6,7 +6,7 @@ Version:
 
 # Contents
 
-- [Dependency graph](#dependency graph)
+- [Dependency graph](#Dependency)
 
 - [Integration approach](#integration)
 
@@ -22,6 +22,8 @@ Version:
 # Dependency graph 
 
      <report the here the dependency graph of the classes in EzWH, using plantuml or other tool>
+
+![](./images/dependencyGraph.jpg)
      
 # Integration approach
 
@@ -30,7 +32,11 @@ Version:
     <Some steps may  correspond to unit testing (ex step1 in ex above), presented in other document UnitTestReport.md>
     <One step will  correspond to API testing>
     
+### BOTTOM-UP
 
+Step 1: Unit Test of DAOs classes \
+Step 2: test of the Service classes \
+Step 3: API class tested
 
 #  Integration Tests
 
@@ -40,21 +46,48 @@ Version:
 ## Step 1
 | Classes  | mock up used |Jest test cases |
 |--|--|--|
-||||
+| internalOrderDAO |  | all test in internalOrderDAO.test.js |
+| itemDAO | | all test in itemDAO.test.js |
+|positionDAO||all test in positionDAO.test.js|
+|testDescriptorDAO|| all test in testDescriptorDAO.test.js|
+|restockOrderDAO|| all test in restockOrderDAO.test.js|
+|returnOrderDAO|| all test in returnOrderDAO.test.js|
+|SKUDAO||all test in SKUDAO.test.js|
+|SKUItemDAO||all test in SKUItemDAO.test.js|
+|testResultDAO||all test in testResultDAO.test.js|
+|userDAO||all test in userDAO.test.js|
 
 
 ## Step 2
 | Classes  | mock up used |Jest test cases |
 |--|--|--|
-||||
+| internalOrderService | mockInternalOrderDAO | all test in internalOrderServiceDBMock.test.js |
+| itemService | mockItemDAO | all test in itemServiceDBMock.test.js |
+|positionService| mockPositionDAO |all test in positionServiceDBMock.test.js|
+|testDescriptorService|mockTestDescriptorDAO | all test in testDescriptorServiceDBMock.test.js|
+|restockOrderService| mockRestockOrderDAO | all test in restockOrderServiceDBMock.test.js|
+|returnOrderService| mockReturnOrderDAO  | all test in returnOrderServiceDBMock.test.js|
+|SKUService| mockSKUDAO |all test in SKUServiceDBMock.test.js|
+|SKUItemService| mockSKUItemDAO |all test in SKUItemServiceDBMock.test.js|
+|testResultService| mockTestResultDAO |all test in testResultServiceDBMock.test.js|
+|userService| mockUserDAO |all test in userServiceDBMock.test.js|
 
 
-## Step n 
+## Step 3
 
    
 | Classes  | mock up used |Jest test cases |
 |--|--|--|
-||||
+|server, itemRouter||all test in testItemRouter.js|
+|server, internalOrderRouter||all test in testInternalOrderRouter.js|
+|server, positionRouter||all test in testPositionRouter.js|
+|server, restockOrderRouter||all test in testRestockOrderRouter.js|
+|server, returnOrderRouter||all test in returnOrderRouter.js|
+|server, SKUItemRouter||all test in testSKUItemRouter.js|
+|server, SKURouter||all test in testSKURouter.js|
+|server, testDescriptorRouter||all test in testTestDescriptorRouter.js|
+|server, testResultRouter||all test in testTestResultRouter.js|
+|server, userRouter||all test in testUserRouter.js|
 
 
 
@@ -88,13 +121,25 @@ Report also for each of the scenarios the (one or more) API Mocha tests that cov
 
 | Scenario ID | Functional Requirements covered | Mocha  Test(s) | 
 | ----------- | ------------------------------- | ----------- | 
-|  ..         | FRx                             |             |             
-|  ..         | FRy                             |             |             
-| ...         |                                 |             |             
-| ...         |                                 |             |             
-| ...         |                                 |             |             
-| ...         |                                 |             |             
-
+|1-1|2.1| createSKU()|
+|1-2|2.1|modifySKU()|
+|1-3|2.1|modifySKU()|
+|2-1|3.1.1|createPosition()|
+|2-2|3.1.1|modifyPosition()|
+|2-3|3.1.1|modifyPosition()|
+|2-4|3.1.1|modifyPosition()|
+|2-5|3.1.2|deletePosition()|
+|3-1|5.1 5.2 5.3 5.5 5.6|createRestockOrder() addSkuItemList() changeStateRestockOrder()|
+|3-2|5.1 5.2 5.3 5.5 5.6|createRestockOrder() addSkuItemList() changeStateRestockOrder()|
+|4-1|1.1|createUser()|
+|4-2|1.1|modifyUser()|
+|4-3|1.2|deleteUser()|
+|6-1| 5.9 5.10|| [comment]: <> Return order of SKU items that failed quality test
+|6-2|||
+||||
+||||
+||||
+||||
 
 
 # Coverage of Non Functional Requirements
