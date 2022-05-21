@@ -12,7 +12,7 @@ describe('testSKUDao', () => {
 
     testAddSKU_And_GetAllSKUs_And_GetSKU(1, ["d1", 100, 50, "n1", 50, 10.99]);
     testModifySKUPositionAndGetSKUPosition(1, ["d1", 100, 50, "n1", 50, 10.99], "800234523412");
-    testModifySKU(i, ["d1", 100, 50, "n1", 50, 10.99], ["d2", 150, 100, "n2", 9.99, 100]);
+    testModifySKU(1, ["d1", 100, 50, "n1", 50, 10.99], ["d2", 150, 100, "n2", 9.99, 100]);
     testDeleteSKU(1, ["d1", 100, 50, "n1", 50, 10.99]);
 });
 
