@@ -87,6 +87,6 @@ function testDeletePosition(positionID, aisleID, row, col, maxWeight, maxVolume)
         await positionDAO.createPosition(positionID, aisleID, row, col, maxWeight, maxVolume);
         await positionDAO.deletePosition(positionID);   
         var res = await positionDAO.getPositions();
-        expect(res.length).toStrictEqual(0);
+        expect(res).toEqual("404");
     });
 }

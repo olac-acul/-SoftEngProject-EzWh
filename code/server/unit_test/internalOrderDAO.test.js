@@ -54,6 +54,6 @@ function testDeleteInternalOrder(id, internalOrder){
         await internalOrderDAO.createInternalOrder(internalOrder);
         await internalOrderDAO.deleteInternalOrder(id);   
         var res = await internalOrderDAO.getInternalOrderById(id);
-        expect(res.length).toStrictEqual(0);
+        expect(res).toEqual("404");
     });
 }

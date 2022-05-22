@@ -48,6 +48,6 @@ function testDeleteItem(item){
         await itemDAO.createItem(item);
         await itemDAO.deleteItem(item.id);   
         var res = await itemDAO.getItemById(item.id);
-        expect(res.length).toStrictEqual(0);
+        expect(res).toEqual("404");
     });
 }

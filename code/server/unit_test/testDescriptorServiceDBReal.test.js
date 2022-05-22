@@ -101,6 +101,6 @@ async function testDeleteTestDescriptor(){
         const id = 1;
         let res = await testDescriptorService.deleteTestDescriptor(id);
         res = await testDescriptorService.getTestDescriptorById(id);
-        expect(res.body).toEqual(null);
+        expect(res).toEqual("404");
     });
 }

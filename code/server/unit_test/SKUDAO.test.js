@@ -62,6 +62,6 @@ function testDeleteSKU(id, SKU){
         await SKUDAO.addSKU(SKU);
         await SKUDAO.deleteSKU(id);   
         var res = await SKUDAO.getSKU(id);
-        expect(res.length).toStrictEqual(0);
+        expect(res).toEqual("404");
     });
 }

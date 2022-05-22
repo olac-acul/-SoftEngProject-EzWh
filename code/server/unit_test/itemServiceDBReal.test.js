@@ -106,6 +106,6 @@ async function testDeleteItem(){
         const id = 12;
         let res = await itemService.deleteItem(id);
         res = await itemService.getItemById(id);
-        expect(res.body).toEqual(null);
+        expect(res).toEqual("404");
     });
 }

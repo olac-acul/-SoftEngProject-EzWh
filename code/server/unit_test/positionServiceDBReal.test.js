@@ -133,6 +133,6 @@ async function testDeletePosition(){
         const positionID = "800234543412";
         let res = await positionService.deletePosition(positionID);
         res = await positionService.getPositions();
-        expect(res.body).toEqual(null);
+        expect(res).toEqual("404");
     });
 }

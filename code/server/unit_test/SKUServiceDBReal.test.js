@@ -15,15 +15,15 @@ async function testGetSKUs(){
     test("get SKUs", async () => {
         let res = await SKU_Service.getSKUs();
         expect(res).toEqual({
-            "id":1,
-            "description" : "d1",
-            "weight" : 100,
-            "volume" : 50,
-            "notes" : "n1",
-            "position" : null,
-            "availableQuantity" : 50,
-            "price" : 10.99,
-            "testDescriptors" : null
+            id:1,
+            description : "d1",
+            weight : 100,
+            volume : 50,
+            notes : "n1",
+            position : null,
+            availableQuantity : 50,
+            price : 10.99,
+            testDescriptors : null
         });
     });
 }
@@ -33,15 +33,15 @@ async function testGetSKU(){
         const id = 1;
         let res = await SKU_Service.getSKU(id);
         expect(res).toEqual({
-            "id":1,
-            "description" : "d1",
-            "weight" : 100,
-            "volume" : 50,
-            "notes" : "n1",
-            "position" : null,
-            "availableQuantity" : 50,
-            "price" : 10.99,
-            "testDescriptors" : null
+            id:1,
+            description : "d1",
+            weight : 100,
+            volume : 50,
+            notes : "n1",
+            position : null,
+            availableQuantity : 50,
+            price : 10.99,
+            testDescriptors : null
         });
     });
 }
@@ -57,25 +57,25 @@ async function testAddSKU(){
     test("create an SKU", async () => {
         const id = 1;
         const SKU = {
-            "description" : "d1",
-            "weight" : 100,
-            "volume" : 50,
-            "notes" : "n1",
-            "availableQuantity" : 50,
-            "price" : 10.99,
+            description : "d1",
+            weight : 100,
+            volume : 50,
+            notes : "n1",
+            availableQuantity : 50,
+            price : 10.99,
         }
         let res = await SKU_Service.addSKU(SKU);
         res = await SKU_Service.getSKU(id);
         expect(res).toEqual({
-            "id":1,
-            "description" : "d1",
-            "weight" : 100,
-            "volume" : 50,
-            "notes" : "n1",
-            "position" : null,
-            "availableQuantity" : 50,
-            "price" : 10.99,
-            "testDescriptors" : null
+            id:1,
+            description : "d1",
+            weight : 100,
+            volume : 50,
+            notes : "n1",
+            position : null,
+            availableQuantity : 50,
+            price : 10.99,
+            testDescriptors : null
         });
     });
 }
@@ -92,25 +92,25 @@ async function testModifySKU(){
     test("modify an SKU", async () => {
         const id = 1;
         const newState = {
-            "newDescription" : "d2",
-            "newWeight" : 150,
-            "newVolume" : 100,
-            "newNotes" : "n2",
-            "newPrice" : 9.99,
-            "newAvailableQuantity" : 100
+            newDescription : "d2",
+            newWeight : 150,
+            newVolume : 100,
+            newNotes : "n2",
+            newPrice : 9.99,
+            newAvailableQuantity : 100
         };
         let res = await SKU_Service.modifySKU(id, newState);
         res = await SKU_Service.getSKU(id);
         expect(res).toEqual({
-            "id":1,
-            "description" : "d2",
-            "weight" : 150,
-            "volume" : 100,
-            "notes" : "n2",
-            "position" : null,
-            "availableQuantity" : 100,
-            "price" : 9.99,
-            "testDescriptors" : null
+            id:1,
+            description : "d2",
+            weight : 150,
+            volume : 100,
+            notes : "n2",
+            position : null,
+            availableQuantity : 100,
+            price : 9.99,
+            testDescriptors : null
         });
     });
 }
@@ -130,15 +130,15 @@ async function testModifySKUPosition(){
         let res = await SKU_Service.modifySKUPosition(id, newPosition);
         res = await SKU_Service.getSKU(id);
         expect(res).toEqual({
-            "id":1,
-            "description" : "d2",
-            "weight" : 150,
-            "volume" : 100,
-            "notes" : "n2",
-            "position" : "800234523412",
-            "availableQuantity" : 100,
-            "price" : 9.99,
-            "testDescriptors" : null
+            id:1,
+            description : "d2",
+            weight : 150,
+            volume : 100,
+            notes : "n2",
+            position : "800234523412",
+            availableQuantity : 100,
+            price : 9.99,
+            testDescriptors : null
         });
     });
 }
@@ -156,6 +156,6 @@ async function testDeleteSKU(){
         const id = 1;
         let res = await SKU_Service.deleteSKU(id);
         res = await SKU_Service.getSKU(id);
-        expect(res.body).toEqual(null);
+        expect(res).toEqual("404");
     });
 }

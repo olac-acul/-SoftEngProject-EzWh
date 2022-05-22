@@ -147,6 +147,6 @@ async function testDeleteInternalOrder(){
         const id = 1;
         let res = await internalOrderService.deleteInternalOrder(id);
         res = await internalOrderService.getInternalOrderById(id);
-        expect(res.body).toEqual(null);
+        expect(res).toEqual("404");
     });
 }

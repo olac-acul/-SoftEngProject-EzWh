@@ -46,6 +46,6 @@ function testDeleteTestDescriptor(id, name, procedureDescription, idSKU){
         await testDescriptorDAO.createTestDescriptor(name, procedureDescription, idSKU);
         await testDescriptorDAO.deleteTestDescriptor(id);   
         var res = await testDescriptorDAO.getTestDescriptors();
-        expect(res.length).toStrictEqual(0);
+        expect(res).toEqual("404");
     });
 }
