@@ -134,12 +134,17 @@ Report also for each of the scenarios the (one or more) API Mocha tests that cov
 |4-1|1.1|createUser()|
 |4-2|1.1|modifyUser()|
 |4-3|1.2|deleteUser()|
-|6-1| 5.9 5.10|| [comment]: <> Return order of SKU items that failed quality test
-|6-2|||
-||||
-||||
-||||
-||||
+|6-1| 5.9 5.10|getReturnOrderById() getSKUItem() addItemRestockOrder()|
+|6-2| 5.9 5.10|getReturnOrderById() getSKUItem() addItemRestockOrder()|
+|9-1|6.1 6.2 6.5 6.6 6.10|createInternalOrder() addSkuInternalOrder() modifyIntenralOrder() changeSKU()|
+|9-2|6.1 6.2 6.5 6.6 6.10|createInternalOrder() addSkuInternalOrder() modifyIntenralOrder() changeSKU()|
+|9-3|6.6|modifyInternalOrder() deleteInternalOrder() changeSKU()|
+|10-1|6.6 6.8 6.9|getInternalOrderById() modifyInternalOrder()|
+|11-1|7|createItem()|
+|11-2|7|modifyItem()|
+|12-1||createTestDescriptor()|
+|12-2||modifyTestDescriptor()|
+|12-3||deleteTestDescriptor()|
 
 
 # Coverage of Non Functional Requirements
@@ -152,5 +157,7 @@ Report also for each of the scenarios the (one or more) API Mocha tests that cov
 
 | Non Functional Requirement | Test name |
 | -------------------------- | --------- |
-|                            |           |
+|        4                    |       createPosition()    |
+|5|createSKU()|
+|6|createSKUItem()|
 
