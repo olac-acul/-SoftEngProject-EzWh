@@ -66,7 +66,7 @@ exports.getInternalOrders = () => {
                 reject(err);
                 return;
             }
-            const returnOrders = rows.map((r) => (
+            const InternalOrders = rows.map((r) => (
                 {
                     id: r.ID,
                     issueDate: r.ISSUE_DATE,
@@ -74,7 +74,7 @@ exports.getInternalOrders = () => {
                     customerId: r.CUSTOMER_ID
                 }
             ));
-            resolve(returnOrders);
+            resolve(InternalOrders);
         });
     });
 }
