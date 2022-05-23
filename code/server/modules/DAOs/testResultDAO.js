@@ -214,3 +214,16 @@ exports.deleteTestResult_join_SKUItem = (RFID, id) => {
         });
     });
 }
+
+exports.deleteTestResults = () => {
+    return new Promise((resolve, reject) => {
+        const sql = 'DELETE FROM TEST_RESULT';
+        db.run(sql, [], function (err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(true);
+        });
+    });
+}

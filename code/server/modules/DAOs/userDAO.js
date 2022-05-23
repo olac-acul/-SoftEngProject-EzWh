@@ -32,21 +32,25 @@ exports.newUserTable = () => {
     });
 }
 
-exports.showUserDetails = () => {
+exports.showUserDetails = (email) => {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT ID, EMAIL, NAME, SURNAME, TYPE FROM USERS';
-        db.get(sql, [], (err, row) => {
+        const sql = 'SELECT ID, EMAIL, NAME, SURNAME, TYPE FROM USERS WHERE EMAIL = ?';
+        db.get(sql, [email], (err, row) => {
             if (err) {
                 reject(err);
                 return;
             }
-            const user = {
-                id: row.ID,
-                email: row.EMAIL,
-                name: row.NAME,
-                surename: row.SURENAME,
-                type: row.TYPE
-            };
+            if (row == undefined)
+                resolve('404');
+            else{
+                const user = {
+                    id: row.ID,
+                    email: row.EMAIL,
+                    name: row.NAME,
+                    surename: row.SURENAME,
+                    type: row.TYPE
+                };
+            }
             resolve(user);
         });
     });
@@ -71,6 +75,29 @@ exports.getSuppliers = () => {
                 }
             ));
             resolve(suppliers);
+        });
+    });
+}
+
+exports.getUsers = () => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT U.ID, U.NAME, U.SURNAME, U.EMAIL, U.TYPE
+                         FROM USERS U`;
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            const users = rows.map((r) => {
+                return ({
+                    id: r.ID,
+                    name: r.NAME,
+                    surename: r.SURNAME,
+                    email: r.EMAIL,
+                    type: r.TYPE
+                });
+            });
+            resolve(users);
         });
     });
 }
@@ -163,3 +190,16 @@ exports.deleteUser = (email, type) => {
         });
     });
 }
+
+exports.deleteUsers = () => {
+    return new Promise((resolve, reject) => {
+        const sql = 'DELETE FROM USERS';
+        db.run(sql, [], function(err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(true);
+        });
+    });
+};
