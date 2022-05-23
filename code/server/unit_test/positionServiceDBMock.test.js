@@ -35,7 +35,7 @@ describe("create a position", () => {
             maxVolume: 1000
         };
         await positionService.createPosition(position);
-        expect(positionDAO.createPosition.mock.call).toBe(position);
+        expect(positionDAO.createPosition.mock.calls[0]).toBe(position);
     });
 });
 
@@ -53,7 +53,8 @@ describe("modify a position", () => {
         };
         await positionService.modifyPosition(oldPositionID, position);
         expect(positionDAO.modifyPosition.mock.calls[0]).toBe(oldPositionID);
-        expect(positionDAO.modifyPosition.mock.calls[1]).toBe(position);
+        expect(positionDAO.modifyPosition.mock.calls[1]).toBe(position.aisleID + position.row + position.col);
+        expect(positionDAO.modifyPosition.mock.calls[2]).toBe(position);
     });
 });
 
@@ -63,7 +64,10 @@ describe("change positionID", () => {
         const newPositionID = "801234543412";
         await positionService.changePositionId(oldPositionID, newPositionID);
         expect(positionDAO.changePositionId.mock.calls[0]).toBe(oldPositionID);
-        expect(positionDAO.changePositionId.mock.calls[1]).toBe(newPositionID);
+        expect(positionDAO.changePositionId.mock.calls[1]).toBe(newPositionID).slice(0,4);
+        expect(positionDAO.changePositionId.mock.calls[2]).toBe(newPositionID).slice(4,8);
+        expect(positionDAO.changePositionId.mock.calls[3]).toBe(newPositionID).slice(8,12);
+        expect(positionDAO.changePositionId.mock.calls[4]).toBe(newPositionID);
     });
 });
 
@@ -71,6 +75,6 @@ describe("delete a position", () => {
     test("delete a position", async () => {
         const positionID = "800234543412";
         await positionService.deletePosition(positionID);
-        expect(positionDAO.deletePosition.mock.call).toBe(positionID);
+        expect(positionDAO.deletePosition.mock.calls[0]).toBe(positionID);
     });
 });

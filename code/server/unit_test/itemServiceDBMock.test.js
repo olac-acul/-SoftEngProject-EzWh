@@ -54,7 +54,7 @@ describe("create an item", () => {
             supplierId : 10
         };
         await itemService.createItem(item);
-        expect(itemDAO.createItem.mock.call).toBe(item);
+        expect(itemDAO.createItem.mock.calls[0]).toBe(item);
     });
 });
 
@@ -62,8 +62,8 @@ describe("modify an item", () => {
     test("modify an item", async () => {
         const id = 12;
         const newStatus = {
-            newPrice: 9.99,
-            newDescription: "d2"
+            newDescription: "d2",
+            newPrice: 9.99
         };
         await itemService.modifyItem(id, newStatus);
         expect(itemDAO.modifyItem.mock.calls[0]).toBe(id);
@@ -75,6 +75,6 @@ describe("delete an item", () => {
     test("delete an item", async () => {
         const id = 12;
         await itemService.deleteItem(id);
-        expect(itemDAO.deleteItem.mock.call).toBe(id);
+        expect(itemDAO.deleteItem.mock.calls[0]).toBe(id);
     });
 });

@@ -1,6 +1,6 @@
 const testDescriptorDAO = require('../modules/testDescriptorDAO');
 
-describe('testTestDescriotorDao', () => {
+describe('testTestDescriotorDAO', () => {
     beforeEach(async () => {
         await testDescriptorDAO.deleteTestDescriptors();
     });
@@ -17,7 +17,7 @@ describe('testTestDescriotorDao', () => {
 
 function testCreateTestDescriptor_And_GetTestDescriptors_And_GetTestDescriptorById(id, name, procedureDescription, idSKU) {
     test('create new testDescriptor and get all testDescriptors and get a testDescriptor by id', async () => {
-        await testDescriptorDAO.createTestDescriptor(name, procedureDescription, idSKU);
+        await testDescriptorDAO.createTestDescriptor([name, procedureDescription, idSKU]);
         var res = await testDescriptorDAO.getTestDescriptors();
         expect(res.length).toStrictEqual(1);
         res = await testDescriptorDAO.getTestDescriptorById(id);
@@ -28,22 +28,22 @@ function testCreateTestDescriptor_And_GetTestDescriptors_And_GetTestDescriptorBy
     });
 }
 
-function testModifyTestDescriptor(name, procedureDescription, idSKU, id, newStatus){
+function testModifyTestDescriptor(name, procedureDescription, idSKU, id, newName, newProcedureDescription, newIdSKU){
     test("modify a testDescriptor", async () => {
-        await testDescriptorDAO.createTestDescriptor(name, procedureDescription, idSKU);
-        await testDescriptorDAO.modifyTestDescriptor(id, newStatus);   
+        await testDescriptorDAO.createTestDescriptor([name, procedureDescription, idSKU]);
+        await testDescriptorDAO.modifyTestDescriptor(id, [name, procedureDescription, idSKU]);   
         var res = await testDescriptorDAO.getTestDescriptorById(id);
         expect(res.length).toStrictEqual(1);
         expect(res.id).toStrictEqual(id);
-        expect(res.name).toStrictEqual(newStatus.name);
-        expect(res.procedureDescription).toStrictEqual(newStatus.procedureDescription);
-        expect(res.idSKU).toStrictEqual(newStatus.idSKU);
+        expect(res.name).toStrictEqual(newName);
+        expect(res.procedureDescription).toStrictEqual(newProcedureDescription);
+        expect(res.idSKU).toStrictEqual(newIdSKU);
     });
 }
 
 function testDeleteTestDescriptor(id, name, procedureDescription, idSKU){
     test("delete a testDescriptor", async () => {
-        await testDescriptorDAO.createTestDescriptor(name, procedureDescription, idSKU);
+        await testDescriptorDAO.createTestDescriptor([name, procedureDescription, idSKU]);
         await testDescriptorDAO.deleteTestDescriptor(id);   
         var res = await testDescriptorDAO.getTestDescriptors();
         expect(res).toEqual("404");

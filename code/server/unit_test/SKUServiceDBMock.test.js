@@ -71,7 +71,7 @@ describe("create an SKU", () => {
             price : 10.99,
         };
         await SKU_Service.addSKU(SKU);
-        expect(SKUDAO.addSKU.mock.call).toBe(SKU);
+        expect(SKUDAO.addSKU.mock.calls[0]).toBe(SKU);
     });
 });
 
@@ -106,6 +106,6 @@ describe("delete an SKU", () => {
     test("delete an SKU", async () => {
         const id = 1;
         await SKU_Service.deleteSKU(id);
-        expect(SKUDAO.deleteSKU.mock.call).toBe(id);
+        expect(SKUDAO.deleteSKU.mock.calls[0]).toBe(id);
     });
 });

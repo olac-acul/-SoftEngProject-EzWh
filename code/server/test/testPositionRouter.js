@@ -15,9 +15,9 @@ describe('test position APIs', () => {
     getAllPositions(204, "800234543412", "8002", "3454", "3412", 1000, 1000);
     createPosition(201, "800234543412", "8002", "3454", "3412", 1000, 1000);
     createPosition(422);
-    modifyPosition(200, "800234543412", "8012", "3454", "3412", 1000, 1000, 300, 150);
+    modifyPosition(200, "800234543412", "8002", "3454", "3412", 1000, 1000, "8012", "3454", "3412", 1000, 1000, 300, 150);
     modifyPosition(422);
-    changePositionID(200, "800234543412", "801234543412");
+    changePositionID(200, "800234543412", "8002", "3454", "3412", 1000, 1000, "801234543412");
     changePositionID(422);
     deletePosition(200, "800234543412", "8002", "3454", "3412", 1000, 1000);
     deletePosition(422);
@@ -67,28 +67,34 @@ function createPosition(expectedHTTPStatus, positionID, aisleID, row, col, maxWe
     });
 }
 
-function modifyPosition(expectedHTTPStatus, oldPositionID, position) {
+function modifyPosition(expectedHTTPStatus, oldPositionID, aisleID, row, col, maxWeight, maxVolume, newAisleID, newRow, newCol, newMaxWeight, newMaxVolume, newOccupiedWeight, newOccupiedVolume) {
     it('modifying a position', function (done) {
         if (oldPositionID !== undefined) {
-            const newPositionID = position.newAisleID + position.newRow + position.newCol;
-            let updatedPosition = { positionID: newPositionID, aisleID: position.newAisleID, row: position.newRow, col: position.newCol, maxWeight: position.newMaxWeight, maxVolume: position.newMaxVolume, occupiedWeight: position.newOccupiedWeight, occupiedVolume: position.newOccupiedVolume }
-            agent.put('/api/position/'+ oldPositionID)
-                .send(updatedPosition)
-                .then(function (res) {
-                    res.should.have.status(200);
-                    agent.get('/api/position/'+ newPositionID)
-                        .then(function (res) {
-                            res.should.have.status(expectedHTTPStatus);
-                            res.body.positionID.should.equal(newPositionID);
-                            res.body.aisleID.should.equal(position.newAisleID);
-                            res.body.row.should.equal(position.newRow);
-                            res.body.col.should.equal(position.newCol);
-                            res.body.maxWeight.should.equal(position.newMaxWeight);
-                            res.body.maxVolume.should.equal(position.newMaxVolume);
-                            res.body.occupiedVolume.should.equal(position.newOccupiedVolume);
-                            res.body.occupiedVolume.should.equal(position.newOccupiedVolume);
-                        done();
-                        });
+            let position = { positionID: oldPositionID, aisleID: aisleID, row: row, col: col, maxWeight: maxWeight, maxVolume: maxVolume };
+            agent.post('/api/position')
+                .send(position)
+                    .then(function (res) {
+                        res.should.have.status(201);
+                        const newPositionID = newAisleID + newRow + newCol;
+                        let updatedPosition = { positionID: newPositionID, aisleID: newAisleID, row: newRow, col: newCol, maxWeight: newMaxWeight, maxVolume: newMaxVolume, occupiedWeight: newOccupiedWeight, occupiedVolume: newOccupiedVolume }
+                        agent.put('/api/position/'+ oldPositionID)
+                            .send(updatedPosition)
+                            .then(function (res) {
+                                res.should.have.status(200);
+                                agent.get('/api/position/'+ newPositionID)
+                                    .then(function (res) {
+                                        res.should.have.status(expectedHTTPStatus);
+                                        res.body.positionID.should.equal(newPositionID);
+                                        res.body.aisleID.should.equal(newAisleID);
+                                        res.body.row.should.equal(newRow);
+                                        res.body.col.should.equal(newCol);
+                                        res.body.maxWeight.should.equal(newMaxWeight);
+                                        res.body.maxVolume.should.equal(newMaxVolume);
+                                        res.body.occupiedWeight.should.equal(newOccupiedWeight);
+                                        res.body.occupiedVolume.should.equal(newOccupiedVolume);
+                                    done();
+                                    });
+                                });
                         
                 });
         }
@@ -102,29 +108,32 @@ function modifyPosition(expectedHTTPStatus, oldPositionID, position) {
     });
 }
 
-function changePositionID(expectedHTTPStatus, oldPositionID, newPositionId) {
+function changePositionID(expectedHTTPStatus, oldPositionID, aisleID, row, col, maxWeight, maxVolume, newPositionId) {
     it('changing positionID', function (done) {
         if (oldPositionID !== undefined) {
-            const newPositionID = newPositionId.newPositionID;
-            const newAisleID = newPositionID.slice(0, 4);
-            const newRow = newPositionID.slice(4, 8);
-            const newCol = newPositionID.slice(8, 12);
-            let updatedElements = { positionID: newPositionID, aisleID: newAisleID, row: newRow, col: newCol }
-            agent.put("/api/position/"+ oldPositionID + "/changeID")
-                .send(updatedElements)
-                .then(function (res) {
-                    res.should.have.status(200);
-                    agent.get('/api/position/'+ newPositionID)
-                        .then(function (res) {
-                            res.should.have.status(expectedHTTPStatus);
-                            res.body.positionID.should.equal(newPositionID);
-                            res.body.aisleID.should.equal(newAisleID);
-                            res.body.row.should.equal(newRow);
-                            res.body.col.should.equal(newCol);
-                        done();
-                        });
-                        
-                });
+            let position = { positionID: oldPositionID, aisleID: aisleID, row: row, col: col, maxWeight: maxWeight, maxVolume: maxVolume };
+            agent.post('/api/position')
+                .send(position)
+                    .then(function (res) {
+                        res.should.have.status(201);
+                        const positionId = {newPositionID: newPositionId}
+                        agent.put("/api/position/"+ oldPositionID + "/changeID")
+                            .send(positionId)
+                                .then(function (res) {
+                                    res.should.have.status(200);
+                                    agent.get('/api/position/'+ newPositionID)
+                                        .then(function (res) {
+                                            res.should.have.status(expectedHTTPStatus);
+                                            res.body.positionId.positionID.should.equal(newPositionID);
+                                            res.body.aisleID.should.equal(newPositionID.slice(0, 4));
+                                            res.body.row.should.equal(newPositionID.slice(4, 8));
+                                            res.body.col.should.equal(newPositionID.slice(8, 12));
+                                            res.body.maxWeight.should.equal(maxWeight);
+                                            res.body.maxVolume.should.equal(maxVolume);
+                                            done();
+                                        });
+                                });
+                    });
         }
         else {
             agent.put('/api/position/changeID') //we are not sending any data

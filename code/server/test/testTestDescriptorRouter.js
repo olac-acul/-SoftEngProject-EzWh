@@ -17,7 +17,7 @@ describe('test testDescriptor APIs', () => {
     getTestDescriptorById(422);
     createTestDescriptor(201, "testDescriptor 1", "PD1", 8);
     createTestDescriptor(422);
-    modifyTestDescriptor(200, 1, "testDescriptor 1", "PD1", 8);
+    modifyTestDescriptor(200, 1, "testDescriptor 1", "PD1", 8, "testDescriptor 1", "PD2", 26);
     modifyTestDescriptor(422);
     deleteTestDescriptor(200, 1, "testDescriptor 1", "PD1", 8);
     deleteTestDescriptor(422);
@@ -94,14 +94,15 @@ function createTestDescriptor(expectedHTTPStatus, name, procedureDescription, id
     });
 }
 
-function modifyTestDescriptor(expectedHTTPStatus, id, name, procedureDescription, idSKU) {
+function modifyTestDescriptor(expectedHTTPStatus, id, name, procedureDescription, idSKU, newName, newProcedureDescription, newIdSKU) {
     it('modifying a testDescriptor', function (done) {
         if (id !== undefined) {
-            let newStatus = { name: name, procedureDescription:procedureDescription, idSKU:idSKU }
+            let testDescriptor = { name: name, procedureDescription: procedureDescription, idSKU: idSKU }
             agent.post('/api/testDescriptor')
                 .send(testDescriptor)
                 .then(function (res) {
                     res.should.have.status(201);
+                    let newStatus = { newName: newName, newProcedureDescription:newProcedureDescription, newIdSKU:newIdSKU }
                     agent.put('/api/testDescriptor/'+ id)
                         .send(newStatus)
                         .then(function (r) {

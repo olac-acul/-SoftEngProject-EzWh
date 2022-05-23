@@ -57,7 +57,7 @@ describe("create an internalOrder", () => {
             customerId : 1
         };
         await internalOrderService.createInternalOrder(internalOrder);
-        expect(internalOrderDAO.createInternalOrder.mock.call).toBe(internalOrder);
+        expect(internalOrderDAO.createInternalOrder.mock.calls[0]).toBe(internalOrder);
     });
 });
 
@@ -99,6 +99,6 @@ describe("delete an internalOrder", () => {
     test("delete an internalOrder", async () => {
         const id = 1;
         await internalOrderService.deleteInternalOrder(id);
-        expect(internalOrderDAO.deleteInternalOrder.mock.call).toBe(id);
+        expect(internalOrderDAO.deleteInternalOrder.mock.calls[0]).toBe(id);
     });
 });

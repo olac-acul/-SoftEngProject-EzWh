@@ -65,7 +65,7 @@ describe("create a restockOrder", () => {
             supplierId : 1,
         };
         await restockOrderService.createRestockOrder(restockOrder);
-        expect(restockOrderDAO.createRestockOrder.mock.call).toBe(restockOrder);
+        expect(restockOrderDAO.createRestockOrder.mock.calls[0]).toBe(restockOrder);
     });
 });
 
@@ -93,6 +93,6 @@ describe("delete a restockOrder", () => {
     test("delete a restockOrder", async () => {
         const id = 1;
         await restockOrderService.deleteRestockOrder(id);
-        expect(restockOrderDAO.deleteRestockOrder.mock.call).toBe(id);
+        expect(restockOrderDAO.deleteRestockOrder.mock.calls[0]).toBe(id);
     });
 });

@@ -114,8 +114,8 @@ async function testChangePositionID(){
             col: "3412",
             maxWeight: 1000,
             maxVolume: 1000,
-            occupiedWeight: 300,
-            occupiedVolume: 150
+            occupiedWeight: null,
+            occupiedVolume: null
         });
     });
 }

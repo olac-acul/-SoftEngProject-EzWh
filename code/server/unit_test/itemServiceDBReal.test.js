@@ -55,7 +55,7 @@ async function testCreateItem(){
             supplierId : 10
         }
         let res = await itemService.createItem(item);
-        res = await itemService.getItemById(id);
+        res = await itemService.getItemById(item.id);
         expect(res).toEqual({
             id:12,
             description : "d1",
@@ -78,15 +78,15 @@ async function testModifyItem(){
     test("modify an item", async () => {
         const id = 12;
         const newStatus = {
-            newPrice: 9.99,
-            newDescription: "d2"
+            newDescription: "d2",
+            newPrice: 9.99
         };
         let res = await itemService.modifyItem(id, newStatus);
         res = await itemService.getItemById(id);
         expect(res).toEqual({
             id:12,
-            description : "d1",
-            price : 10.99,
+            description : "d2",
+            price : 9.99,
             SKUId : 8,
             supplierId : 10
         });

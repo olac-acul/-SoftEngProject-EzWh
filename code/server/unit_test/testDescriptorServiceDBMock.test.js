@@ -4,6 +4,7 @@ const testDescriptorService = new TestDescriptorService(testDescriptorDAO);
 
 describe("get testDescriptors", () => {
     testDescriptorDAO.getTestDescriptors.mockReturnValue({
+        id: 1,
         name: "testDescriptor 1",
         procedureDescription: "PD1",
         idSKU: 8
@@ -11,6 +12,7 @@ describe("get testDescriptors", () => {
     test("get testDescriptors", async () => {
         let res = await testDescriptorService.getTestDescriptors();
         expect(res).toEqual({
+            id: 1,
             name: "testDescriptor 1",
             procedureDescription: "PD1",
             idSKU: 8
@@ -45,8 +47,7 @@ describe("create a testDescriptor", () => {
             idSKU: 8
         }
         await testDescriptorService.createTestDescriptor(testDescriptor);
-        expect(testDescriptorDAO.createTestDescriptor.mock.call).toBe(testDescriptor);
-        expect(testDescriptorDAO.createTestDescriptor.mock.call).toBe(testDescriptor);
+        expect(testDescriptorDAO.createTestDescriptor.mock.calls[0]).toBe(testDescriptor);
     });
 });
 
@@ -54,9 +55,9 @@ describe("modify a testDescriptor", () => {
     test("modify a testDescriptor", async () => {
         const id = 1;
         const newStatus = {
-            name: "testDescriptor 1",
-            procedureDescription: "PD2",
-            idSKU: 26
+            newName: "testDescriptor 1",
+            newProcedureDescription: "PD2",
+            newIdSKU: 26
         }
         await testDescriptorService.modifyTestDescriptor(id, newStatus);
         expect(testDescriptorDAO.modifyTestDescriptor.mock.calls[0]).toBe(id);
@@ -68,6 +69,6 @@ describe("delete a testDescriptor", () => {
     test("delete a testDescriptor", async () => {
         const id = 1;
         await testDescriptorService.deleteTestDescriptor(id);
-        expect(testDescriptorDAO.deleteTestDescriptor.mock.call).toBe(id);
+        expect(testDescriptorDAO.deleteTestDescriptor.mock.calls[0]).toBe(id);
     });
 });
