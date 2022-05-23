@@ -7,8 +7,11 @@ describe("get restockOrders", () => {
         id:1,
         issueDate:"2021/11/29 09:33",
         state: "ISSUED",
+        products: [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
+                    {"SKUId":180,"description":"another product","price":11.99,"qty":20}],
         supplierId : 1,
-        transportNote: null
+        transportNote: null,
+        skuItems: null
         }
   );
     test("get restockOrders", async () => {
@@ -17,8 +20,11 @@ describe("get restockOrders", () => {
             id:1,
             issueDate:"2021/11/29 09:33",
             state: "ISSUED",
+            products: [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
+                        {"SKUId":180,"description":"another product","price":11.99,"qty":20}],
             supplierId : 1,
-            transportNote: null
+            transportNote: null,
+            skuItems: null
         });
     });
 });
@@ -28,8 +34,11 @@ describe("get a restockOrder", () => {
         id:1,
         issueDate:"2021/11/29 09:33",
         state: "ISSUED",
+        products: [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
+                    {"SKUId":180,"description":"another product","price":11.99,"qty":20}],
         supplierId : 1,
-        transportNote: null
+        transportNote: null,
+        skuItems: null
     });
     test("get a restockOrder", async () => {
         const id = 1;
@@ -38,8 +47,11 @@ describe("get a restockOrder", () => {
             id:1,
             issueDate:"2021/11/29 09:33",
             state: "ISSUED",
+            products: [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
+                        {"SKUId":180,"description":"another product","price":11.99,"qty":20}],
             supplierId : 1,
-            transportNote: null
+            transportNote: null,
+            skuItems: null
         });
     });
 });
@@ -48,6 +60,8 @@ describe("create a restockOrder", () => {
     test("create a restockOrder", async () => {
         const restockOrder = {
             issueDate:"2021/11/29 09:33",
+            products: [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
+                        {"SKUId":180,"description":"another product","price":11.99,"qty":20}],
             supplierId : 1,
         };
         await restockOrderService.createRestockOrder(restockOrder);

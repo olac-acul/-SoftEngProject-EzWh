@@ -26,7 +26,7 @@ function testCreateRestockOrder_And_GetRestockOrders_And_GetRestockOrderById(id,
         expect(res.issueDate).toStrictEqual(restockOrder.issueDate);
         expect(res.state).toStrictEqual("ISSUED");
         expect(res.supplierId).toStrictEqual(restockOrder.supplierId);
-        expect(res.transportNote).toStrictEqual(null);
+        expect(res.transportNote).toStrictEqual(null); 
     });
 }
 

@@ -16,12 +16,12 @@ async function testGetInternalOrders(){
     test("get internalOrders", async () => {
         let res = await internalOrderService.testGetInternalOrders();
         expect(res).toEqual({
-            "id":1,
-            "issueDate":"2021/11/29 09:33",
-            "state": "ACCEPTED",
-            "products": [{"SKUId":12,"description":"a product","price":10.99,"qty":2},
+            id:1,
+            issueDate:"2021/11/29 09:33",
+            state: "ACCEPTED",
+            products: [{"SKUId":12,"description":"a product","price":10.99,"qty":2},
                 {"SKUId":180,"description":"another product","price":11.99,"qty":3}],
-            "customerId" : 1
+            customerId : 1
         });
     });
 }
@@ -31,12 +31,12 @@ async function testGetInternalOrderById(){
         const id = 1;
         let res = await internalOrderService.getInternalOrderById(id);
         expect(res).toEqual({
-            "id":1,
-            "issueDate":"2021/11/29 09:33",
-            "state": "ACCEPTED",
-            "products": [{"SKUId":12,"description":"a product","price":10.99,"qty":2},
+            id:1,
+            issueDate:"2021/11/29 09:33",
+            state: "ACCEPTED",
+            products: [{"SKUId":12,"description":"a product","price":10.99,"qty":2},
                 {"SKUId":180,"description":"another product","price":11.99,"qty":3}],
-            "customerId" : 1
+            customerId: 1
         });
     });
 }
@@ -52,21 +52,20 @@ async function testCreateInternalOrder(){
     test("create an internalOrder", async () => {
         const id = 1;
         const internalOrder = {
-            "issueDate":"2021/11/29 09:33",
-            "state": "ACCEPTED",
-            "products": [{"SKUId":12,"description":"a product","price":10.99,"qty":2},
+            issueDate:"2021/11/29 09:33",
+            products: [{"SKUId":12,"description":"a product","price":10.99,"qty":2},
                 {"SKUId":180,"description":"another product","price":11.99,"qty":3}],
-            "customerId" : 1
+            customerId : 1
         }
         let res = await internalOrderService.createInternalOrder(internalOrder);
         res = await internalOrderService.getInternalOrderById(id);
         expect(res).toEqual({
-            "id":1,
-            "issueDate":"2021/11/29 09:33",
-            "state": "ACCEPTED",
-            "products": [{"SKUId":12,"description":"a product","price":10.99,"qty":2},
+            id:1,
+            issueDate:"2021/11/29 09:33",
+            state: "ISSUED", 
+            products: [{"SKUId":12,"description":"a product","price":10.99,"qty":2},
                 {"SKUId":180,"description":"another product","price":11.99,"qty":3}],
-            "customerId" : 1
+            customerId : 1
         });
     });
 }
@@ -89,12 +88,12 @@ async function testChangeInternalOrderStateWithStateACCEPTED(){
         let res = await internalOrderService.changeStateInternalOrder(id, newStatus);
         res = await internalOrderService.getInternalOrderById(id);
         expect(res).toEqual({
-            "id":1,
-            "issueDate":"2021/11/29 09:33",
-            "state": "ACCEPTED",
-            "products": [{"SKUId":12,"description":"a product","price":10.99,"qty":2},
+            id:1,
+            issueDate:"2021/11/29 09:33",
+            state: "ACCEPTED",
+            products: [{"SKUId":12,"description":"a product","price":10.99,"qty":2},
                 {"SKUId":180,"description":"another product","price":11.99,"qty":3}],
-            "customerId" : 1
+            customerId : 1
         });
     });
 }
@@ -107,12 +106,12 @@ async function testChangeInternalOrderStateWithStateCOMPLETED(){
         let res = await internalOrderService.changeStateInternalOrder(id, newStatus);
         res = await internalOrderService.getInternalOrderById(id);
         expect(res).toEqual({
-            "id":1,
-            "issueDate":"2021/11/29 09:33",
-            "state": "COMPLETED",
-            "products": [{"SKUId":12,"description":"a product","price":10.99,"qty":2},
+            id:1,
+            issueDate:"2021/11/29 09:33",
+            state: "COMPLETED",
+            products: [{"SKUId":12,"description":"a product","price":10.99,"qty":2},
                 {"SKUId":180,"description":"another product","price":11.99,"qty":3}],
-            "customerId" : 1
+            customerId : 1
         });
     });
 }
@@ -124,12 +123,12 @@ async function testChangeInternalOrderStateWithStateACCEPTEDWithProducts(){
         let res = await internalOrderService.changeStateInternalOrder(id, newStatus);
         res = await internalOrderService.getInternalOrderById(id);
         expect(res).toEqual({
-            "id":1,
-            "issueDate":"2021/11/29 09:33",
-            "state": "ACCEPTED",
-            "products": [{"SKUId":12,"description":"a product","price":10.99,"qty":2},
+            id:1,
+            issueDate:"2021/11/29 09:33",
+            state: "ACCEPTED",
+            products: [{"SKUId":12,"description":"a product","price":10.99,"qty":2},
                 {"SKUId":180,"description":"another product","price":11.99,"qty":3}],
-            "customerId" : 1
+            customerId : 1
         });
     });
 }

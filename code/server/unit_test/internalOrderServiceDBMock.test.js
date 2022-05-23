@@ -4,46 +4,46 @@ const internalOrderService = new InternalOrderService(internalOrderDAO);
 
 describe("get internalOrders", () => {
     internalOrderDAO.getInternalOrders.mockReturnValue(  {
-        "id":1,
-        "issueDate":"2021/11/29 09:33",
-        "state": "ACCEPTED",
-        "products": [{"SKUId":12,"description":"a product","price":10.99,"qty":2},
+        id:1,
+        issueDate:"2021/11/29 09:33",
+        state: "ACCEPTED",
+        products: [{"SKUId":12,"description":"a product","price":10.99,"qty":2},
                     {"SKUId":180,"description":"another product","price":11.99,"qty":3}],
-        "customerId" : 1
+        customerId : 1
         }
   );
     test("get internalOrders", async () => {
         let res = await internalOrderService.getInternalOrders();
         expect(res).toEqual({
-            "id":1,
-            "issueDate":"2021/11/29 09:33",
-            "state": "ACCEPTED",
-            "products": [{"SKUId":12,"description":"a product","price":10.99,"qty":2},
+            id:1,
+            issueDate:"2021/11/29 09:33",
+            state: "ACCEPTED",
+            products: [{"SKUId":12,"description":"a product","price":10.99,"qty":2},
                         {"SKUId":180,"description":"another product","price":11.99,"qty":3}],
-            "customerId" : 1
+            customerId : 1
         });
     });
 });
 
 describe("get an internalOrder", () => {
     internalOrderDAO.getInternalOrderById.mockReturnValue({
-        "id":1,
-        "issueDate":"2021/11/29 09:33",
-        "state": "ACCEPTED",
-        "products": [{"SKUId":12,"description":"a product","price":10.99,"qty":2},
+        id:1,
+        issueDate:"2021/11/29 09:33",
+        state: "ACCEPTED",
+        products: [{"SKUId":12,"description":"a product","price":10.99,"qty":2},
                     {"SKUId":180,"description":"another product","price":11.99,"qty":3}],
-        "customerId" : 1
+        customerId : 1
     });
     test("get an internalOrder", async () => {
         const id = 1;
         let res = await internalOrderService.getInternalOrderById(id);
         expect(res).toEqual({
-            "id":1,
-            "issueDate":"2021/11/29 09:33",
-            "state": "ACCEPTED",
-            "products": [{"SKUId":12,"description":"a product","price":10.99,"qty":2},
+            id:1,
+            issueDate:"2021/11/29 09:33",
+            state: "ACCEPTED",
+            products: [{"SKUId":12,"description":"a product","price":10.99,"qty":2},
                         {"SKUId":180,"description":"another product","price":11.99,"qty":3}],
-            "customerId" : 1
+            customerId : 1
         });
     });
 });
@@ -51,10 +51,10 @@ describe("get an internalOrder", () => {
 describe("create an internalOrder", () => {
     test("create an internalOrder", async () => {
         const internalOrder = {
-            "issueDate":"2021/11/29 09:33",
-            "products": [{"SKUId":12,"description":"a product","price":10.99,"qty":2},
+            issueDate:"2021/11/29 09:33",
+            products: [{"SKUId":12,"description":"a product","price":10.99,"qty":2},
                         {"SKUId":180,"description":"another product","price":11.99,"qty":3}],
-            "customerId" : 1
+            customerId : 1
         };
         await internalOrderService.createInternalOrder(internalOrder);
         expect(internalOrderDAO.createInternalOrder.mock.call).toBe(internalOrder);

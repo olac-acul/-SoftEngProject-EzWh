@@ -44,7 +44,7 @@ function getAllInternalOrders(expectedHTTPStatus, id, internalOrder) {
                         r.should.have.status(expectedHTTPStatus);
                         r.body.id.should.equal(id);
                         r.body.issueDate.should.equal(internalOrder.issueDate);
-                        r.body.state.should.equal(null);
+                        r.body.state.should.equal("ISSUED");
                         r.body.products.should.equal(internalOrder.products);
                         r.body.customerId.should.equal(internalOrder.customerId);
                         done();
@@ -65,7 +65,7 @@ function getInternalOrderById(expectedHTTPStatus, id, internalOrder) {
                             r.should.have.status(expectedHTTPStatus);
                             r.body.id.should.equal(id);
                             r.body.issueDate.should.equal(internalOrder.issueDate);
-                            r.body.state.should.equal(null);
+                            r.body.state.should.equal("ISSUED");
                             r.body.products.should.equal(internalOrder.products);
                             r.body.customerId.should.equal(internalOrder.customerId);
                             done();
