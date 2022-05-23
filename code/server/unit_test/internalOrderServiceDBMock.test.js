@@ -67,7 +67,7 @@ describe("modify an internalOrder with state ACCEPTED", () => {
         const newState = "ACCEPTED";
         await internalOrderService.changeStateInternalOrder(id, newState);
         expect(internalOrderDAO.changeStateInternalOrder.mock.calls[0]).toBe(id);
-        expect(internalOrderDAO.changeStateInternalOrder.calls[1]).toBe(state);
+        expect(internalOrderDAO.changeStateInternalOrder.calls[1]).toBe(newState);
     });
 });
 

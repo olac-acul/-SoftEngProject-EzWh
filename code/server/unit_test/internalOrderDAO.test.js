@@ -43,7 +43,7 @@ function testModifyInternalOrder(id, internalOrder, newState){
         expect(res.length).toStrictEqual(1);
         expect(res.id).toStrictEqual(id);
         expect(res.issueDate).toStrictEqual(internalOrder.issueDate);
-        expect(res.state).toStrictEqual(newState.newState);
+        expect(res.state).toStrictEqual(newState);
         expect(res.products).toStrictEqual(internalOrder.products);
         expect(res.customerId).toStrictEqual(internalOrder.customerId);
     });

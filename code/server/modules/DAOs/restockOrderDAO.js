@@ -58,8 +58,8 @@ exports.getRestockOrders = () => {
                     id: r.ID,
                     issueDate: r.ISSUE_DATE,
                     state: r.STATE,
-                    transportNote: r.TRANSPORT_NOTE,
-                    supplierId: r.SUPPILER_ID
+                    supplierId: r.SUPPILER_ID,
+                    transportNote: r.TRANSPORT_NOTE
                 }
             ));
             resolve(restockOrders);
@@ -286,3 +286,16 @@ exports.deleteRestockOrder_join_Product = (id) => {
     });
 
 }
+
+exports.deleteRestockOrders = () => {
+    return new Promise((resolve, reject) => {
+      const sql = 'DELETE FROM RESTOCK_ORDERS';
+      db.run(sql, [], function (err) {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(true);
+      })
+    })
+  };
