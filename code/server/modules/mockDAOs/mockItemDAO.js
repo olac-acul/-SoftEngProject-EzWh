@@ -1,3 +1,4 @@
+exports.newTable = jest.fn();
 exports.getItems = jest.fn();
 exports.getItemById = jest.fn();
 exports.createItem = jest.fn();

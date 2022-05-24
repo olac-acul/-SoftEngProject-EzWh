@@ -11,7 +11,7 @@ describe("get testDescriptors", () => {
     });
     test("get testDescriptors", async () => {
         let res = await testDescriptorService.getTestDescriptors();
-        expect(res[0]).toEqual({
+        expect(res).toEqual({
             id: 1,
             name: "testDescriptor 1",
             procedureDescription: "PD1",

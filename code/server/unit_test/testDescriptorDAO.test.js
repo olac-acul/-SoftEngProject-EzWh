@@ -11,8 +11,8 @@ describe('testTestDescriotorDAO', () => {
     });
 
     testCreateTestDescriptor_And_GetTestDescriptors_And_GetTestDescriptorById(1, "test descriptor 1", "PD1", 8)
-    testModifyTestDescriptor("test descriptor 1", "PD1", 8, 1, "test descriptor 1", "PD2", 26);
-    testDeleteTestDescriptor(1, "test descriptor 1", "PD1", 8);
+    testModifyTestDescriptor("test descriptor 1", "PD1", 8, 2, "test descriptor 1", "PD2", 26);
+    testDeleteTestDescriptor(3, "test descriptor 1", "PD1", 8);
 });
 
 function testCreateTestDescriptor_And_GetTestDescriptors_And_GetTestDescriptorById(id, name, procedureDescription, idSKU) {
@@ -45,7 +45,7 @@ function testDeleteTestDescriptor(id, name, procedureDescription, idSKU){
     test("delete a testDescriptor", async () => {
         await testDescriptorDAO.createTestDescriptor({name: name, procedureDescription: procedureDescription, idSKU: idSKU});
         await testDescriptorDAO.deleteTestDescriptor(id);   
-        var res = await testDescriptorDAO.getTestDescriptors();
+        var res = await testDescriptorDAO.getTestDescriptorById(id);
         expect(res.length).toEqual(0);
     });
 }

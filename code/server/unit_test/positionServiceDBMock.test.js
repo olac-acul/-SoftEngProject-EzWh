@@ -15,7 +15,7 @@ describe("get positions", () => {
     });
     test("get positions", async () => {
         let res = await positionService.getPositions();
-        expect(res[0]).toEqual({
+        expect(res).toEqual({
             positionID: "800234543412",
             aisleID: "8002",
             row: "3454",

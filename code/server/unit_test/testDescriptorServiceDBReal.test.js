@@ -2,7 +2,7 @@ const TestDescriptorService = require("../modules/services/testDescriptorService
 const testDescriptorDAO = require("../modules/DAOs/testDescriptorDAO");
 const testDescriptorService = new TestDescriptorService(testDescriptorDAO);
 
-describe("get testDescriptors", () => {
+describe("get testDescriptor", () => {
     beforeEach(async () => {
         await testDescriptorDAO.deleteTestDescriptors();
         await testDescriptorDAO.createTestDescriptor({name: "testDescriptor 1", procedureDescription: "PD1", idSKU: 8});
