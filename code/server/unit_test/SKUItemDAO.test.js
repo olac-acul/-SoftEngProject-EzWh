@@ -1,6 +1,6 @@
 const SKUItemDAO = require('../modules/SKUItemDAO');
 
-describe('testSKUItemDao', () => {
+describe('testSKUItemDAO', () => {
     beforeEach(async () => {
         await SKUItemDAO.deleteSKUItems();
     });
@@ -10,30 +10,30 @@ describe('testSKUItemDao', () => {
         expect(res.length).toStrictEqual(0);
     });
 
-    testAddSKUItem_getAllSKUItems_getSKUItem('123123123', ['123123123', 1, 10, '2021/11/29 12:30']);
-    testModifySKUItem('123123123', ['123123123', 1, 10, '2021/11/29 12:30'], ['321321', 1, '2021/11/22 12:30']);
-    testDeleteSKUItem('123123123', ['123123123', 1, 10, '2021/11/29 12:30']);
+    testAddSKUItem_getAllSKUItems_getSKUItem({RFID: '123123123', SKUId: 8, DateOfStock: '2021/11/29 12:30'});
+    testModifySKUItem({RFID: '123123123', SKUId: 8, DateOfStock: '2021/11/29 12:30'}, {newRFID: '321321321', newAvailable: 1 , newDateOfStock: '2021/11/22 12:30'});
+    testDeleteSKUItem({RFID: '123123123', SKUId: 8, DateOfStock: '2021/11/29 12:30'});
 
 });
 
-function testAddSKUItem_getAllSKUItems_getSKUItem(RFID, SKUItem) {
+function testAddSKUItem_getAllSKUItems_getSKUItem(SKUItem) {
     test('create new SKUItem and get all SKUItems and get an SKUItem by rfid', async () => {
         await SKUItemDAO.addSKUItem(SKUItem);
         var res = await SKUItemDAO.getAllSKUItems();
         expect(res.length).toStrictEqual(1);
-        res = await SKUItemDAO.getSKUItem(RFID);
-        expect(res.RFID).toStrictEqual(RFID);
+        res = await SKUItemDAO.getSKUItem(SKUItem.RFID);
+        expect(res.RFID).toStrictEqual(SKUItem.RFID);
         expect(res.SKUId).toStrictEqual(SKUItem.SKUId);
-        expect(res.available).toStrictEqual(SKU.available);
-        expect(res.dateOfStock).toStrictEqual(SKU.dateOfStock);
+        expect(res.available).toStrictEqual(SKUItem.available);
+        expect(res.dateOfStock).toStrictEqual(SKUItem.dateOfStock);
     });
 }
 
-function testModifySKUItem(RFID, SKUItem, newStatus){
+function testModifySKUItem(SKUItem, newStatus){
     test("modify an SKUItem", async () => {
         await SKUItemDAO.addSKUItem(SKUItem);
-        await SKUItemDAO.modifySKUItem(RFID, newStatus) ;
-        var res = await SKUItemDAO.getSKUItem(RFID);
+        await SKUItemDAO.modifySKUItem(SKUItem.RFID, newStatus) ;
+        var res = await SKUItemDAO.getSKUItem(SKUItem.RFID);
         expect(res.length).toStrictEqual(1);
         expect(res.RFID).toStrictEqual(newStatus.newRFID);
         expect(res.available).toStrictEqual(newStatus.newAvailable);
@@ -41,11 +41,11 @@ function testModifySKUItem(RFID, SKUItem, newStatus){
     });
 }
 
-function testDeleteSKUItem(RFID, SKUItem){
+function testDeleteSKUItem(SKUItem){
     test("delete an SKUItem", async () => {
         await SKUItemDAO.addSKUItem(SKUItem);
-        await SKUItemDAO.deleteSKUItem(RFID);   
-        var res = await SKUItemDAO.getSKUItem(RFID);
+        await SKUItemDAO.deleteSKUItem(SKUItem.RFID);   
+        var res = await SKUItemDAO.getSKUItem(SKUItem.RFID);
         expect(res).toEqual("404");
     });
 }
