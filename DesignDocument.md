@@ -69,8 +69,8 @@ The design must satisfy the Official Requirements document, notably functional a
 
 
 
-![Scenario 10.1](images/Scenario 10.1.jpg)
+![Scenario 10.1](images/Scenario%2010.1.jpg)
 
 
 
-![Scenario 11.2](images/Scenario 11.2.jpg)
+![Scenario 11.2](images/Scenario%2011.2.jpg)
