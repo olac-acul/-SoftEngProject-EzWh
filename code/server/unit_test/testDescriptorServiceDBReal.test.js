@@ -14,7 +14,7 @@ describe("get testDescriptors", () => {
 async function testGetTestDescriptors(){
     test("get testDescriptors", async () => {
         let res = await testDescriptorService.getTestDescriptors();
-        expect(res).toEqual({
+        expect(res[0]).toEqual({
             id: 1,
             name: "testDescriptor 1",
             procedureDescription: "PD1",
@@ -101,6 +101,6 @@ async function testDeleteTestDescriptor(){
         const id = 1;
         let res = await testDescriptorService.deleteTestDescriptor(id);
         res = await testDescriptorService.getTestDescriptorById(id);
-        expect(res).toEqual("404");
+        expect(res.length).toEqual(0);
     });
 }
