@@ -1,5 +1,5 @@
-const ItemService = require("../services/itemService");
-const itemDAO = require("../mockDAOs/mockItemDAO");
+const ItemService = require("../modules/services/itemService");
+const itemDAO = require("../modules/mockDAOs/mockItemDAO");
 const itemService = new ItemService(itemDAO);
 
 describe("get items", () => {

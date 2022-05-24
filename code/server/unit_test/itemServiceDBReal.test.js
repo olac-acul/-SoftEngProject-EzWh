@@ -1,4 +1,4 @@
-const ItemService = require("../services/itemService");
+const ItemService = require("../modules/services/itemService");
 const itemDAO = require("../DAOs/itemDAO");
 const itemService = new ItemService(itemDAO);
 

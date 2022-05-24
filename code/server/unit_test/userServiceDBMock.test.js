@@ -1,5 +1,5 @@
-const userService = require("../services/userService");
-const userDAO = require("../mockDAOs/mockUserDAO");
+const userService = require("../modules/services/userService");
+const userDAO = require("../modules/mockDAOs/mockUserDAO");
 const user_Service = new userService(userDAO);
 
 describe("get users", () => {

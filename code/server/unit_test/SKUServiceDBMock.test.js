@@ -1,5 +1,5 @@
-const SKUService = require("../services/SKUService");
-const SKUDAO = require("../mockDAOs/mockSKUDAO");
+const SKUService = require("../modules/services/SKUService");
+const SKUDAO = require("../modules/mockDAOs/mockSKUDAO");
 const SKU_Service = new SKUService(SKUDAO);
 
 describe("get SKUs", () => {

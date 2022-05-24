@@ -1,4 +1,4 @@
-const SKUItemDAO = require('../modules/SKUItemDAO');
+const SKUItemDAO = require('../modules/DAOs/SKUItemDAO');
 
 describe('testSKUItemDAO', () => {
     beforeEach(async () => {

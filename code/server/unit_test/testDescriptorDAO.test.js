@@ -1,4 +1,4 @@
-const testDescriptorDAO = require('../modules/testDescriptorDAO');
+const testDescriptorDAO = require('../modules/DAOs/testDescriptorDAO');
 
 describe('testTestDescriotorDAO', () => {
     beforeEach(async () => {

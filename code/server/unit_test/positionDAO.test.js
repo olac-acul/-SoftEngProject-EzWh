@@ -1,4 +1,4 @@
-const positionDAO = require('../modules/positionDAO');
+const positionDAO = require('../modules/DAOs/positionDAO');
 
 describe('testPositionDAO', () => {
     beforeEach(async () => {

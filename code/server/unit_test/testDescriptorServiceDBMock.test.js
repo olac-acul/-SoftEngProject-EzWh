@@ -1,5 +1,5 @@
-const TestDescriptorService = require("../services/testDescriptorService");
-const testDescriptorDAO = require("../mockDAOs/mockTestDescriptorDAO");
+const TestDescriptorService = require("../modules/services/testDescriptorService");
+const testDescriptorDAO = require("../modules/mockDAOs/mockTestDescriptorDAO");
 const testDescriptorService = new TestDescriptorService(testDescriptorDAO);
 
 describe("get testDescriptors", () => {

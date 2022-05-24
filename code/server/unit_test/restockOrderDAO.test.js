@@ -1,4 +1,4 @@
-const restockOrderDAO = require('../modules/restockOrderDAO');
+const restockOrderDAO = require('../modules/DAOs/restockOrderDAO');
 
 describe('testRestockOrderDAO', () => {
     beforeEach(async () => {

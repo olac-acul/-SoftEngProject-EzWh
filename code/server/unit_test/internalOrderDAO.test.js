@@ -1,4 +1,4 @@
-const internalOrderDAO = require('../modules/internalOrderDAO');
+const internalOrderDAO = require('../modules/DAOs/internalOrderDAO');
 
 describe('testInternalOrderDAO', () => {
     beforeEach(async () => {

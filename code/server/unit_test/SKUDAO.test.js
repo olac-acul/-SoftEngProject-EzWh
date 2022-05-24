@@ -1,4 +1,4 @@
-const SKUDAO = require('../modules/SKUDAO');
+const SKUDAO = require('../modules/DAOs/SKUDAO');
 
 describe('testSKUDAO', () => {
     beforeEach(async () => {

@@ -1,5 +1,5 @@
-const PositionService = require("../services/positionService");
-const positionDAO = require("../mockDAOs/mockPositionDAO");
+const PositionService = require("../modules/services/positionService");
+const positionDAO = require("../modules/mockDAOs/mockPositionDAO");
 const positionService = new PositionService(positionDAO);
 
 describe("get positions", () => {

@@ -1,5 +1,5 @@
-const RestockOrderService = require("../services/restockOrderService");
-const restockOrderDAO = require("../mockDAOs/mockRestockOrderDAO");
+const RestockOrderService = require("../modules/services/restockOrderService");
+const restockOrderDAO = require("../modules/mockDAOs/mockRestockOrderDAO");
 const restockOrderService = new RestockOrderService(restockOrderDAO);
 
 describe("get restockOrders", () => {

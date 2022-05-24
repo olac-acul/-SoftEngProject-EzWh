@@ -1,5 +1,5 @@
-const userService = require("../services/userService");
-const userDAO = require("../DAOs/userDAO");
+const userService = require("../modules/services/userService");
+const userDAO = require("../modules/DAOs/userDAO");
 const user_Service = new userService(userDAO);
 
 describe("get users", () => {

@@ -1,5 +1,5 @@
-const InternalOrderService = require("../services/internalOrderService");
-const internalOrderDAO = require("../DAOs/internalOrderDAO");
+const InternalOrderService = require("../modules/services/internalOrderService");
+const internalOrderDAO = require("../modules/DAOs/internalOrderDAO");
 const internalOrderService = new InternalOrderService(internalOrderDAO);
 
 describe("get internalOrders", () => {
