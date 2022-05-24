@@ -12,14 +12,14 @@ describe('test position APIs', () => {
         await agent.delete('/api/positions');
     })
 
-    getAllPositions(204, "800234543412", "8002", "3454", "3412", 1000, 1000);
+    getAllPositions(200, "800234543412", "8002", "3454", "3412", 1000, 1000);
     createPosition(201, "800234543412", "8002", "3454", "3412", 1000, 1000);
     createPosition(422);
-    modifyPosition(200, "800234543412", "8002", "3454", "3412", 1000, 1000, "8012", "3454", "3412", 1000, 1000, 300, 150);
+    modifyPosition(204, "800234543412", "8002", "3454", "3412", 1000, 1000, "8012", "3454", "3412", 1000, 1000, 300, 150);
     modifyPosition(422);
-    changePositionID(200, "800234543412", "8002", "3454", "3412", 1000, 1000, "801234543412");
+    changePositionID(204, "800234543412", "8002", "3454", "3412", 1000, 1000, "801234543412");
     changePositionID(422);
-    deletePosition(200, "800234543412", "8002", "3454", "3412", 1000, 1000);
+    deletePosition(204, "800234543412", "8002", "3454", "3412", 1000, 1000);
     deletePosition(422);
     deleteAllPositions(204);
 });
@@ -46,10 +46,9 @@ function getAllPositions(expectedHTTPStatus, positionID, aisleID, row, col, maxW
     });
 }
 
-function createPosition(expectedHTTPStatus, positionID, aisleID, row, col, maxWeight, maxVolume) {
+function createPosition(expectedHTTPStatus, position) {
     it('creating a position', function (done) {
-        if (positionID !== undefined) {
-            let position = { positionID: positionID, aisleID: aisleID, row: row, col: col, maxWeight: maxWeight, maxVolume: maxVolume }
+        if (position !== undefined) {
             agent.post('/api/position')
                 .send(position)
                 .then(function (res) {

@@ -12,16 +12,16 @@ describe('test SKU APIs', () => {
         await agent.delete('/api/skus');
     })
 
-    getAllSKUs(204, 1, ["d1", 100, 50, "n1", 50, 10.99]);
-    getSKU(200, 1, ["d1", 100, 50, "n1", 50, 10.99]);
+    getAllSKUs(200, 1, {description: "d1", weight: 100, volume: 50, notes: "n1", price: 10.99, availableQuantity: 50});
+    getSKU(200, 1, {description: "d1", weight: 100, volume: 50, notes: "n1", price: 10.99, availableQuantity: 50});
     getSKU(422);
-    addSKU(201, 1, ["d1", 100, 50, "n1", 50, 10.99]);
+    addSKU(201, {description: "d1", weight: 100, volume: 50, notes: "n1", price: 10.99, availableQuantity: 50});
     addSKU(422);
-    modifySKU(200, 1, ["d1", 100, 50, "n1", 50, 10.99], ["d12", 150, 100, "n2", 100, 9.99]);
+    modifySKU(204, 1,{description: "d1", weight: 100, volume: 50, notes: "n1", price: 10.99, availableQuantity: 50}, {newDescription: "d2", newWeight: 150, newVolume: 100, newNotes: "n2", newPrice: 9.99, newAvailableQuantity: 100});
     modifySKU(422);
-    modifySKUPosition(200, 1, ["d1", 100, 50, "n1", 50, 10.99], "800234523412");
+    modifySKUPosition(204, 1, {description: "d1", weight: 100, volume: 50, notes: "n1", price: 10.99, availableQuantity: 50}, "800234523412");
     modifySKUPosition(422);
-    deleteSKU(200, 1, ["d1", 100, 50, "n1", 50, 10.99]);
+    deleteSKU(204, 1, {description: "d1", weight: 100, volume: 50, notes: "n1", price: 10.99, availableQuantity: 50});
     deleteSKU(422);
     deleteAllSKUs(204);
 });
@@ -40,10 +40,8 @@ function getAllSKUs(expectedHTTPStatus, id, SKU) {
                         r.body.weight.should.equal(SKU.weight);
                         r.body.volume.should.equal(SKU.volume);
                         r.body.notes.should.equal(SKU.notes);
-                        r.body.position.should.equal(null);
                         r.body.availableQuantity.should.equal(SKU.availableQuantity);
                         r.body.price.should.equal(SKU.price);
-                        r.body.testDescriptors.should.equal(null);
                         done();
                     });
             });
@@ -51,7 +49,7 @@ function getAllSKUs(expectedHTTPStatus, id, SKU) {
 }
 
 function getSKU(expectedHTTPStatus, id, SKU) {
-    it('getting SKU data from the system', function (done) {
+    it('getting an SKU data from the system', function (done) {
         if (id !== undefined) {
             agent.post('/api/sku')
                 .send(SKU)
@@ -65,10 +63,8 @@ function getSKU(expectedHTTPStatus, id, SKU) {
                             r.body.weight.should.equal(SKU.weight);
                             r.body.volume.should.equal(SKU.volume);
                             r.body.notes.should.equal(SKU.notes);
-                            r.body.position.should.equal(null);
                             r.body.availableQuantity.should.equal(SKU.availableQuantity);
                             r.body.price.should.equal(SKU.price);
-                            r.body.testDescriptors.should.equal(null);
                             done();
                         });
                 });
@@ -83,7 +79,7 @@ function getSKU(expectedHTTPStatus, id, SKU) {
     });
 }
 
-function addSKU(expectedHTTPStatus, id, SKU) {
+function addSKU(expectedHTTPStatus, SKU) {
     it('creating an SKU', function (done) {
         if (SKU !== undefined) {
             agent.post('/api/sku')
@@ -136,7 +132,7 @@ function modifySKUPosition(expectedHTTPStatus, id, SKU, newPosition) {
                 .send(SKU)
                 .then(function (res) {
                     res.should.have.status(201);
-                    agent.put("/api/sku/" + id + "position")
+                    agent.put("/api/sku/" + id + "/position")
                         .send(newPosition)
                         .then(function (r) {
                             r.should.have.status(expectedHTTPStatus);

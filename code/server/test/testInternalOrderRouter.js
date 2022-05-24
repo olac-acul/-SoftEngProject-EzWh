@@ -12,23 +12,23 @@ describe('test internalOrder APIs', () => {
         await agent.delete('/api/internalOrders');
     })
 
-    getAllInternalOrders(204, 1, ["2021/11/29 09:33", [{"SKUId":12,"description":"a product","price":10.99,"qty":3},
-    {"SKUId":180,"description":"another product","price":11.99,"qty":3}], 1]);
-    getInternalOrderById(200, 1, ["2021/11/29 09:33", [{"SKUId":12,"description":"a product","price":10.99,"qty":3},
-    {"SKUId":180,"description":"another product","price":11.99,"qty":3}], 1]);
+    getAllInternalOrders(200, 1, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":3},
+    {"SKUId":180,"description":"another product","price":11.99,"qty":3}], customerId: 1});
+    getInternalOrderById(200, 1, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":3},
+    {"SKUId":180,"description":"another product","price":11.99,"qty":3}], customerId: 1});
     getInternalOrderById(422);
-    createInternalOrder(201, ["2021/11/29 09:33", [{"SKUId":12,"description":"a product","price":10.99,"qty":3},
-    {"SKUId":180,"description":"another product","price":11.99,"qty":3}], 1]);
+    createInternalOrder(201, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":3},
+    {"SKUId":180,"description":"another product","price":11.99,"qty":3}], customerId: 1});
     createInternalOrder(422);
-    changeInternalOrderState(200, 1, ["2021/11/29 09:33", [{"SKUId":12,"description":"a product","price":10.99,"qty":3},
-    {"SKUId":180,"description":"another product","price":11.99,"qty":3}], 1], "ACCEPTED");
-    changeInternalOrderState(200, 1, ["2021/11/29 09:33", [{"SKUId":12,"description":"a product","price":10.99,"qty":3},
-    {"SKUId":180,"description":"another product","price":11.99,"qty":3}], 1], ["COMPLETED", {"SkuID":1,"RFID":"12345678901234567890123456789016"},{"SkuID":1,"RFID":"12345678901234567890123456789038"}]);
-    changeInternalOrderState(200, 1, ["2021/11/29 09:33", [{"SKUId":12,"description":"a product","price":10.99,"qty":3},
-    {"SKUId":180,"description":"another product","price":11.99,"qty":3}], 1], ["ACCEPTED", {"SkuID":1,"RFID":"12345678901234567890123456789016"},{"SkuID":1,"RFID":"12345678901234567890123456789038"}]);
+    changeInternalOrderState(204, 1, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":3},
+    {"SKUId":180,"description":"another product","price":11.99,"qty":3}], customerId: 1}, "ACCEPTED");
+    changeInternalOrderState(204, 1, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":3},
+    {"SKUId":180,"description":"another product","price":11.99,"qty":3}], customerId: 1}, {newState: "COMPLETED", products: [{"SkuID":1,"RFID":"12345678901234567890123456789016"},{"SkuID":1,"RFID":"12345678901234567890123456789038"}]});
+    changeInternalOrderState(204, 1, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":3},
+    {"SKUId":180,"description":"another product","price":11.99,"qty":3}], customerId: 1}, {newState: "ACCEPTED", products: [{"SkuID":1,"RFID":"12345678901234567890123456789016"},{"SkuID":1,"RFID":"12345678901234567890123456789038"}]});
     changeInternalOrderState(422);
-    deleteInternalOrder(200, 1, ["2021/11/29 09:33", [{"SKUId":12,"description":"a product","price":10.99,"qty":3},
-    {"SKUId":180,"description":"another product","price":11.99,"qty":3}], 1]);
+    deleteInternalOrder(204, 1, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":3},
+    {"SKUId":180,"description":"another product","price":11.99,"qty":3}], customerId: 1});
     deleteInternalOrder(422);
     deleteAllInternalOrders(204);
 });

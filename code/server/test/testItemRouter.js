@@ -12,21 +12,20 @@ describe('test item APIs', () => {
         await agent.delete('/api/items');
     })
 
-    getAllItems(204, 12, "d1", 10.99, 8, 10);
-    getItemById(200, 12, "d1", 10.99, 8, 10);
+    getAllItems(200, {id: 12, description: "d1", price: 10.99, SKUId: 8, supplierId: 10});
+    getItemById(200, {id: 12, description: "d1", price: 10.99, SKUId: 8, supplierId: 10});
     getItemById(422);
-    createItem(201, 12, "d1", 10.99, 8, 10);
+    createItem(201, {id: 12, description: "d1", price: 10.99, SKUId: 8, supplierId: 10});
     createItem(422);
-    modifyItem(200, 12, "d1", 10.99, 8, 10, "d2", 9.99);
+    modifyItem(204, {id: 12, description: "d1", price: 10.99, SKUId: 8, supplierId: 10}, {newDescription: "d2", newPrice: 9.99});
     modifyItem(422);
-    deleteItem(200, 12, "d1", 10.99, 8, 10);
+    deleteItem(204, {id: 12, description: "d1", price: 10.99, SKUId: 8, supplierId: 10});
     deleteItem(422);
     deleteAllItems(204);
 });
 
-function getAllItems(expectedHTTPStatus, id, description, price, SKUId, supplierId) {
+function getAllItems(expectedHTTPStatus, item) {
     it('getting all items data from the system', function (done) {
-        let item = { id: id, description: description, price: price, SKUId: SKUId, supplierId: supplierId };
         agent.post('/api/item')
             .send(item)
             .then(function (res) {
@@ -34,33 +33,32 @@ function getAllItems(expectedHTTPStatus, id, description, price, SKUId, supplier
                 agent.get('/api/items')
                     .then(function (r) {
                         r.should.have.status(expectedHTTPStatus);
-                        r.body.id.should.equal(id);
-                        r.body.description.should.equal(description);
-                        r.body.price.should.equal(price);
-                        r.body.SKUId.should.equal(SKUId);
-                        r.body.supplierId.should.equal(supplierId);
+                        r.body.id.should.equal(item.id);
+                        r.body.description.should.equal(item.description);
+                        r.body.price.should.equal(item.price);
+                        r.body.SKUId.should.equal(item.SKUId);
+                        r.body.supplierId.should.equal(item.supplierId);
                         done();
                     });
             });
     });
 }
 
-function getItemById(expectedHTTPStatus, id, description, price, SKUId, supplierId) {
+function getItemById(expectedHTTPStatus, item) {
     it('getting item data from the system', function (done) {
         if (id !== undefined) {
-            let item = { id: id, description: description, price: price, SKUId: SKUId, supplierId: supplierId };
             agent.post('/api/item')
                 .send(item)
                 .then(function (res) {
                     res.should.have.status(201);
-                    agent.get('/api/item/'+ id)
+                    agent.get('/api/item/'+ item.id)
                         .then(function (r) {
                             r.should.have.status(expectedHTTPStatus);
-                            r.body.id.should.equal(id);
-                            r.body.description.should.equal(description);
-                            r.body.price.should.equal(price);
-                            r.body.SKUId.should.equal(SKUId);
-                            r.body.supplierId.should.equal(supplierId);
+                            r.body.id.should.equal(item.id);
+                            r.body.description.should.equal(item.description);
+                            r.body.price.should.equal(item.price);
+                            r.body.SKUId.should.equal(item.SKUId);
+                            r.body.supplierId.should.equal(item.supplierId);
                             done();
                         });
                 });
@@ -75,10 +73,9 @@ function getItemById(expectedHTTPStatus, id, description, price, SKUId, supplier
     });
 }
 
-function createItem(expectedHTTPStatus, id, description, price, SKUId, supplierId) {
+function createItem(expectedHTTPStatus, item) {
     it('creating an item', function (done) {
-        if (id !== undefined) {
-            let item = { id: id, description: description, price: price, SKUId: SKUId, supplierId: supplierId };
+        if (item !== undefined) {
             agent.post('/api/item')
                 .send(item)
                 .then(function (res) {
@@ -96,16 +93,14 @@ function createItem(expectedHTTPStatus, id, description, price, SKUId, supplierI
     });
 }
 
-function modifyItem(expectedHTTPStatus, id, description, price, SKUId, supplierId, newDescription, newPrice) {
+function modifyItem(expectedHTTPStatus, item, newState) {
     it('modifying an item', function (done) {
         if (id !== undefined) {
-            let item = { id: id, description: description, price: price, SKUId: SKUId, supplierId: supplierId };
-            let newState = { newDescription: newDescription, newPrice: newPrice };
             agent.post('/api/item')
                 .send(item)
                 .then(function (res) {
                     res.should.have.status(201);
-                    agent.put('/api/item/'+ id)
+                    agent.put('/api/item/'+ item.id)
                         .send(newState)
                         .then(function (r) {
                             r.should.have.status(expectedHTTPStatus);
@@ -124,15 +119,14 @@ function modifyItem(expectedHTTPStatus, id, description, price, SKUId, supplierI
     });
 }
 
-function deleteItem(expectedHTTPStatus, id, description, price, SKUId, supplierId) {
+function deleteItem(expectedHTTPStatus, item) {
     it('deleting an item', function (done) {
         if (id !== undefined) {
-            let item = { id: id, description: description, price: price, SKUId: SKUId, supplierId: supplierId };
             agent.post('/api/item')
                 .send(item)
                 .then(function (res) {
                     res.should.have.status(201);
-                    agent.delete('/api/item/'+ id)
+                    agent.delete('/api/item/'+ item.id)
                         .then(function (r) {
                             r.should.have.status(expectedHTTPStatus);
                             done();

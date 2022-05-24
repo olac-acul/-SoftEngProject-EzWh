@@ -12,21 +12,20 @@ describe('test testDescriptor APIs', () => {
         await agent.delete('/api/testDescriptors');
     })
 
-    getAllTestDescriptors(204, 1, "testDescriptor 1", "PD1", 8);
-    getTestDescriptorById(200, 1, "testDescriptor 1", "PD1", 8);
+    getAllTestDescriptors(200, 1, {name: "testDescriptor 1", procedureDescription: "PD1", idSKU: 8});
+    getTestDescriptorById(200, 1, {name: "testDescriptor 1", procedureDescription: "PD1", idSKU: 8});
     getTestDescriptorById(422);
-    createTestDescriptor(201, "testDescriptor 1", "PD1", 8);
+    createTestDescriptor(201, {name: "testDescriptor 1", procedureDescription: "PD1", idSKU: 8});
     createTestDescriptor(422);
-    modifyTestDescriptor(200, 1, "testDescriptor 1", "PD1", 8, "testDescriptor 1", "PD2", 26);
+    modifyTestDescriptor(204, 1, {name: "testDescriptor 1", procedureDescription: "PD1", idSKU: 8}, {newName: "testDescriptor 1", newProcedureDescription: "PD2", newIdSKU: 26});
     modifyTestDescriptor(422);
-    deleteTestDescriptor(200, 1, "testDescriptor 1", "PD1", 8);
+    deleteTestDescriptor(204, 1, {name: "testDescriptor 1", procedureDescription: "PD1", idSKU: 8});
     deleteTestDescriptor(422);
     deleteAllTestDescriptors(204);
 });
 
-function getAllTestDescriptors(expectedHTTPStatus, id, name, procedureDescription, idSKU) {
+function getAllTestDescriptors(expectedHTTPStatus, id, testDescriptor) {
     it('getting all testDescriptors data from the system', function (done) {
-        let testDescriptor = { name: name, procedureDescription:procedureDescription, idSKU:idSKU }
         agent.post('/api/testDescriptor')
             .send(testDescriptor)
             .then(function (res) {
@@ -35,19 +34,18 @@ function getAllTestDescriptors(expectedHTTPStatus, id, name, procedureDescriptio
                     .then(function (r) {
                         r.should.have.status(expectedHTTPStatus);
                         r.body.id.should.equal(id);
-                        r.body.name.should.equal(name);
-                        r.body.procedureDescription.should.equal(procedureDescription);
-                        r.body.idSKU.should.equal(idSKU);
+                        r.body.name.should.equal(testDescriptor.name);
+                        r.body.procedureDescription.should.equal(testDescriptor.procedureDescription);
+                        r.body.idSKU.should.equal(testDescriptor.idSKU);
                         done();
                     });
             });
     });
 }
 
-function getTestDescriptorById(expectedHTTPStatus, id, name, procedureDescription, idSKU) {
+function getTestDescriptorById(expectedHTTPStatus, id, testDescriptor) {
     it('getting testDescriptor data from the system', function (done) {
         if (id !== undefined) {
-            let testDescriptor = { name: name, procedureDescription:procedureDescription, idSKU:idSKU }
             agent.post('/api/testDescriptor')
                 .send(testDescriptor)
                 .then(function (res) {
@@ -56,9 +54,9 @@ function getTestDescriptorById(expectedHTTPStatus, id, name, procedureDescriptio
                         .then(function (r) {
                             r.should.have.status(expectedHTTPStatus);
                             r.body.id.should.equal(id);
-                            r.body.name.should.equal(name);
-                            r.body.procedureDescription.should.equal(procedureDescription);
-                            r.body.idSKU.should.equal(idSKU);
+                            r.body.name.should.equal(testDescriptor.name);
+                            r.body.procedureDescription.should.equal(testDescriptor.procedureDescription);
+                            r.body.idSKU.should.equal(testDescriptor.idSKU);
                             done();
                         });
                 });
@@ -73,10 +71,9 @@ function getTestDescriptorById(expectedHTTPStatus, id, name, procedureDescriptio
     });
 }
 
-function createTestDescriptor(expectedHTTPStatus, name, procedureDescription, idSKU) {
+function createTestDescriptor(expectedHTTPStatus, testDescriptor) {
     it('creating a testDescriptor', function (done) {
-        if (name !== undefined) {
-            let testDescriptor = { name: name, procedureDescription: procedureDescription, idSKU: idSKU }
+        if (testDescriptor !== undefined) {
             agent.post('/api/testDescriptor')
                 .send(testDescriptor)
                 .then(function (res) {
@@ -94,17 +91,15 @@ function createTestDescriptor(expectedHTTPStatus, name, procedureDescription, id
     });
 }
 
-function modifyTestDescriptor(expectedHTTPStatus, id, name, procedureDescription, idSKU, newName, newProcedureDescription, newIdSKU) {
+function modifyTestDescriptor(expectedHTTPStatus, id, testDescriptor, newState) {
     it('modifying a testDescriptor', function (done) {
         if (id !== undefined) {
-            let testDescriptor = { name: name, procedureDescription: procedureDescription, idSKU: idSKU }
             agent.post('/api/testDescriptor')
                 .send(testDescriptor)
                 .then(function (res) {
                     res.should.have.status(201);
-                    let newStatus = { newName: newName, newProcedureDescription:newProcedureDescription, newIdSKU:newIdSKU }
                     agent.put('/api/testDescriptor/'+ id)
-                        .send(newStatus)
+                        .send(newState)
                         .then(function (r) {
                             r.should.have.status(expectedHTTPStatus);
                             done();
@@ -122,10 +117,9 @@ function modifyTestDescriptor(expectedHTTPStatus, id, name, procedureDescription
     });
 }
 
-function deleteTestDescriptor(expectedHTTPStatus, id, name, procedureDescription, idSKU) {
+function deleteTestDescriptor(expectedHTTPStatus, id, testDescriptor) {
     it('deleting a testDescriptor', function (done) {
         if (id !== undefined) {
-            let testDescriptor = { name: name, procedureDescription:procedureDescription, idSKU:idSKU }
             agent.post('/api/testDescriptor')
                 .send(testDescriptor)
                 .then(function (res) {

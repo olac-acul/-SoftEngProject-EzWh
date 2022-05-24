@@ -12,16 +12,22 @@ describe('test restockOrder APIs', () => {
         await agent.delete('/api/restockOrders');
     })
 
-    getAllRestockOrders(204, 1, ["2021/11/29 09:33", 1]);
-    getRestockOrderById(200, 1, ["2021/11/29 09:33", 1]);
+    getAllRestockOrders(200, 1, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
+    {"SKUId":180,"description":"another product","price":11.99,"qty":20}], supplierId: 1});
+    getRestockOrderById(200, 1, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
+    {"SKUId":180,"description":"another product","price":11.99,"qty":20}], supplierId: 1});
     getRestockOrderById(422);
-    createRestockOrder(201, ["2021/11/29 09:33", 1]);
+    createRestockOrder(201, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
+    {"SKUId":180,"description":"another product","price":11.99,"qty":20}], supplierId: 1});
     createRestockOrder(422);
-    changeRestockOrderState(200, 1, ["2021/11/29 09:33", 1], "DELIVERED");
+    changeRestockOrderState(204, 1, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
+    {"SKUId":180,"description":"another product","price":11.99,"qty":20}], supplierId: 1}, "DELIVERED");
     changeRestockOrderState(422);
-    addTransportNoteRestockOrder(200, 1, ["2021/11/29 09:33", 1], {deliveryDate:"2021/12/29"});
+    addTransportNoteRestockOrder(204, 1, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
+    {"SKUId":180,"description":"another product","price":11.99,"qty":20}], supplierId: 1}, {deliveryDate:"2021/12/29"});
     addTransportNoteRestockOrder(422);
-    deleteRestockOrder(200, 1, ["2021/11/29 09:33", 1]);
+    deleteRestockOrder(204, 1, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
+    {"SKUId":180,"description":"another product","price":11.99,"qty":20}], supplierId: 1});
     deleteRestockOrder(422);
     deleteAllRestockOrders(204);
 });
@@ -38,8 +44,8 @@ function getAllRestockOrders(expectedHTTPStatus, id, restockOrder) {
                         r.body.id.should.equal(id);
                         r.body.issueDate.should.equal(restockOrder.issueDate);
                         r.body.state.should.equal("ISSUED");
+                        r.body.products.should.equal(restockOrder.products);
                         r.body.supplierId.should.equal(restockOrder.supplierId);
-                        r.body.transportNote.should.equal(null);
                         done();
                     });
             });
@@ -59,8 +65,8 @@ function getRestockOrderById(expectedHTTPStatus, id, restockOrder) {
                             r.body.id.should.equal(id);
                             r.body.issueDate.should.equal(restockOrder.issueDate);
                             r.body.state.should.equal("ISSUED");
+                            r.body.products.should.equal(restockOrder.products);
                             r.body.supplierId.should.equal(restockOrder.supplierId);
-                            r.body.transportNote.should.equal(null);
                         done();
                         });
                 });
