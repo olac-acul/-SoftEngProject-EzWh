@@ -17,9 +17,11 @@ describe('test user APIs', () => {
     addUser(201, [1, 'mail1', 'mario', 'rossi', 'alz', 'customer']);
     addUser(422);
     //login
-    modifyUserRights(200, [1, 'mail1', 'mario', 'rossi', 'alz', 'customer'], 'mail1', 'supplier');
+    loginManager(200, {username: "user1@ezwh.com", password: "testpassword"})
+    loginManager(422);
+    modifyUserRights(204, [1, 'mail1', 'mario', 'rossi', 'alz', 'customer'], 'mail1', 'supplier');
     modifyUserRights(422);
-    deleteUser(200, [1, 'mail1', 'mario', 'rossi', 'alz', 'customer'], 'mail1', 'customer');
+    deleteUser(204, [1, 'mail1', 'mario', 'rossi', 'alz', 'customer'], 'mail1', 'customer');
     deleteUser(422);
 });
 
@@ -45,7 +47,7 @@ function getSuppliers(expectedHTTPStatus, email, user) {
 }
 
 function getUsersExceptManager(expectedHTTPStatus, email, user) {
-    it('getting all userss data from the system', function (done) {
+    it('getting all users data from the system', function (done) {
         agent.post('/api/newUser')
             .send(user)
             .then(function (res) {
@@ -86,26 +88,26 @@ function addUser(expectedHTTPStatus, user) {
 }
 
 // IMPLEMENT LOGIN TEST
+function loginManager(expectedHTTPStatus, user) {
+    it('login manager', function (done) {
+        if (user !== undefined) {
+            agent.post('/api/managerSessions')
+                .send(user)
+                .then(function (res) {
+                    res.should.have.status(expectedHTTPStatus);
+                    res.body.email.should.equal(user.username);
+                    done();
+                });
+        } else {
+            agent.post('/api/managerSessions') //we are not sending any data
+                .then(function (res) {
+                    res.should.have.status(expectedHTTPStatus);
+                    done();
+                });
+        }
 
-// function loginManager(expectedHTTPStatus, user, email, password, type) {
-//     it('login manager', function (done) {
-//         if (user !== undefined) {
-//             agent.post('/api/managerSessions')
-//                 .send(user)
-//                 .then(function (res) {
-//                     res.should.have.status(expectedHTTPStatus);
-//                     done();
-//                 });
-//         } else {
-//             agent.post('/api/newUser') //we are not sending any data
-//                 .then(function (res) {
-//                     res.should.have.status(expectedHTTPStatus);
-//                     done();
-//                 });
-//         }
-
-//     });
-// }
+    });
+}
 
 function modifyUserRights(expectedHTTPStatus, user, username, newType) {
     it('modifying user rights', function (done) {
