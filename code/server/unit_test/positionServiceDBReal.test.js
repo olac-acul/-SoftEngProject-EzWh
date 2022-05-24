@@ -5,7 +5,7 @@ const positionService = new PositionService(positionDAO);
 describe("get positions", () => {
     beforeEach(async () => {
         await positionDAO.deletePositions();
-        await positionDAO.createPosition(["800234543412", "8002", "3454", "3412", 1000, 1000]);
+        await positionDAO.createPosition({positionID: "800234543412", aisleID: "8002", row: "3454", col: "3412", maxWeight: 1000, maxVolume: 1000});
     });
     testGetPositions();
 });
@@ -61,7 +61,7 @@ async function testCreatePosition(){
 describe("modify a position", () => {
     beforeEach(async () => {
         await positionDAO.deletePositions();
-        await positionDAO.createPosition(["800234543412", "8002", "3454", "3412", 1000, 1000]);
+        await positionDAO.createPosition({positionID: "800234543412", aisleID: "8002", row: "3454", col: "3412", maxWeight: 1000, maxVolume: 1000});
     });
     testModifyPosition();
 });
@@ -96,7 +96,7 @@ async function testModifyPosition(){
 describe("change positionID", () => {
     beforeEach(async () => {
         await positionDAO.deletePositions();
-        await positionDAO.createPosition(["800234543412", "8002", "3454", "3412", 1000, 1000]);
+        await positionDAO.createPosition({positionID: "800234543412", aisleID: "8002", row: "3454", col: "3412", maxWeight: 1000, maxVolume: 1000});
     });
     testChangePositionID();
 });
@@ -123,7 +123,7 @@ async function testChangePositionID(){
 describe("delete a position", () => {
     beforeEach(async () => {
         await positionDAO.deletePositions();
-        await positionDAO.createPosition(["800234543412", "8002", "3454", "3412", 1000, 1000]);
+        await positionDAO.createPosition({positionID: "800234543412", aisleID: "8002", row: "3454", col: "3412", maxWeight: 1000, maxVolume: 1000});
     });
     testDeletePosition();
 });

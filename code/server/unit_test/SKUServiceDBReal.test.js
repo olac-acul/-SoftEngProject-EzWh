@@ -5,7 +5,7 @@ const SKU_Service = new SKUService(SKUDAO);
 describe("get SKUs", () => {
     beforeEach(async () => {
         await SKUDAO.deleteSKUs();
-        await SKUDAO.addSKU(["d1", 100, 50, "n1", 50, 10.99]);
+        await SKUDAO.addSKU({description: "d1", weight: 100, volume: 50, notes: "n1", price: 10.99, availableQuantity: 50});
     });
     testGetSKUs();
     testGetSKU();
@@ -83,7 +83,7 @@ async function testAddSKU(){
 describe("modify an SKU", () => {
     beforeEach(async () => {
         await SKUDAO.deleteSKUs();
-        await SKUDAO.addSKU(["d1", 100, 50, "n1", 50, 10.99]);
+        await SKUDAO.addSKU({description: "d1", weight: 100, volume: 50, notes: "n1", price: 10.99, availableQuantity: 50});
     });
     testModifySKU();
 });
@@ -118,7 +118,7 @@ async function testModifySKU(){
 describe("modify an SKU position", () => {
     beforeEach(async () => {
         await SKUDAO.deleteSKUs();
-        await SKUDAO.addSKU(["d1", 100, 50, "n1", 50, 10.99]);
+        await SKUDAO.addSKU({description: "d1", weight: 100, volume: 50, notes: "n1", price: 10.99, availableQuantity: 50});
     });
     testModifySKUPosition();
 });
@@ -146,7 +146,7 @@ async function testModifySKUPosition(){
 describe("delete an SKU", () => {
     beforeEach(async () => {
         await SKUDAO.deleteSKUs();
-        await SKUDAO.addSKU(["d1", 100, 50, "n1", 50, 10.99]);
+        await SKUDAO.addSKU({description: "d1", weight: 100, volume: 50, notes: "n1", price: 10.99, availableQuantity: 50});
     });
     testDeleteSKU();
 });

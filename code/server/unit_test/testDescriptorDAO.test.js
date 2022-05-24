@@ -17,7 +17,7 @@ describe('testTestDescriotorDAO', () => {
 
 function testCreateTestDescriptor_And_GetTestDescriptors_And_GetTestDescriptorById(id, name, procedureDescription, idSKU) {
     test('create new testDescriptor and get all testDescriptors and get a testDescriptor by id', async () => {
-        await testDescriptorDAO.createTestDescriptor([name, procedureDescription, idSKU]);
+        await testDescriptorDAO.createTestDescriptor({name: name, procedureDescription: procedureDescription, idSKU: idSKU});
         var res = await testDescriptorDAO.getTestDescriptors();
         expect(res.length).toStrictEqual(1);
         res = await testDescriptorDAO.getTestDescriptorById(id);
@@ -30,8 +30,8 @@ function testCreateTestDescriptor_And_GetTestDescriptors_And_GetTestDescriptorBy
 
 function testModifyTestDescriptor(name, procedureDescription, idSKU, id, newName, newProcedureDescription, newIdSKU){
     test("modify a testDescriptor", async () => {
-        await testDescriptorDAO.createTestDescriptor([name, procedureDescription, idSKU]);
-        await testDescriptorDAO.modifyTestDescriptor(id, [name, procedureDescription, idSKU]);   
+        await testDescriptorDAO.createTestDescriptor({name: name, procedureDescription: procedureDescription, idSKU: idSKU});
+        await testDescriptorDAO.modifyTestDescriptor(id, {newName: newName, newProcedureDescription: newProcedureDescription, newIdSKU: newIdSKU});   
         var res = await testDescriptorDAO.getTestDescriptorById(id);
         expect(res.length).toStrictEqual(1);
         expect(res.id).toStrictEqual(id);
@@ -43,7 +43,7 @@ function testModifyTestDescriptor(name, procedureDescription, idSKU, id, newName
 
 function testDeleteTestDescriptor(id, name, procedureDescription, idSKU){
     test("delete a testDescriptor", async () => {
-        await testDescriptorDAO.createTestDescriptor([name, procedureDescription, idSKU]);
+        await testDescriptorDAO.createTestDescriptor({name: name, procedureDescription: procedureDescription, idSKU: idSKU});
         await testDescriptorDAO.deleteTestDescriptor(id);   
         var res = await testDescriptorDAO.getTestDescriptors();
         expect(res).toEqual("404");

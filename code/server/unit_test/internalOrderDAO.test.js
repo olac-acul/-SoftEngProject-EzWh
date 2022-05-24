@@ -1,6 +1,6 @@
 const internalOrderDAO = require('../modules/internalOrderDAO');
 
-describe('testInternalOrderDao', () => {
+describe('testInternalOrderDAO', () => {
     beforeEach(async () => {
         await internalOrderDAO.deleteInternalOrders();
     });
@@ -10,10 +10,14 @@ describe('testInternalOrderDao', () => {
         expect(res.length).toStrictEqual(0);
     });
 
-    testCreateInternalOrder_And_GetInternalOrders_And_GetInternalOrderById(1, ["2021/11/29 09:33", 1]);
-    testModifyInternalOrder(1, ["2021/11/29 09:33", 1], "ACCEPTED");
-    testModifyInternalOrder(1, ["2021/11/29 09:33", 1], "COMPLETED");
-    testDeleteInternalOrder(1, ["2021/11/29 09:33", 1]);
+    testCreateInternalOrder_And_GetInternalOrders_And_GetInternalOrderById(1, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":3},
+    {"SKUId":180,"description":"another product","price":11.99,"qty":3}], customerId: 1});
+    testModifyInternalOrder(1, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":3},
+    {"SKUId":180,"description":"another product","price":11.99,"qty":3}], customerId: 1}, "ACCEPTED");
+    testModifyInternalOrder(1, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":3},
+    {"SKUId":180,"description":"another product","price":11.99,"qty":3}], customerId: 1}, "COMPLETED");
+    testDeleteInternalOrder(1, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":3},
+    {"SKUId":180,"description":"another product","price":11.99,"qty":3}], customerId: 1});
 });
 
 function testCreateInternalOrder_And_GetInternalOrders_And_GetInternalOrderById(id, internalOrder) {
@@ -25,6 +29,7 @@ function testCreateInternalOrder_And_GetInternalOrders_And_GetInternalOrderById(
         expect(res.id).toStrictEqual(id);
         expect(res.issueDate).toStrictEqual(internalOrder.issueDate);
         expect(res.state).toStrictEqual("ISSUED");
+        expect(res.products).toStrictEqual(internalOrder.products);
         expect(res.customerId).toStrictEqual(internalOrder.customerId);
     });
 }
@@ -38,6 +43,7 @@ function testModifyInternalOrder(id, internalOrder, newState){
         expect(res.id).toStrictEqual(id);
         expect(res.issueDate).toStrictEqual(internalOrder.issueDate);
         expect(res.state).toStrictEqual(newState);
+        expect(res.products).toStrictEqual(internalOrder.products);
         expect(res.customerId).toStrictEqual(internalOrder.customerId);
     });
 }

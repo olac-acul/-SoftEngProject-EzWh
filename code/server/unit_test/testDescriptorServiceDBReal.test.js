@@ -5,7 +5,7 @@ const testDescriptorService = new TestDescriptorService(testDescriptorDAO);
 describe("get testDescriptors", () => {
     beforeEach(async () => {
         await testDescriptorDAO.deleteTestDescriptors();
-        await testDescriptorDAO.createTestDescriptor(["testDescriptor 1", "PD1", 8]);
+        await testDescriptorDAO.createTestDescriptor({name: "testDescriptor 1", procedureDescription: "PD1", idSKU: 8});
     });
     testGetTestDescriptors();
     testGetTestDescriptorById();
@@ -64,7 +64,7 @@ async function testCreateTestDescriptor(){
 describe("modify a testDescriptor", () => {
     beforeEach(async () => {
         await testDescriptorDAO.deleteTestDescriptors();
-        await testDescriptorDAO.createTestDescriptor(["testDescriptor 1", "PD1", 8]);
+        await testDescriptorDAO.createTestDescriptor({name: "testDescriptor 1", procedureDescription: "PD1", idSKU: 8});
     });
     testModifyTestDescriptor();
 });
@@ -91,7 +91,7 @@ async function testModifyTestDescriptor(){
 describe("delete a testDescriptor", () => {
     beforeEach(async () => {
         await testDescriptorDAO.deleteTestDescriptors();
-    await testDescriptorDAO.createTestDescriptor(["testDescriptor 1", "PD1", 8]);
+    await testDescriptorDAO.createTestDescriptor({name: "testDescriptor 1", procedureDescription: "PD1", idSKU: 8});
     });
     testDeleteTestDescriptor();
 });

@@ -5,7 +5,7 @@ const itemService = new ItemService(itemDAO);
 describe("get items", () => {
     beforeEach(async () => {
         await itemDAO.deleteItems();
-        await itemDAO.createItem([12, "d1", 10.99, 8, 10]);
+        await itemDAO.createItem({id: 12, description: "d1", price: 10.99, SKUId: 8, supplierId: 10});
     });
     testGetItems();
     testGetItemById();
@@ -69,7 +69,7 @@ async function testCreateItem(){
 describe("modify an item", () => {
     beforeEach(async () => {
         await itemDAO.deleteItems();
-        await itemDAO.createItem([12, "d1", 10.99, 8, 10]);
+        await itemDAO.createItem({id: 12, description: "d1", price: 10.99, SKUId: 8, supplierId: 10});
     });
     testModifyItem();
 });
@@ -96,7 +96,7 @@ async function testModifyItem(){
 describe("delete an item", () => {
     beforeEach(async () => {
         await itemDAO.deleteItems();
-        await itemDAO.createItem([12, "d1", 10.99, 8, 10]);
+        await itemDAO.createItem({id: 12, description: "d1", price: 10.99, SKUId: 8, supplierId: 10});
     });
     testDeleteItem();
 });

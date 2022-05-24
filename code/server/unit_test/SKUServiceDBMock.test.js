@@ -86,7 +86,7 @@ describe("modify an SKU", () => {
             newPrice : 9.99,
             newAvailableQuantity : 100
         };
-        await SKU_Service.modifySKU(id, newStatus);
+        await SKU_Service.modifySKU(id, newState);
         expect(SKUDAO.modifySKU.mock.calls[0]).toBe(id);
         expect(SKUDAO.modifySKU.mock.calls[1]).toBe(newState);
     });

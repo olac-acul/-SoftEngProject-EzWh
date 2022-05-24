@@ -5,7 +5,6 @@ const db = new sqlite.Database('EzWh', (err) => {
     if (err) throw err;
 });
 
-//Not tested
 exports.newSKUTable = () => {
     return new Promise((resolve, reject) => {
         const sql = `CREATE TABLE IF NOT EXISTS SKU (

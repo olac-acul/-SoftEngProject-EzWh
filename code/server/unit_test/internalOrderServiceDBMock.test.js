@@ -76,10 +76,10 @@ describe("modify an internalOrder with state COMPLETED and products arrary", () 
         const id = 1;
         const products = [{"SKUId":12,"description":"a product","price":10.99,"qty":2},
             {"SKUId":180,"description":"another product","price":11.99,"qty":3}];
-        const newState = ["COMPLETED", products];
-        await internalOrderService.changeStateInternalOrder(id, newState);
+        const newStatus = {newState: "COMPLETED", products: products};
+        await internalOrderService.changeStateInternalOrder(id, newStatus);
         expect(internalOrderDAO.changeStateInternalOrder.mock.calls[0]).toBe(id);
-        expect(internalOrderDAO.changeStateInternalOrder.calls[1]).toBe(newState);
+        expect(internalOrderDAO.changeStateInternalOrder.calls[1]).toBe(newStatus);
     });
 });
 
@@ -88,10 +88,10 @@ describe("modify an internalOrder with state ACCEPTED and products arrary (the p
         const id = 1;
         const products = [{"SKUId":12,"description":"a product","price":10.99,"qty":2},
             {"SKUId":180,"description":"another product","price":11.99,"qty":3}];
-        const newState = ["ACCEPTED", products];
-        await internalOrderService.changeStateInternalOrder(id, newState);
+        const newStatus = {newState: "ACCEPTED", products: products};
+        await internalOrderService.changeStateInternalOrder(id, newStatus);
         expect(internalOrderDAO.changeStateInternalOrder.mock.calls[0]).toBe(id);
-        expect(internalOrderDAO.changeStateInternalOrder.calls[1]).toBe(newState);
+        expect(internalOrderDAO.changeStateInternalOrder.calls[1]).toBe(newStatus);
     });
 });
 

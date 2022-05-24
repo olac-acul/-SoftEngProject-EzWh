@@ -5,8 +5,8 @@ const restockOrderService = new RestockOrderService(restockOrderDAO);
 describe("get restockOrders", () => {
     beforeEach(async () => {
         await restockOrderDAO.deleteRestockOrders();
-        await restockOrderDAO.createRestockOrder(["2021/11/29 09:33", [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
-        {"SKUId":180,"description":"another product","price":11.99,"qty":20}], 1]);
+        await restockOrderDAO.createRestockOrder({issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
+        {"SKUId":180,"description":"another product","price":11.99,"qty":20}],  supplierId: 1});
     });
     testGetRestockOrders();
     testGetRestockOrderById();
@@ -79,8 +79,8 @@ async function testCreateRestockOrder(){
 describe("change a restockOrder state", () => {
     beforeEach(async () => {
         await restockOrderDAO.deleteRestockOrders();
-        await restockOrderDAO.createRestockOrder(["2021/11/29 09:33", [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
-        {"SKUId":180,"description":"another product","price":11.99,"qty":20}], 1]);
+        await restockOrderDAO.createRestockOrder({issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
+        {"SKUId":180,"description":"another product","price":11.99,"qty":20}],  supplierId: 1});
     });
     testChangeRestockOrderState();
 });
@@ -107,8 +107,8 @@ async function testChangeRestockOrderState(){
 describe("add transportNote to a restockOrder", () => {
     beforeEach(async () => {
         await restockOrderDAO.deleteRestockOrders();
-        await restockOrderDAO.createRestockOrder(["2021/11/29 09:33", [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
-        {"SKUId":180,"description":"another product","price":11.99,"qty":20}], 1]);
+        await restockOrderDAO.createRestockOrder({issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
+        {"SKUId":180,"description":"another product","price":11.99,"qty":20}],  supplierId: 1});
     });
     testAddTransportNote();
 });
@@ -135,8 +135,8 @@ async function testAddTransportNote(){
 describe("delete a restockOrder", () => {
     beforeEach(async () => {
         await restockOrderDAO.deleteRestockOrders();
-        await restockOrderDAO.createRestockOrder(["2021/11/29 09:33", [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
-        {"SKUId":180,"description":"another product","price":11.99,"qty":20}], 1]);
+        await restockOrderDAO.createRestockOrder({issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
+        {"SKUId":180,"description":"another product","price":11.99,"qty":20}],  supplierId: 1});
     });
     testDeleteRestockOrder();
 });

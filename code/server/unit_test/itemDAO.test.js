@@ -10,44 +10,44 @@ describe('testItemDAO', () => {
         expect(res.length).toStrictEqual(0);
     });
 
-    testCreateItem_And_GetItems_And_GetItemById(12, "d1", 10.99, 8, 10);
-    testModifyItem(12, "d1", 10.99, 8, 10, "d2", 9.99);
-    testDeleteItem(12, "d1", 10.99, 8, 10);
+    testCreateItem_And_GetItems_And_GetItemById({id: 12, description: "d1", price: 10.99, SKUId: 8, supplierId: 10});
+    testModifyItem({id: 12, description: "d1", price: 10.99, SKUId: 8, supplierId: 10}, {newDescription: "d2", newPrice: 9.99});
+    testDeleteItem({id: 12, description: "d1", price: 10.99, SKUId: 8, supplierId: 10});
 });
 
-function testCreateItem_And_GetItems_And_GetItemById(id, description, price, SKUId, supplierId) {
+function testCreateItem_And_GetItems_And_GetItemById(item) {
     test('create new item and get all items and get an item by id', async () => {
-        await itemDAO.createItem([id, description, price, SKUId, supplierId]);
+        await itemDAO.createItem(item);
         var res = await itemDAO.getItems();
         expect(res.length).toStrictEqual(1);
-        res = await itemDAO.getItemById(id);
-        expect(res.id).toStrictEqual(id);
-        expect(res.description).toStrictEqual(description);
-        expect(res.price).toStrictEqual(price);
-        expect(res.SKUId).toStrictEqual(SKUId);
-        expect(res.supplierId).toStrictEqual(supplierId);
+        res = await itemDAO.getItemById(item.id);
+        expect(res.id).toStrictEqual(item.id);
+        expect(res.description).toStrictEqual(item.description);
+        expect(res.price).toStrictEqual(item.price);
+        expect(res.SKUId).toStrictEqual(item.SKUId);
+        expect(res.supplierId).toStrictEqual(item.supplierId);
     });
 }
 
-function testModifyItem(id, description, price, SKUId, supplierId, newDescription, newPrice){
+function testModifyItem(item, newStatus){
     test("modify an item", async () => {
-        await itemDAO.createItem([id, description, price, SKUId, supplierId]);
-        await itemDAO.modifyItem(id, [newDescription, newPrice]);   
-        var res = await itemDAO.getItemById(id);
+        await itemDAO.createItem(item);
+        await itemDAO.modifyItem(item.id, newStatus);   
+        var res = await itemDAO.getItemById(item.id);
         expect(res.length).toStrictEqual(1);
-        expect(res.id).toStrictEqual(id);
-        expect(res.description).toStrictEqual(newDescription);
-        expect(res.price).toStrictEqual(newPrice);
-        expect(res.SKUId).toStrictEqual(SKUId);
-        expect(res.supplierId).toStrictEqual(supplierId);
+        expect(res.id).toStrictEqual(item.id);
+        expect(res.description).toStrictEqual(newStatus.newDescription);
+        expect(res.price).toStrictEqual(newStatus.newPrice);
+        expect(res.SKUId).toStrictEqual(item.SKUId);
+        expect(res.supplierId).toStrictEqual(item.supplierId);
     });
 }
 
-function testDeleteItem(id, description, price, SKUId, supplierId, newDescription, newPrice){
+function testDeleteItem(item){
     test("delete an item", async () => {
-        await itemDAO.createItem([id, description, price, SKUId, supplierId, newDescription, newPrice]);
-        await itemDAO.deleteItem(id);   
-        var res = await itemDAO.getItemById(id);
+        await itemDAO.createItem(item);
+        await itemDAO.deleteItem(item.id);   
+        var res = await itemDAO.getItemById(item.id);
         expect(res).toEqual("404");
     });
 }

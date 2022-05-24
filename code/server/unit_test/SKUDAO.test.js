@@ -1,6 +1,6 @@
 const SKUDAO = require('../modules/SKUDAO');
 
-describe('testSKUDao', () => {
+describe('testSKUDAO', () => {
     beforeEach(async () => {
         await SKUDAO.deleteSKUs();
     });
@@ -10,10 +10,10 @@ describe('testSKUDao', () => {
         expect(res.length).toStrictEqual(0);
     });
 
-    testAddSKU_And_GetAllSKUs_And_GetSKU(1, ["d1", 100, 50, "n1", 50, 10.99]);
-    testModifySKUPositionAndGetSKUPosition(1, ["d1", 100, 50, "n1", 50, 10.99], "800234523412");
-    testModifySKU(1, ["d1", 100, 50, "n1", 50, 10.99], ["d2", 150, 100, "n2", 9.99, 100]);
-    testDeleteSKU(1, ["d1", 100, 50, "n1", 50, 10.99]);
+    testAddSKU_And_GetAllSKUs_And_GetSKU(1, {description: "d1", weight: 100, volume: 50, notes: "n1", price: 10.99, availableQuantity: 50});
+    testModifySKUPositionAndGetSKUPosition(1, {description: "d1", weight: 100, volume: 50, notes: "n1", price: 10.99, availableQuantity: 50}, "800234523412");
+    testModifySKU(1, {description: "d1", weight: 100, volume: 50, notes: "n1", price: 10.99, availableQuantity: 50}, {newDescription: "d2", newWeight: 150, newVolume: 100, newNotes: "n2", newPrice: 9.99, newAvailableQuantity: 100});
+    testDeleteSKU(1, {description: "d1", weight: 100, volume: 50, notes: "n1", price: 10.99, availableQuantity: 50});
 });
 
 function testAddSKU_And_GetAllSKUs_And_GetSKU(id, SKU) {
@@ -27,8 +27,8 @@ function testAddSKU_And_GetAllSKUs_And_GetSKU(id, SKU) {
         expect(res.weight).toStrictEqual(SKU.weight);
         expect(res.volume).toStrictEqual(SKU.volume);
         expect(res.notes).toStrictEqual(SKU.notes);
-        expect(res.availableQuantity).toStrictEqual(SKU.availableQuantity);
         expect(res.price).toStrictEqual(SKU.price);
+        expect(res.availableQuantity).toStrictEqual(SKU.availableQuantity);
     });
 }
 
