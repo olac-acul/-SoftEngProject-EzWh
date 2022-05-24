@@ -61,16 +61,16 @@ The design must satisfy the Official Requirements document, notably functional a
 
 
 
-![Scenario 3.1](images/Scenario 3.1.jpg)
+![Scenario 3.1](./images/Scenario%203.1.jpg)
 
 
 
-![Scenario 5.1.1](images/Scenario 5.1.1.jpg)
+![Scenario 5.1.1](./images/Scenario%205.1.1.jpg)
 
 
 
-![Scenario 10.1](images/Scenario 10.1.jpg)
+![Scenario 10.1](images/Scenario%2010.1.jpg)
 
 
 
-![Scenario 11.2](images/Scenario 11.2.jpg)
+![Scenario 11.2](images/Scenario%2011.2.jpg)

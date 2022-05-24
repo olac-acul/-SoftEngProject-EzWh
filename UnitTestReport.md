@@ -1916,11 +1916,18 @@ Version:
     <For traceability write the class and method name that contains the test case>
 
 
-| Unit name | Jest test case |
-|--|--|
-|||
-|||
-||||
+|internalOrder|testInternalOrderRouter.js|
+|item|testItemRouter.js|
+|position|testPositionRouter.js|
+|restockOrder|testRestockOderRouter.js|
+|returnOrder|testReturnOrderRouter.js|
+|SKUItem|testSKUItemRouter.js|
+|SKU|testSKURouter.js|
+|testDescriptor|testTestDescriptorRouter.js|
+|testResult|testTestResultRouter.js|
+|user|testUserRouter.js|
+
+
 
 ### Code coverage report
 
@@ -1937,7 +1944,7 @@ Version:
 |---|---|---|---|
 |||||
 |||||
-||||||
+|||||
 
 
 
