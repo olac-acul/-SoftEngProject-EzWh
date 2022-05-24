@@ -39,11 +39,12 @@ class PositionService {
             return '422';
         if (typeof position.newMaxWeight !== "number" || typeof position.newMaxVolume !== "number" || typeof position.newOccupiedWeight !== "number" || typeof position.newOccupiedVolume !== "number")
             return '422';
-        if (oldPositionID.length !== 12)
+        if (isNaN(oldPositionID) || oldPositionID.length !== 12)
             return '422';
         // END OF VALIDATION
+        const validatedOldPositionId = oldPositionID;
         const newPositionID = position.newAisleID + position.newRow + position.newCol;
-        const updatedElements = await this.dao.modifyPosition(oldPositionID, newPositionID, position);
+        const updatedElements = await this.dao.modifyPosition(validatedOldPositionId, newPositionID, position);
         if (updatedElements === 0)
             return '404';
         else

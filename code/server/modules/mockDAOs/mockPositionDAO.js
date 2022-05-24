@@ -1,3 +1,4 @@
+exports.newTable = jest.fn();
 exports.getPositions = jest.fn();
 exports.createPosition = jest.fn();
 exports.modifyPosition = jest.fn();
