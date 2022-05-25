@@ -57,6 +57,7 @@ exports.getPositions = () => {
     });
 }
 
+
 exports.createPosition = (position) => {
     return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO POSITIONS(POSITION_ID, AISLE_ID, ROW, COL, MAX_WEIGHT, MAX_VOLUME, OCCUPIED_WEIGHT, OCCUPIED_VOLUME) VALUES(?, ?, ?, ?, ?, ?, 0, 0)';

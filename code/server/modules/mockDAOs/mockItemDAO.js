@@ -1,6 +1,8 @@
 exports.newTable = jest.fn();
 exports.getItems = jest.fn();
 exports.getItemById = jest.fn();
+exports.validateSKUId = jest.fn();
+exports.earchSKU = jest.fn();
 exports.createItem = jest.fn();
 exports.modifyItem = jest.fn();
 exports.deleteItem = jest.fn();

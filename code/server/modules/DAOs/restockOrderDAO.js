@@ -58,8 +58,10 @@ exports.getRestockOrders = () => {
                     id: r.ID,
                     issueDate: r.ISSUE_DATE,
                     state: r.STATE,
+                    products: [],
                     supplierId: r.SUPPILER_ID,
-                    transportNote: r.TRANSPORT_NOTE
+                    transportNote: r.TRANSPORT_NOTE,
+                    skuItems: []
                 }
             ));
             resolve(restockOrders);

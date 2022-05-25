@@ -1,4 +1,5 @@
 exports.newTable = jest.fn();
+exports.dropTable = jest.fn();
 exports.getTestDescriptors = jest.fn();
 exports.getTestDescriptorById = jest.fn();
 exports.searchSKU = jest.fn();

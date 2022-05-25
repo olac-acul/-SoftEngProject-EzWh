@@ -1,3 +1,4 @@
+exports.newSKUTable = jest.fn();
 exports.getAllSKUs = jest.fn();
 exports.getSKU = jest.fn();
 exports.addSKU = jest.fn();

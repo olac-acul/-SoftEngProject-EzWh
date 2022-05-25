@@ -29,6 +29,7 @@ class RestockOrderService {
             return '404';
         if (restockOrder.state === 'ISSUED') {
             return {
+                id: validatedId,
                 issueDate: restockOrder.issueDate,
                 state: restockOrder.state,
                 products: restockOrder.products,
@@ -38,6 +39,7 @@ class RestockOrderService {
         }
         else {
             return {
+                id: validatedId,
                 issueDate: restockOrder.issueDate,
                 state: restockOrder.state,
                 products: restockOrder.products,
