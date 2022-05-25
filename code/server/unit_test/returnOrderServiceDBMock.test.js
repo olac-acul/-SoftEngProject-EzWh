@@ -1,25 +1,25 @@
-const ReturnOrderService = require("../services/returnOrderService");
-const returnOrderDAO = require("../mockDAOs/mockReturnOrderDAO");
+const ReturnOrderService = require("../modules/services/returnOrderService");
+const returnOrderDAO = require("../modules/mockDAOs/mockReturnOrderDAO");
 const returnOrderService = new ReturnOrderService(returnOrderDAO);
 
 describe("get returnOrders", () => {
-    returnOrderDAO.getReturnOrders.mockReturnValue(  {
-        id:1,
+    returnOrderDAO.getReturnOrders.mockReturnValue(  [{
+        id: 1,
         returnDate: "2021/11/29 09:33",
         products: [{"SKUId":12,"description":"a product","price":10.99,"RFID":"12345678901234567890123456789016"},
                     {"SKUId":180,"description":"another product","price":11.99,"RFID":"12345678901234567890123456789038"}],
         restockOrderId : 1
-        }
+        }]
   );
     test("get returnOrders", async () => {
         let res = await returnOrderService.getReturnOrders();
-        expect(res).toEqual({
-            id:1,
+        expect(res).toEqual([{
+            id: 1,
             returnDate: "2021/11/29 09:33",
             products: [{"SKUId":12,"description":"a product","price":10.99,"RFID":"12345678901234567890123456789016"},
                        {"SKUId":180,"description":"another product","price":11.99,"RFID":"12345678901234567890123456789038"}],
             restockOrderId : 1
-        });
+        }]);
     });
 });
 

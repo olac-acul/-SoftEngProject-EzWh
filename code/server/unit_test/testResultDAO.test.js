@@ -1,4 +1,4 @@
-const testResultDAO = require('../modules/testResultDAO');
+const testResultDAO = require('../modules/DAOs/testResultDAO');
 
 describe('testTestResultDAO', () => {
     beforeEach(async () => {

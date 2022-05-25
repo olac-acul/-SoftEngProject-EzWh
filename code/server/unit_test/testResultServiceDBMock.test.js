@@ -1,4 +1,4 @@
-const TestResultService = require("../modules/services/testDResultService");
+const TestResultService = require("../modules/services/testResultService");
 const testResultDAO = require("../modules/mockDAOs/mockTestResultDAO");
 const testResultService = new TestResultService(testResultDAO);
 

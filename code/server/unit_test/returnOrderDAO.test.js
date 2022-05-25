@@ -1,4 +1,4 @@
-const returnOrderDAO = require('../modules/returnOrderDAO');
+const returnOrderDAO = require('../modules/DAOs/returnOrderDAO');
 
 describe('testReturnOrderDao', () => {
     beforeEach(async () => {
@@ -23,7 +23,6 @@ function testCreateReturnOrder_getReturnOrders_getReturnOrderById(id, returnOrde
         var res = await returnOrderDAO.getReturnOrders();
         expect(res.length).toStrictEqual(1);
         res = await returnOrderDAO.getReturnOrderById(id);
-        expect(res.id).toStrictEqual(id);
         expect(res.returnDate).toStrictEqual(returnOrder.returnDate);
         expect(res.restockOrderId).toStrictEqual(returnOrder.restockOrderId);
     });
@@ -34,6 +33,6 @@ function testDeleteReturnOrder(id, returnOrder){
         await returnOrderDAO.createReturnOrder(returnOrder);
         await returnOrderDAO.deleteReturnOrder(id);   
         var res = await returnOrderDAO.getReturnOrderById(id);
-        expect(res).toEqual("404");
+        expect(res).toEqual("Not Found");
     });
 }
