@@ -1935,6 +1935,7 @@ Version:
     <Add here the screenshot report of the statement and branch coverage obtained using
     the coverage tool. >
 
+![](./images/coverage.jpg)
 
 ### Loop coverage analysis
 
