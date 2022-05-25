@@ -4,9 +4,9 @@ Version: 1.0
 
 Date: 03 May 2022
 
-| Change   | Description                                                 |
-| -------- | ----------------------------------------------------------- |
-| issue 2  | fixed comment, 'delete a position receiving its positionId  |
+| Change | Description |
+|---|------|
+| issue 2 | fixed comment, 'delete a position receiving its positionId |
 | issue 11 | fixed POST /api/item,  now receives both SKU.id and Item.id |
 
 ## INDEX
