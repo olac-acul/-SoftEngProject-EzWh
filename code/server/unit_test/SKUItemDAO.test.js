@@ -25,7 +25,7 @@ function testAddSKUItem_getAllSKUItems_getSKUItem(SKUItem) {
         res = await SKUItemDAO.getSKUItem(SKUItem.RFID);
         expect(res.RFID).toStrictEqual(SKUItem.RFID);
         expect(res.SKUId).toStrictEqual(SKUItem.SKUId);
-        expect(res.available).toStrictEqual(SKUItem.available);
+        expect(res.available).toStrictEqual(0);
         expect(res.dateOfStock).toStrictEqual(SKUItem.dateOfStock);
     });
 }
@@ -35,7 +35,7 @@ function testModifySKUItem(SKUItem, newStatus){
         await SKUItemDAO.addSKUItem(SKUItem);
         await SKUItemDAO.modifySKUItem(SKUItem.RFID, newStatus) ;
         var res = await SKUItemDAO.getSKUItem(SKUItem.RFID);
-        expect(res.length).toStrictEqual(1);
+        expect(res.length).toStrictEqual(3);
         expect(res.RFID).toStrictEqual(newStatus.newRFID);
         expect(res.available).toStrictEqual(newStatus.newAvailable);
         expect(res.dateOfStock).toStrictEqual(newStatus.newDateOfStock);

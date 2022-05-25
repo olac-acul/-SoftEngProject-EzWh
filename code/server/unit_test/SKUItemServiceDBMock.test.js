@@ -3,7 +3,7 @@ const SKUItemDAO = require("../modules/mockDAOs/mockSKUItemDAO");
 const SKUItem_Service = new SKUItemService(SKUItemDAO);
 
 describe("get SKUItems", () => {
-    SKUItemDAO.getSKUItems.mockReturnValue(  {
+    SKUItemDAO.getAllSKUItems.mockReturnValue(  {
         RFID: '123123123',
         SKUId: 1,
         available: 10,
