@@ -11,18 +11,10 @@ describe('testRestockOrderDAO', () => {
         expect(res.length).toStrictEqual(0);
     });
 
-    testCreateRestockOrder_And_GetRestockOrders_And_GetRestockOrderById(1, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
-    {"SKUId":180,"description":"another product","price":11.99,"qty":20}],  supplierId: 8}, {issueDate: "2021/11/22 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
-    {"SKUId":180,"description":"another product","price":10.99,"qty":30}],  supplierId: 10});
-    testChangeStateRestockOrder(1, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
-    {"SKUId":180,"description":"another product","price":11.99,"qty":20}],  supplierId: 8}, {issueDate: "2021/11/22 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
-    {"SKUId":180,"description":"another product","price":10.99,"qty":30}],  supplierId: 10}, "DELIVERED");
-    testAddTransportNoteRestockOrder(1, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
-    {"SKUId":180,"description":"another product","price":11.99,"qty":20}],  supplierId: 8}, {issueDate: "2021/11/22 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
-    {"SKUId":180,"description":"another product","price":10.99,"qty":30}],  supplierId: 10}, {deliveryDate:"2021/12/29"});
-    testDeleteRestockOrder(1, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
-    {"SKUId":180,"description":"another product","price":11.99,"qty":20}],  supplierId: 8}, {issueDate: "2021/11/22 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":30},
-    {"SKUId":180,"description":"another product","price":10.99,"qty":30}],  supplierId: 10});
+    testCreateRestockOrder_And_GetRestockOrders_And_GetRestockOrderById(1, {issueDate: "2021/11/29 09:33",  supplierId: 8}, {issueDate: "2021/11/22 09:33", supplierId: 10});
+    testChangeStateRestockOrder(1, {issueDate: "2021/11/29 09:33",  supplierId: 8}, {issueDate: "2021/11/22 09:33",  supplierId: 10}, "DELIVERED");
+    testAddTransportNoteRestockOrder(1, {issueDate: "2021/11/29 09:33",  supplierId: 8}, {issueDate: "2021/11/22 09:33",  supplierId: 10}, {deliveryDate:"2021/12/29"});
+    testDeleteRestockOrder(1, {issueDate: "2021/11/29 09:33",  supplierId: 8}, {issueDate: "2021/11/22 09:33",  supplierId: 10});
 });
 
 function testCreateRestockOrder_And_GetRestockOrders_And_GetRestockOrderById(id, restockOrder1 , restockOrder2) {
@@ -35,7 +27,6 @@ function testCreateRestockOrder_And_GetRestockOrders_And_GetRestockOrderById(id,
         expect(res.id).toStrictEqual(id);
         expect(res.issueDate).toStrictEqual(restockOrder1.issueDate);
         expect(res.state).toStrictEqual("ISSUED");
-        expect(res.products).toStrictEqual(restockOrder1.products);
         expect(res.supplierId).toStrictEqual(restockOrder1.supplierId);
     });
 }
@@ -49,7 +40,6 @@ function testChangeStateRestockOrder(id, restockOrder1, restockOrder2, newState)
         expect(res.id).toStrictEqual(id);
         expect(res.issueDate).toStrictEqual(restockOrder1.issueDate);
         expect(res.state).toStrictEqual(newState);
-        expect(res.products).toStrictEqual(restockOrder1.products);
         expect(res.supplierId).toStrictEqual(restockOrder1.supplierId);
     });
 }
@@ -63,7 +53,6 @@ function testAddTransportNoteRestockOrder(id, restockOrder1, restockOrder2, tran
         expect(res.id).toStrictEqual(id);
         expect(res.issueDate).toStrictEqual(restockOrder1.issueDate);
         expect(res.state).toStrictEqual("ISSUED");
-        expect(res.products).toStrictEqual(restockOrder1.products);
         expect(res.supplierId).toStrictEqual(restockOrder1.supplierId);
         expect(res.transportNote).toStrictEqual(transportNote);
     });

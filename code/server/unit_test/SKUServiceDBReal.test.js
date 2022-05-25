@@ -38,7 +38,7 @@ async function testAddSKU(){
             notes : "n1",
             availableQuantity : 50,
             price : 20.99
-        }
+        };
         let res = await SKU_Service.addSKU(SKU);
         res = await SKU_Service.getSKU(id);
         expect(res).toEqual({
