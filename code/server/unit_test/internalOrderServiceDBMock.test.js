@@ -46,7 +46,7 @@ describe("modify an internalOrder with state ACCEPTED", () => {
         const newStatus = {newState: "ACCEPTED"};
         await internalOrderService.changeStateInternalOrder(id, newStatus);
         expect(internalOrderDAO.changeStateInternalOrder.mock.calls[0][0]).toBe(id);
-        expect(internalOrderDAO.changeStateInternalOrder.calls[0][1].newState).toBe(newStatus.newState);
+        expect(internalOrderDAO.changeStateInternalOrder.mock.calls[0][1].newState).toBe(newStatus.newState);
     });
 });
 
@@ -58,8 +58,8 @@ describe("modify an internalOrder with state COMPLETED and products arrary", () 
         const newStatus = {newState: "COMPLETED", products: products};
         await internalOrderService.changeStateInternalOrder(id, newStatus);
         expect(internalOrderDAO.changeStateInternalOrder.mock.calls[0][0]).toBe(id);
-        expect(internalOrderDAO.changeStateInternalOrder.calls[0][1].newState).toBe(newStatus.newState);
-        expect(internalOrderDAO.changeStateInternalOrder.calls[0][1].products).toBe(newStatus.products);
+        expect(internalOrderDAO.changeStateInternalOrder.mock.calls[0][1].newState).toBe(newStatus.newState);
+        expect(internalOrderDAO.changeStateInternalOrder.mock.calls[0][1].products).toBe(newStatus.products);
     });
 });
 
@@ -71,8 +71,8 @@ describe("modify an internalOrder with state ACCEPTED and products arrary (the p
         const newStatus = {newState: "ACCEPTED", products: products};
         await internalOrderService.changeStateInternalOrder(id, newStatus);
         expect(internalOrderDAO.changeStateInternalOrder.mock.calls[0][0]).toBe(id);
-        expect(internalOrderDAO.changeStateInternalOrder.calls[0][1].newState).toBe(newStatus.newState);
-        expect(internalOrderDAO.changeStateInternalOrder.calls[0][1].products).toBe(newStatus.products);
+        expect(internalOrderDAO.changeStateInternalOrder.mock.calls[0][1].newState).toBe(newStatus.newState);
+        expect(internalOrderDAO.changeStateInternalOrder.mock.calls[0][1].products).toBe(newStatus.products);
     });
 });
 

@@ -7,7 +7,7 @@ const db = new sqlite.Database('EzWh', (err) => {
 
 exports.dropTable = () => {
     return new Promise((resolve, reject) => {
-        const sql = 'DROP TABLE IF EXISTs INTERNAL_ORDERS';
+        const sql = 'DROP TABLE IF EXISTS INTERNAL_ORDERS';
         db.run(sql, function (err) {
             if (err) {
                 reject(err);
@@ -105,14 +105,15 @@ exports.getInternalOrderById = (id) => {
                             reject(err);
                             return;
                         }
-                        const products = rows.map(r => (
-                            {
+                        const products = [];
+                        for (r of rows) {
+                            products.push({
                                 SKUId: r.SKU_ID,
                                 description: r.DESCRIPTION,
                                 price: r.PRICE,
-                                RFID: r.RFID
-                            }
-                        ));
+                                qty: r.QUANTITY
+                            });
+                        }
                         const internalOrder = {
                             id: preInternalOrder.id,
                             issueDate: preInternalOrder.issueDate,
@@ -135,14 +136,15 @@ exports.getInternalOrderById = (id) => {
                             reject(err);
                             return;
                         }
-                        const products = rows.map(r => (
-                            {
+                        const products = [];
+                        for (r of rows) {
+                            products.push({
                                 SKUId: r.SKU_ID,
                                 description: r.DESCRIPTION,
                                 price: r.PRICE,
                                 qty: r.QUANTITY
-                            }
-                        ));
+                            });
+                        }
                         const internalOrder = {
                             id: preInternalOrder.id,
                             issueDate: preInternalOrder.issueDate,
@@ -239,13 +241,13 @@ exports.deleteInternalOrder_join_Product = (id) => {
 
 exports.deleteInternalOrders = () => {
     return new Promise((resolve, reject) => {
-      const sql = 'DELETE FROM INTERNAL_ORDERS';
-      db.run(sql, [], function (err) {
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve(true);
-      })
+        const sql = 'DELETE FROM INTERNAL_ORDERS';
+        db.run(sql, [], function (err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(true);
+        })
     })
-  };
+};

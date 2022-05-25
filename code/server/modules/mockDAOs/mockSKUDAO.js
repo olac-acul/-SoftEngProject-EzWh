@@ -4,6 +4,7 @@ exports.getSKU = jest.fn();
 exports.addSKU = jest.fn();
 exports.modifySKU = jest.fn();
 exports.getSKUPosition = jest.fn();
+exports.getPositionById = jest.fn();
 exports.modifySKUPosition = jest.fn();
 exports.deleteSKU = jest.fn();
 exports.deleteSKUs = jest.fn();
