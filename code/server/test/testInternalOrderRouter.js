@@ -12,23 +12,37 @@ describe('test internalOrder APIs', () => {
         await agent.delete('/api/internalOrdersAll');
     })
 
-    getAllInternalOrders(200, 1, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":3},
-    {"SKUId":180,"description":"another product","price":11.99,"qty":3}], customerId: 1});
-    getInternalOrderById(200, 1, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":3},
-    {"SKUId":180,"description":"another product","price":11.99,"qty":3}], customerId: 1});
+    getAllInternalOrders(200, 1, {
+        issueDate: "2021/11/29 09:33", products: [{ SKUId: 12, description: "a product", price: 10.99, qty: 3 },
+        { SKUId: 180, description: "another product", price: 11.99, qty: 3 }], customerId: 1
+    });
+    getInternalOrderById(200, 1, {
+        issueDate: "2021/11/29 09:33", products: [{ "SKUId": 12, "description": "a product", "price": 10.99, "qty": 3 },
+        { "SKUId": 180, "description": "another product", "price": 11.99, "qty": 3 }], customerId: 1
+    });
     getInternalOrderById(422);
-    createInternalOrder(201, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":3},
-    {"SKUId":180,"description":"another product","price":11.99,"qty":3}], customerId: 1});
+    createInternalOrder(201, {
+        issueDate: "2021/11/29 09:33", products: [{ "SKUId": 12, "description": "a product", "price": 10.99, "qty": 3 },
+        { "SKUId": 180, "description": "another product", "price": 11.99, "qty": 3 }], customerId: 1
+    });
     createInternalOrder(422);
-    changeInternalOrderState(204, 1, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":3},
-    {"SKUId":180,"description":"another product","price":11.99,"qty":3}], customerId: 1}, "ACCEPTED");
-    changeInternalOrderState(204, 1, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":3},
-    {"SKUId":180,"description":"another product","price":11.99,"qty":3}], customerId: 1}, {newState: "COMPLETED", products: [{"SkuID":1,"RFID":"12345678901234567890123456789016"},{"SkuID":1,"RFID":"12345678901234567890123456789038"}]});
-    changeInternalOrderState(204, 1, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":3},
-    {"SKUId":180,"description":"another product","price":11.99,"qty":3}], customerId: 1}, {newState: "ACCEPTED", products: [{"SkuID":1,"RFID":"12345678901234567890123456789016"},{"SkuID":1,"RFID":"12345678901234567890123456789038"}]});
+    changeInternalOrderState(204, 1, {
+        issueDate: "2021/11/29 09:33", products: [{ "SKUId": 12, "description": "a product", "price": 10.99, "qty": 3 },
+        { "SKUId": 180, "description": "another product", "price": 11.99, "qty": 3 }], customerId: 1
+    }, "ACCEPTED");
+    changeInternalOrderState(204, 1, {
+        issueDate: "2021/11/29 09:33", products: [{ "SKUId": 12, "description": "a product", "price": 10.99, "qty": 3 },
+        { "SKUId": 180, "description": "another product", "price": 11.99, "qty": 3 }], customerId: 1
+    }, { newState: "COMPLETED", products: [{ "SkuID": 1, "RFID": "12345678901234567890123456789016" }, { "SkuID": 1, "RFID": "12345678901234567890123456789038" }] });
+    changeInternalOrderState(204, 1, {
+        issueDate: "2021/11/29 09:33", products: [{ "SKUId": 12, "description": "a product", "price": 10.99, "qty": 3 },
+        { "SKUId": 180, "description": "another product", "price": 11.99, "qty": 3 }], customerId: 1
+    }, { newState: "ACCEPTED", products: [{ "SkuID": 1, "RFID": "12345678901234567890123456789016" }, { "SkuID": 1, "RFID": "12345678901234567890123456789038" }] });
     changeInternalOrderState(422);
-    deleteInternalOrder(204, 1, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":3},
-    {"SKUId":180,"description":"another product","price":11.99,"qty":3}], customerId: 1});
+    deleteInternalOrder(204, 1, {
+        issueDate: "2021/11/29 09:33", products: [{ "SKUId": 12, "description": "a product", "price": 10.99, "qty": 3 },
+        { "SKUId": 180, "description": "another product", "price": 11.99, "qty": 3 }], customerId: 1
+    });
     deleteInternalOrder(422);
     deleteAllInternalOrders(204);
 });
@@ -42,11 +56,11 @@ function getAllInternalOrders(expectedHTTPStatus, id, internalOrder) {
                 agent.get('/api/internalOrders')
                     .then(function (r) {
                         r.should.have.status(expectedHTTPStatus);
-                        r.body.id.should.equal(id);
-                        r.body.issueDate.should.equal(internalOrder.issueDate);
-                        r.body.state.should.equal("ISSUED");
-                        r.body.products.should.equal(internalOrder.products);
-                        r.body.customerId.should.equal(internalOrder.customerId);
+                        r.body[0].id.should.equal(id);
+                        r.body[0].issueDate.should.equal(internalOrder.issueDate);
+                        r.body[0].state.should.equal("ISSUED");
+                        r.body[0].products.should.equal(internalOrder.products);
+                        r.body[0].customerId.should.equal(internalOrder.customerId);
                         done();
                     });
             });
@@ -60,14 +74,14 @@ function getInternalOrderById(expectedHTTPStatus, id, internalOrder) {
                 .send(internalOrder)
                 .then(function (res) {
                     res.should.have.status(201);
-                    agent.get('/api/internalOrder/'+ id)
+                    agent.get('/api/internalOrder/' + id)
                         .then(function (r) {
                             r.should.have.status(expectedHTTPStatus);
-                            r.body.id.should.equal(id);
-                            r.body.issueDate.should.equal(internalOrder.issueDate);
-                            r.body.state.should.equal("ISSUED");
-                            r.body.products.should.equal(internalOrder.products);
-                            r.body.customerId.should.equal(internalOrder.customerId);
+                            r.body[0].id.should.equal(id);
+                            r.body[0].issueDate.should.equal(internalOrder.issueDate);
+                            r.body[0].state.should.equal("ISSUED");
+                            r.body[0].products.should.equal(internalOrder.products);
+                            r.body[0].customerId.should.equal(internalOrder.customerId);
                             done();
                         });
                 });
@@ -109,13 +123,13 @@ function changeInternalOrderState(expectedHTTPStatus, id, internalOrder, newStat
                 .send(internalOrder)
                 .then(function (res) {
                     res.should.have.status(201);
-                    agent.put('/api/internalOrder/'+ id)
+                    agent.put('/api/internalOrder/' + id)
                         .send(newState)
                         .then(function (r) {
                             r.should.have.status(expectedHTTPStatus);
                             done();
                         });
-                        
+
                 });
         }
         else {
@@ -135,19 +149,12 @@ function deleteInternalOrder(expectedHTTPStatus, id, internalOrder) {
                 .send(internalOrder)
                 .then(function (res) {
                     res.should.have.status(201);
-                    agent.delete('/api/internalOrder/'+ id)
+                    agent.delete('/api/internalOrder/' + id)
                         .then(function (r) {
                             r.should.have.status(expectedHTTPStatus);
                             done();
                         });
-                        
-                });
-        }
-        else {
-            agent.delete('/api/internalOrder/') //we are not sending the id
-                .then(function (res) {
-                    res.should.have.status(expectedHTTPStatus);
-                    done();
+
                 });
         }
     });
