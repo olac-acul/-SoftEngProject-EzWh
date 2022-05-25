@@ -2,7 +2,8 @@ const SKUItemDAO = require('../modules/DAOs/SKUItemDAO');
 
 describe('testSKUItemDAO', () => {
     beforeEach(async () => {
-        await SKUItemDAO.deleteSKUItems();
+        await SKUItemDAO.dropTable();
+        await SKUItemDAO.newSKUItemTable();
     });
 
     test('delete all SKUItems', async () => {

@@ -4,7 +4,8 @@ const returnOrderService = new ReturnOrderService(returnOrderDAO);
 
 describe("get returnOrders", () => {
     beforeEach(async () => {
-        await returnOrderDAO.deleteReturnOrders();
+        await returnOrderDAO.dropTable();
+        await returnOrderDAO.newReturnOrderTable();
         await returnOrderDAO.createReturnOrder({returnDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"RFID":"12345678901234567890123456789016"},
         {"SKUId":180,"description":"another product","price":11.99,"RFID":"12345678901234567890123456789038"}],  restockOrderId: 1});
     });
@@ -41,7 +42,8 @@ async function testGetReturnOrderById(){
 
 describe("create a returnOrder", () => {
     beforeEach(async () => {
-        await returnOrderDAO.deleteReturnOrders();
+        await returnOrderDAO.dropTable();
+        await returnOrderDAO.newReturnOrderTable();
     });
     testCreateReturnOrder();
 });
@@ -69,7 +71,8 @@ async function testCreateReturnOrder(){
 
 describe("delete a returnOrder", () => {
     beforeEach(async () => {
-        await returnOrderDAO.deleteReturnOrders();
+        await returnOrderDAO.dropTable();
+        await returnOrderDAO.newReturnOrderTable();
         await returnOrderDAO.createReturnOrder({returnDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"RFID":"12345678901234567890123456789016"},
         {"SKUId":180,"description":"another product","price":11.99,"RFID":"12345678901234567890123456789038"}],  restockOrderId: 1});
     });

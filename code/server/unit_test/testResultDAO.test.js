@@ -2,7 +2,8 @@ const testResultDAO = require('../modules/testResultDAO');
 
 describe('testTestResultDAO', () => {
     beforeEach(async () => {
-        await testResultDAO.deleteTestResults();
+        await testResultDAO.dropTable();
+        await testResultDAO.newTestResultTable();
     });
 
     test('delete all testResults', async () => {

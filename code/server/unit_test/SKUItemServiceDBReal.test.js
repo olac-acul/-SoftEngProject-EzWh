@@ -4,7 +4,8 @@ const SKUItem_Service = new SKUItemService(SKUItemDAO);
 
 describe("get SKUItems", () => {
     beforeEach(async () => {
-        await SKUItemDAO.deleteSKUItems();
+        await SKUItemDAO.dropTable();
+        await SKUItemDAO.newSKUItemTable();
         await SKUItemDAO.addSKUItem({RFID: '123123123', SKUId: 8, DateOfStock: '2021/11/29 12:30'});
     });
     testGetSKUItems();
@@ -38,7 +39,8 @@ async function testGetSKUItem(){
 
 describe("create an SKUItem", () => {
     beforeEach(async () => {
-        await SKUItemDAO.deleteSKUItems();
+        await SKUItemDAO.dropTable();
+        await SKUItemDAO.newSKUItemTable();
     });
     testAddSKUItem();
 });
@@ -65,7 +67,8 @@ async function testAddSKUItem(){
 
 describe("modify an SKUItem", () => {
     beforeEach(async () => {
-        await SKUItemDAO.deleteSKUItems();
+        await SKUItemDAO.dropTable();
+        await SKUItemDAO.newSKUItemTable();
         await SKUItemDAO.addSKUItem({RFID: '123123123', SKUId: 8, DateOfStock: '2021/11/29 12:30'});
     });
     testModifySKUItem();
@@ -92,7 +95,8 @@ async function testModifySKUItem(){
 
 describe("delete an SKUItem", () => {
     beforeEach(async () => {
-        await SKUItemDAO.deleteSKUItems();
+        await SKUItemDAO.dropTable();
+        await SKUItemDAO.newSKUItemTable();
         await SKUItemDAO.addSKUItem({RFID: '123123123', SKUId: 8, DateOfStock: '2021/11/29 12:30'});
     });
     testDeleteSKUItem();

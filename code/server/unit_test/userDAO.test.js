@@ -2,7 +2,8 @@ const userDAO = require('../modules/DAOs/userDAO');
 
 describe('testUserDao', () => {
     beforeEach(async () => {
-        await userDAO.deleteUsers();
+        await userDAO.dropTable();
+        await userDAO.newUserTable();
     });
 
     test('delete all Users', async () => {

@@ -2,7 +2,8 @@ const returnOrderDAO = require('../modules/returnOrderDAO');
 
 describe('testReturnOrderDao', () => {
     beforeEach(async () => {
-        await returnOrderDAO.deleteReturnOrders();
+        await returnOrderDAO.dropTable();
+        await returnOrderDAO.newReturnOrderTable();
     });
 
     test('delete all returnOrders', async () => {
