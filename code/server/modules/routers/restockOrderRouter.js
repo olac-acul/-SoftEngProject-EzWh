@@ -127,4 +127,13 @@ router.delete('/restockOrder/:id', async (req, res) => {
     }
 });
 
+router.delete('/restockOrders', async (req, res) => {
+    try {
+        await restockOrderService.deleteRestockOrders();
+        res.status(204).end();
+    } catch (err) {
+        res.status(500).json({ error: `Service Unavailable` }).end();
+    }
+});
+
 module.exports = router;

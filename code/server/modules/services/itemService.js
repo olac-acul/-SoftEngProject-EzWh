@@ -99,5 +99,9 @@ class ItemService {
             return '422';
         return;
     }
+
+    deleteItems = async () => {
+        await this.dao.deleteItems();
+    }
 }
 module.exports = ItemService;

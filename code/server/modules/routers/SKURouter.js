@@ -89,4 +89,13 @@ router.delete('/skus/:id', async (req, res) => {
     }
 });
 
+router.delete('/skusAll', async (req, res) => {
+    try {
+        await skuService.deleteSKUs();
+        res.status(204).end();
+    } catch (err) {
+        res.status(503).json({ error: `Generic error` }).end();
+    }
+});
+
 module.exports = router;

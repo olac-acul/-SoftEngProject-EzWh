@@ -112,6 +112,10 @@ class InternalOrderService {
             return '422';
         await this.dao.deleteInternalOrder_join_Product(validatedId);
     }
+
+    deleteInternalOrders = async () => {
+        await this.dao.deleteInternalOrders();
+    }
 }
 
 module.exports = InternalOrderService;

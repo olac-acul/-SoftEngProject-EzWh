@@ -101,6 +101,10 @@ class UserService {
         else
             return '204';
     }
+
+    deleteUsers = async () => {
+        await this.dao.deleteUsers();
+        }
 }
 
 module.exports = UserService;

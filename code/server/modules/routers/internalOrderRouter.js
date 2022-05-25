@@ -99,4 +99,13 @@ router.delete('/internalOrders/:id', async (req, res) => {
     }
 });
 
+router.delete('/internalOrdersAll', async (req, res) => {
+    try {
+        await internalOrderService.deleteInternalOrders(); 
+        res.status(204).end();
+    } catch (err) {
+        res.status(503).json({ error: `Service Unavailable` }).end();
+    }
+});
+
 module.exports = router;

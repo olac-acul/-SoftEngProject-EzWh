@@ -9,7 +9,7 @@ var agent = chai.request.agent(app);
 describe('test internalOrder APIs', () => {
 
     beforeEach(async () => {
-        await agent.delete('/api/internalOrders');
+        await agent.delete('/api/internalOrdersAll');
     })
 
     getAllInternalOrders(200, 1, {issueDate: "2021/11/29 09:33", products: [{"SKUId":12,"description":"a product","price":10.99,"qty":3},
@@ -155,7 +155,7 @@ function deleteInternalOrder(expectedHTTPStatus, id, internalOrder) {
 
 function deleteAllInternalOrders(expectedHTTPStatus) {
     it('deleting all internalOrders', function (done) {
-        agent.delete('/api/internalOrders')
+        agent.delete('/api/internalOrdersAll')
             .then(function (res) {
                 res.should.have.status(expectedHTTPStatus);
                 done();

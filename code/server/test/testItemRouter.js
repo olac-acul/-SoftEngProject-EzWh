@@ -9,7 +9,7 @@ var agent = chai.request.agent(app);
 describe('test item APIs', () => {
 
     beforeEach(async () => {
-        await agent.delete('/api/items');
+        await agent.delete('/api/itemsAll');
     })
 
     getAllItems(200, {id: 12, description: "d1", price: 10.99, SKUId: 8, supplierId: 10});
@@ -146,7 +146,7 @@ function deleteItem(expectedHTTPStatus, item) {
 
 function deleteAllItems(expectedHTTPStatus) {
     it('deleting all items', function (done) {
-        agent.delete('/api/items')
+        agent.delete('/api/itemsAll')
             .then(function (res) {
                 res.should.have.status(expectedHTTPStatus);
                 done();

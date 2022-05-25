@@ -173,4 +173,13 @@ router.delete('/users/:username/:type', async (req, res) => {
     }
 });
 
+router.delete('/usersAll', async (req, res) => {
+    try {
+        await userService.deleteUsers();
+        res.status(204).end();
+    } catch (err) {
+        res.status(503).json({ error: `Generic error` }).end();
+    }
+});
+
 module.exports = router;

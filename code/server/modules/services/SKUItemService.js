@@ -102,6 +102,10 @@ class SKUItemService {
         if (deletedSKUItems === 0)
             return '422';
     }
+
+    deleteSKUItems = async () => {
+        await this.dao.deleteSKUItems();
+        }
 }
 
 module.exports = SKUItemService;

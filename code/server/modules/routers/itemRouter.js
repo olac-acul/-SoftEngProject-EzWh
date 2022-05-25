@@ -79,4 +79,13 @@ router.delete('/items/:id', async (req, res) => {
     }
 });
 
+router.delete('/itemsAll', async (req, res) => {
+    try {
+        itemService.deleteItems();
+        res.status(204).end();
+    } catch (err) {
+        res.status(503).json({ error: `Generic error` }).end();
+    }
+});
+
 module.exports = router;

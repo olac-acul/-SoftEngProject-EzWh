@@ -97,6 +97,10 @@ class ReturnOrderService {
         await this.dao.deleteReturnOrder_join_Product(validatedId);
         return '204';
     }
+
+    deleteReturnOrders = async () => {
+        await this.dao.deleteReturnOrders();
+        }
 }
 
 module.exports = ReturnOrderService;
