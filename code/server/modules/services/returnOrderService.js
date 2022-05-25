@@ -28,7 +28,6 @@ class ReturnOrderService {
             return '404';
         const filterId = {
             returnDate: returnOrder.returnDate,
-            products: returnOrder.products,
             restockOrderId: returnOrder.restockOrderId
         }
         return filterId;

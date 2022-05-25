@@ -36,7 +36,6 @@ function testModifyUserRights(user, email, oldType, newType){
         await userDAO.addUser(user);
         await userDAO.modifyUserRights(email, oldType, newType);
         var res = await userDAO.showUserDetails(email);
-        expect(res.length).toStrictEqual(1);
         expect(res.type).toStrictEqual(newType);
     });
 }
@@ -45,7 +44,6 @@ function testLoginUser(user, email, password, type){
     test('login user', async () => {
         await userDAO.addUser(user);
         var res = await userDAO.loginUser(email, password, type);
-        expect(res.length).toStrictEqual(1);
         expect(res.id).toStrictEqual(user.id);
         expect(res.email).toStrictEqual(user.email);
         expect(res.name).toStrictEqual(user.name);

@@ -8,29 +8,13 @@ describe("get users", () => {
         await userDAO.newUserTable();
         await userDAO.addUser({id: 1, email: 'mail1', name: 'mario', surname: 'rossi', password: 'alz', type: 'customer'});
     });
-    testGetUsers();
-    testShowUserDetails();
+    testGetUsersExceptManager();
 });
 
-async function testGetUsers(){
+async function testGetUsersExceptManager(){
     test("get users", async () => {
-        let res = await user_Service.getUsers();
-        expect(res).toEqual({
-            id: 1,
-            email: 'mail1',
-            name: 'mario',
-            surname: 'rossi',
-            password: 'alz',
-            type: 'customer'
-        });
-    });
-}
-
-async function testShowUserDetails(){
-    test("get a user", async () => {
-        const email = 'mail1';
-        let res = await user_Service.showUserDetails(email);
-        expect(res).toEqual({
+        let res = await user_Service.getUsersExceptManager();
+        expect(res[0]).toEqual({
             id: 1,
             email: 'mail1',
             name: 'mario',
@@ -61,8 +45,8 @@ async function testAddUser(){
             type: 'customer'
         };
         let res = await user_Service.addUser(user);
-        res = await user_Service.showUserDetails(email);
-        expect(res).toEqual({
+        res = await user_Service.getUsersExceptManager();
+        expect(res[0]).toEqual({
             id: 1,
             email: 'mail1',
             name: 'mario',
@@ -88,7 +72,6 @@ async function testLoginUser(){
         const password = 'alz';
         const type = 'customer';
         let res = await user_Service.loginUser(email, password, type);
-        res = await user_Service.showUserDetails(email);
         expect(res).toEqual({
             id: 1,
             email: 'mail1',
@@ -112,8 +95,8 @@ async function testModifyUserRights(){
         const oldType = 'customer';
         const newType = 'supplier';
         let res = await user_Service.modifyUserRights(email, oldType, newType);
-        res = await user_Service.showUserDetails(email);
-        expect(res).toEqual({
+        res = await user_Service.getUsersExceptManager();
+        expect(res[0]).toEqual({
             id: 1,
             email: 'mail1',
             name: 'mario',
@@ -138,8 +121,8 @@ async function testDeleteUser(){
         const email = 'mail1';
         const type = 'customer';
         let res = await user_Service.deleteUser(email, type);
-        res = await user_Service.showUserDetails(email);
-        expect(res).toEqual("404");
+        res = await user_Service.getUsersExceptManager();
+        expect(res.length).toEqual(0);
     });
 }
 
