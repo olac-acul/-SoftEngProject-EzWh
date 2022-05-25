@@ -15,12 +15,11 @@ describe('test position APIs', () => {
     getAllPositions(200, {positionID: "800234543412", aisleID: "8002", row: "3454", col: "3412", maxWeight: 1000, maxVolume: 1000});
     createPosition(201, {positionID: "800234543412", aisleID: "8002", row: "3454", col: "3412", maxWeight: 1000, maxVolume: 1000});
     createPosition(422);
-    modifyPosition(204, "800234543412", {aisleID: "8002", row: "3454", col: "3412", maxWeight: 1000, maxVolume: 1000}, {newAisleID: "8012", newRow: "3454", newCol: "3412", newMaxWeight: 1500, newMaxVolume: 1000, newOccupiedWeight: 200, newOccupiedVolume: 150});
+    modifyPosition(200, "800234543412", {positionID: "800234543412", aisleID: "8002", row: "3454", col: "3412", maxWeight: 1000, maxVolume: 1000}, {newAisleID: "8012", newRow: "3454", newCol: "3412", newMaxWeight: 1500, newMaxVolume: 1000, newOccupiedWeight: 200, newOccupiedVolume: 150});
     modifyPosition(422);
-    changePositionID(204, "800234543412", {aisleID: "8002", row: "3454", col: "3412", maxWeight: 1000, maxVolume: 1000}, "801234543412");
+    changePositionID(200, "800234543412", {positionID: "800234543412", aisleID: "8002", row: "3454", col: "3412", maxWeight: 1000, maxVolume: 1000}, {newPositionID: "801234543412"});
     changePositionID(422);
     deletePosition(204, {positionID: "800234543412", aisleID: "8002", row: "3454", col: "3412", maxWeight: 1000, maxVolume: 1000});
-    deletePosition(422);
     deleteAllPositions(204);
 });
 
@@ -33,12 +32,12 @@ function getAllPositions(expectedHTTPStatus, position) {
                 agent.get('/api/positions')
                     .then(function (res) {
                         res.should.have.status(expectedHTTPStatus);
-                        res.body.positionID.should.equal(position.positionID);
-                        res.body.aisleID.should.equal(position.aisleID);
-                        res.body.row.should.equal(position.row);
-                        res.body.col.should.equal(position.col);
-                        res.body.maxWeight.should.equal(position.maxWeight);
-                        res.body.maxVolume.should.equal(position.maxVolume);
+                        res.body[0].positionID.should.equal(position.positionID);
+                        res.body[0].aisleID.should.equal(position.aisleID);
+                        res.body[0].row.should.equal(position.row);
+                        res.body[0].col.should.equal(position.col);
+                        res.body[0].maxWeight.should.equal(position.maxWeight);
+                        res.body[0].maxVolume.should.equal(position.maxVolume);
                         done();
                     });
             });
@@ -72,7 +71,6 @@ function modifyPosition(expectedHTTPStatus, oldPositionID, position, newState) {
                 .send(position)
                     .then(function (res) {
                         res.should.have.status(201);
-                        const newPositionID = newAisleID + newRow + newCol;
                         agent.put('/api/position/'+ oldPositionID)
                             .send(newState)
                             .then(function (res) {
@@ -80,14 +78,14 @@ function modifyPosition(expectedHTTPStatus, oldPositionID, position, newState) {
                                 agent.get('/api/positions')
                                     .then(function (res) {
                                         res.should.have.status(expectedHTTPStatus);
-                                        res.body.positionID.should.equal(newState.newAisleID + newState.newRow + newState.newCol);
-                                        res.body.aisleID.should.equal(newState.newAisleID);
-                                        res.body.row.should.equal(newState.newRow);
-                                        res.body.col.should.equal(newState.newCol);
-                                        res.body.maxWeight.should.equal(newState.newMaxWeight);
-                                        res.body.maxVolume.should.equal(newState.newMaxVolume);
-                                        res.body.occupiedWeight.should.equal(newState.newOccupiedWeight);
-                                        res.body.occupiedVolume.should.equal(newState.newOccupiedVolume);
+                                        res.body[0].positionID.should.equal(newState.newAisleID + newState.newRow + newState.newCol);
+                                        res.body[0].aisleID.should.equal(newState.newAisleID);
+                                        res.body[0].row.should.equal(newState.newRow);
+                                        res.body[0].col.should.equal(newState.newCol);
+                                        res.body[0].maxWeight.should.equal(newState.newMaxWeight);
+                                        res.body[0].maxVolume.should.equal(newState.newMaxVolume);
+                                        res.body[0].occupiedWeight.should.equal(newState.newOccupiedWeight);
+                                        res.body[0].occupiedVolume.should.equal(newState.newOccupiedVolume);
                                     done();
                                     });
                                 });
@@ -95,7 +93,7 @@ function modifyPosition(expectedHTTPStatus, oldPositionID, position, newState) {
                 });
         }
         else {
-            agent.put('/api/position/') //we are not sending any data
+            agent.put('/api/position/2') //we are not sending any data
                 .then(function (res) {
                     res.should.have.status(expectedHTTPStatus);
                     done();
@@ -118,12 +116,12 @@ function changePositionID(expectedHTTPStatus, oldPositionID, position, newPositi
                                     agent.get('/api/positions')
                                         .then(function (res) {
                                             res.should.have.status(expectedHTTPStatus);
-                                            res.body.positionId.positionID.should.equal(newPositionID);
-                                            res.body.aisleID.should.equal(newPositionID.slice(0, 4));
-                                            res.body.row.should.equal(newPositionID.slice(4, 8));
-                                            res.body.col.should.equal(newPositionID.slice(8, 12));
-                                            res.body.maxWeight.should.equal(position.maxWeight);
-                                            res.body.maxVolume.should.equal(position.maxVolume);
+                                            res.body[0].positionID.should.equal(newPositionID.newPositionID);
+                                            res.body[0].aisleID.should.equal(newPositionID.newPositionID.slice(0, 4));
+                                            res.body[0].row.should.equal(newPositionID.newPositionID.slice(4, 8));
+                                            res.body[0].col.should.equal(newPositionID.newPositionID.slice(8, 12));
+                                            res.body[0].maxWeight.should.equal(position.maxWeight);
+                                            res.body[0].maxVolume.should.equal(position.maxVolume);
                                             done();
                                         });
                                 });
@@ -142,7 +140,7 @@ function changePositionID(expectedHTTPStatus, oldPositionID, position, newPositi
 
 function deletePosition(expectedHTTPStatus, position) {
     it('deleting a position', function (done) {
-        if (positionID !== undefined) {
+        if (position !== undefined) {
             agent.post('/api/position')
                 .send(position)
                 .then(function (res) {
@@ -153,13 +151,6 @@ function deletePosition(expectedHTTPStatus, position) {
                             done();
                         });
                         
-                });
-        }
-        else {
-            agent.delete('/api/position/') //we are not sending the positionID
-                .then(function (res) {
-                    res.should.have.status(expectedHTTPStatus);
-                    done();
                 });
         }
     });

@@ -12,7 +12,7 @@ const rfid = '123123123';
 describe('test testResult APIs', () => {
 
     beforeEach(async () => {
-        await agent.delete('/api/skuitems/' + rfid + '/testResults');
+        await agent.delete('/api/skuitems/testResults');
     })
     getAllTestResultsByRfid(200, 1, {idTestDescriptor:14, Date:"2021/11/29", Result: false});
     getTestResultByRfidAndId(200, 1, {idTestDescriptor:14, Date:"2021/11/29", Result: false});

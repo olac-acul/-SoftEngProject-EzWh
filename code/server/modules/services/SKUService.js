@@ -152,6 +152,10 @@ class SKUService {
         if (deletedElements === 0)
             return '422';
     }
+
+    deleteSKUs = async () => {
+        await this.dao.deleteSKUs();
+        }
 }
 
 module.exports = SKUService;

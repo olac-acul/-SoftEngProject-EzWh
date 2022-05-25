@@ -92,4 +92,13 @@ router.delete('/skuitems/:rfid', async (req, res) => {
     }
 });
 
+router.delete('/skuitemsAll', async (req, res) => {
+    try {
+        await skuItemService.deleteSKUItems();
+        res.status(204).end();
+    } catch (err) {
+        res.status(503).json({ error: `Generic error` }).end();
+    }
+});
+
 module.exports = router;

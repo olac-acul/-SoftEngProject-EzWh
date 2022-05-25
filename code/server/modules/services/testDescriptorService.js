@@ -86,6 +86,10 @@ class TestDescriptorService {
         return;
     }
 
+    deleteTestDescriptors = async () => {
+        await this.dao.deleteTestDescriptors();
+        }
+
 }
 
 module.exports = TestDescriptorService;

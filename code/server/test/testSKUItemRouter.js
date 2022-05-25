@@ -1,6 +1,6 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const { modifySKUItem } = require('../modules/DAOs/SKUItemDAO');
+// const { modifySKUItem } = require('../modules/DAOs/SKUItemDAO');
 chai.use(chaiHttp);
 chai.should();
 
@@ -10,7 +10,7 @@ var agent = chai.request.agent(app);
 describe('test SKUItem APIs', () => {
 
     beforeEach(async () => {
-        await agent.delete('/api/skuitems');
+        await agent.delete('/api/skuitemsAll');
     })
 
     getAllSKUItems(200, {RFID: '123123123', SKUId: 8, DateOfStock: '2021/11/29 12:30'});

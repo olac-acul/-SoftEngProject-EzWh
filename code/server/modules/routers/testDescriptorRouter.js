@@ -77,4 +77,13 @@ router.delete('/testDescriptor/:id', async (req, res) => {
     }
 });
 
+router.delete('/testDescriptors', async (req, res) => {
+    try {
+        await testDescriptorService.deleteTestDescriptors();
+        res.status(204).end();
+    } catch (err) {
+        res.status(503).json({ error: `Generic error` }).end();
+    }
+});
+
 module.exports = router;

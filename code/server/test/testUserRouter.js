@@ -9,7 +9,7 @@ var agent = chai.request.agent(app);
 
 describe('test user APIs', () => {
     beforeEach(async () => {
-        await agent.delete('/api/users');
+        await agent.delete('/api/usersAll');
     })
 
     getSuppliers(200, 'mail1', {id: 1, email: 'mail1', name:'mario', surname: 'rossi', password: 'alz', type: 'supplier'});

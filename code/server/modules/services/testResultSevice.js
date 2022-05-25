@@ -107,11 +107,15 @@ class TestResultService {
         if (isNaN(id) || Number(id) <= 0)
             return '422';
         const validatedId = Number(id);
-        // const deletedTestResult = await this.dao.deleteTestResult(validatedId);
-        // if (deletedTestResult === 0)
-        //     return '422';
+        const deletedTestResult = await this.dao.deleteTestResult(validatedId);
+        if (deletedTestResult === 0)
+            return '422';
         await this.dao.deleteTestResult_join_SKUItem(validatedRFID, validatedId);
     }
+
+    deleteTestResults = async () => {
+        await this.dao.deleteTestResults();
+        }
 }
 
 module.exports = TestResultService;

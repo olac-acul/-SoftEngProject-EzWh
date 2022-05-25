@@ -72,5 +72,14 @@ router.delete('/returnOrder/:id', async (req, res) => {
     }
 });
 
+router.delete('/returnOrders', async (req, res) => {
+    try {
+        await returnOrderService.deleteReturnOrders();
+        res.status(204).end();
+    } catch (err) {
+        res.status(503).json({ error: `Generic error` }).end();
+    }
+});
+
 
 module.exports = router;

@@ -201,6 +201,10 @@ class RestockOrderService {
             return '422';
         await this.dao.deleteRestockOrder_join_Product(validatedId);
     }
+
+    deleteRestockOrders = async () => {
+        await this.dao.deleteRestockOrders();
+    }
 }
 
 module.exports = RestockOrderService;
