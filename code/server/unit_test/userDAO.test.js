@@ -10,10 +10,10 @@ describe('testUserDao', () => {
         expect(res.length).toStrictEqual(0);
     });
 
-    testAddUserAndGetUsersAndShowUserDetails([1, 'mail1', 'mario', 'rossi', 'alz', 'customer'], 'mail1');
-    testModifyUserRights([1, 'mail1', 'mario', 'rossi', 'alz', 'customer'], 'mail1', 'customer', 'supplier');
-    testLoginUser([1, 'mail1', 'mario', 'rossi', 'alz', 'customer'], 'mail1', 'alz', 'customer');
-    testDeleteUser([1, 'mail1', 'mario', 'rossi', 'alz', 'customer'], 'customer');
+    testAddUserAndGetUsersAndShowUserDetails({id: 1, email: 'mail1', name: 'mario', surname: 'rossi', password: 'alz', type: 'customer'}, 'mail1');
+    testModifyUserRights({id: 1, email: 'mail1', name: 'mario', surname: 'rossi', password: 'alz', type: 'customer'}, 'mail1', 'customer', 'supplier');
+    testLoginUser({id: 1, email: 'mail1', name: 'mario', surname: 'rossi', password: 'alz', type: 'customer'}, 'mail1', 'alz', 'customer');
+    testDeleteUser({id: 1, email: 'mail1', name: 'mario', surname: 'rossi', password: 'alz', type: 'customer'}, 'customer');
 });
 
 function testAddUserAndGetUsersAndShowUserDetails(user, email){

@@ -5,7 +5,7 @@ const testResultService = new TestResultService(testResultDAO);
 describe("get testResults by rfid", () => {
     beforeEach(async () => {
         await testResultDAO.deleteTestResults();
-        await testResultDAO.createTestResult({"idTestDescriptor":14, "Date":"2021/11/29", "Result": false});
+        await testResultDAO.createTestResult({idTestDescriptor:14, Date:"2021/11/29", Result: false});
     });
 
     testGetTestResultsByRfid();
@@ -69,7 +69,7 @@ async function testCreateTestResult(){
 describe("modify a testResult", () => {
     beforeEach(async () => {
         await testResultDAO.deleteTestResults();
-        await testResultDAO.createTestResult({"idTestDescriptor":14, "Date":"2021/11/29", "Result": false});
+        await testResultDAO.createTestResult({idTestDescriptor:14, Date:"2021/11/29", Result: false});
     });
     testModifyTestResult();
 });
@@ -97,7 +97,7 @@ async function testModifyTestResult(){
 describe("delete a testResult", () => {
     beforeEach(async () => {
         await testResultDAO.deleteTestResults();
-        await testResultDAO.createTestResult({"idTestDescriptor":14, "Date":"2021/11/29", "Result": false});
+        await testResultDAO.createTestResult({idTestDescriptor:14, Date:"2021/11/29", Result: false});
     });
     testDeleteTestResult();
 });

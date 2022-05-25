@@ -54,7 +54,9 @@ describe("create a returnOrder", () => {
             restockOrderId : 1
         };
         await returnOrderService.createReturnOrder(returnOrder);
-        expect(returnOrderDAO.createReturnOrder.mock.calls[0]).toBe(returnOrder);
+        expect(returnOrderDAO.createReturnOrder.mock.calls[0][0].id).toBe(returnOrder.id);
+        expect(returnOrderDAO.createReturnOrder.mock.calls[0][0].returnDate).toBe(returnOrder.returnDate);
+        expect(returnOrderDAO.createReturnOrder.mock.calls[0][0].restockOrderId).toBe(returnOrder.restockOrderId);
     });
 });
 
@@ -62,6 +64,6 @@ describe("delete a returnOrder", () => {
     test("delete a returnOrder", async () => {
         const id = 1;
         await returnOrderService.deleteReturnOrder(id);
-        expect(returnOrderDAO.deleteReturnOrder.mock.calls[0]).toBe(id);
+        expect(returnOrderDAO.deleteReturnOrder.mock.calls[0][0]).toBe(id);
     });
 });

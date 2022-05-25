@@ -49,7 +49,10 @@ describe("create an SKUItem", () => {
             dateOfStock: '2021/11/29 12:30'
         };
         await SKUItem_Service.addSKUItem(SKUItem);
-        expect(SKUItemDAO.addSKUItem.mock.calls[0]).toBe(SKUItem);
+        expect(SKUItemDAO.addSKUItem.mock.calls[0][0].RFID).toBe(SKUItem.RFID);
+        expect(SKUItemDAO.addSKUItem.mock.calls[0][0].SKUId).toBe(SKUItem.SKUId);
+        expect(SKUItemDAO.addSKUItem.mock.calls[0][0].available).toBe(SKUItem.available);
+        expect(SKUItemDAO.addSKUItem.mock.calls[0][0].dateOfStock).toBe(SKUItem.dateOfStock);
     });
 });
 
@@ -62,8 +65,10 @@ describe("modify an SKUItem", () => {
             newDateOfStock: "2021/11/22 12:30"
         };
         await SKU_Service.modifySKU(RFID, newStatus);
-        expect(SKUItemDAO.modifySKUItem.mock.calls[0]).toBe(RFID);
-        expect(SKUItemDAO.modifySKUItem.mock.calls[1]).toBe(newStatus);
+        expect(SKUItemDAO.modifySKUItem.mock.calls[0][0]).toBe(RFID);
+        expect(SKUItemDAO.modifySKUItem.mock.calls[0][1].newRFID).toBe(newStatus.newRFID);
+        expect(SKUItemDAO.modifySKUItem.mock.calls[0][1].newAvailable).toBe(newStatus.newAvailable);
+        expect(SKUItemDAO.modifySKUItem.mock.calls[0][1].newDateOfStock).toBe(newStatus.newDateOfStock);
     });
 });
 
@@ -71,6 +76,6 @@ describe("delete an SKUItem", () => {
     test("delete an SKUItem", async () => {
         const RFID = '123123123';
         await SKUItem_Service.deleteSKUItem(RFID);
-        expect(SKUItemDAO.deleteSKUItem.mock.calls[0]).toBe(RFID);
+        expect(SKUItemDAO.deleteSKUItem.mock.calls[0][0]).toBe(RFID);
     });
 });

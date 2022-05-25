@@ -11,9 +11,9 @@ describe('testTestResultDAO', () => {
         expect(res.length).toStrictEqual(0);
     });
 
-    testCreateTestResult_getTestResultsByRfid_getTestResultByRfidAndId('123123123', 2, {"idTestDescriptor":12, "Date":"2021/11/29", "Result": true});
-    testModifyTestResult('123123123', 2, {"idTestDescriptor":14, "Date":"2021/11/29", "Result": false}, {"idTestDescriptor":12, "Date":"2021/11/29", "Result": true});
-    testDeleteTestResult('123123123', 2, {"idTestDescriptor":12, "Date":"2021/11/29", "Result": true});
+    testCreateTestResult_getTestResultsByRfid_getTestResultByRfidAndId('123123123', 2, {idTestDescriptor:12, Date:"2021/11/29", Result: true});
+    testModifyTestResult('123123123', 2, {newIdTestDescriptor:14, newDate:"2021/11/29", newResult: false}, {idTestDescriptor:12, Date:"2021/11/29", Result: true});
+    testDeleteTestResult('123123123', 2, {idTestDescriptor:12, Date:"2021/11/29", Result: true});
 });
 
 function testCreateTestResult_getTestResultsByRfid_getTestResultByRfidAndId(RFID, id, testResult) {

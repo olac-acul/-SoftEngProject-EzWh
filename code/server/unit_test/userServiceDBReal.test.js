@@ -5,7 +5,7 @@ const user_Service = new userService(userDAO);
 describe("get users", () => {
     beforeEach(async () => {
         await userDAO.deleteUsers();
-        await userDAO.addUser([1, 'mail1', 'mario', 'rossi', 'alz', 'customer']);
+        await userDAO.addUser({id: 1, email: 'mail1', name: 'mario', surname: 'rossi', password: 'alz', type: 'customer'});
     });
     testGetUsers();
     testShowUserDetails();
@@ -74,7 +74,7 @@ async function testAddUser(){
 describe("login user", () => {
     beforeEach(async () => {
         await userDAO.deleteUsers();
-        await userDAO.addUser([1, 'mail1', 'mario', 'rossi', 'alz', 'customer']);
+        await userDAO.addUser({id: 1, email: 'mail1', name: 'mario', surname: 'rossi', password: 'alz', type: 'customer'});
     });
     testLoginUser();
 });
@@ -97,7 +97,7 @@ async function testLoginUser(){
 describe("modify user rights", () => {
     beforeEach(async () => {
         await userDAO.deleteUsers();
-        await userDAO.addUser([1, 'mail1', 'mario', 'rossi', 'alz', 'customer']);
+        await userDAO.addUser({id: 1, email: 'mail1', name: 'mario', surname: 'rossi', password: 'alz', type: 'customer'});
     });
     testModifyUserRights();
 });
@@ -123,7 +123,7 @@ async function testModifyUserRights(){
 describe("delete a user", () => {
     beforeEach(async () => {
         await userDAO.deleteUsers();
-        await userDAO.addUser([1, 'mail1', 'mario', 'rossi', 'alz', 'customer']);
+        await userDAO.addUser({id: 1, email: 'mail1', name: 'mario', surname: 'rossi', password: 'alz', type: 'customer'});
     });
     testDeleteUser();
 });

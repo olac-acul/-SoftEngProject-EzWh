@@ -14,14 +14,14 @@ describe('test testResult APIs', () => {
     beforeEach(async () => {
         await agent.delete('/api/skuitems/' + rfid + '/testResults');
     })
-    getAllTestResultsByRfid(200, 1, {"idTestDescriptor":14, "Date":"2021/11/29", "Result": false});
-    getTestResultByRfidAndId(200, 1, {"idTestDescriptor":14, "Date":"2021/11/29", "Result": false});
+    getAllTestResultsByRfid(200, 1, {idTestDescriptor:14, Date:"2021/11/29", Result: false});
+    getTestResultByRfidAndId(200, 1, {idTestDescriptor:14, Date:"2021/11/29", Result: false});
     getTestResultByRfidAndId(422);
-    createTestResult(201, {"idTestDescriptor":14, "Date":"2021/11/29", "Result": false});
+    createTestResult(201, {idTestDescriptor:14, Date:"2021/11/29", Result: false});
     createTestResult(422);
-    modifyTestResult(204, 1, {"idTestDescriptor":14, "Date":"2021/11/29", "Result": false}, {"idTestDescriptor":12, "Date":"2021/11/29", "Result": true});
+    modifyTestResult(204, 1, {idTestDescriptor:14, Date:"2021/11/29", Result: false}, {newIdTestDescriptor:12, newDate:"2021/11/29", newResult: true});
     modifyTestResult(422);
-    deleteTestResult(204, 1, {"idTestDescriptor":14, "Date":"2021/11/29", "Result": false});
+    deleteTestResult(204, 1, {idTestDescriptor:14, Date:"2021/11/29", Result: false});
     deleteTestResult(422);
 });
 

@@ -12,16 +12,16 @@ describe('test user APIs', () => {
         await agent.delete('/api/users');
     })
 
-    getSuppliers(200, 'mail1', [1, 'mail1', 'mario', 'rossi', 'alz', 'supplier']);
-    getUsersExceptManager(200, 'mail1', [1, 'mail1', 'mario', 'rossi', 'alz', 'customer']);
-    addUser(201, [1, 'mail1', 'mario', 'rossi', 'alz', 'customer']);
+    getSuppliers(200, 'mail1', {id: 1, email: 'mail1', name:'mario', surname: 'rossi', password: 'alz', type: 'supplier'});
+    getUsersExceptManager(200, 'mail1', {id: 1, email: 'mail1', name: 'mario', surname: 'rossi', password: 'alz', type: 'customer'});
+    addUser(201, {id: 1, email: 'mail1', name: 'mario', surname: 'rossi', password: 'alz', type: 'customer'});
     addUser(422);
     //login
     loginManager(200, {username: "user1@ezwh.com", password: "testpassword"})
     loginManager(422);
-    modifyUserRights(204, [1, 'mail1', 'mario', 'rossi', 'alz', 'customer'], 'mail1', 'supplier');
+    modifyUserRights(204, {id: 1, email: 'mail1', name: 'mario', surname: 'rossi', password: 'alz', type: 'customer'}, 'mail1', 'supplier');
     modifyUserRights(422);
-    deleteUser(204, [1, 'mail1', 'mario', 'rossi', 'alz', 'customer'], 'mail1', 'customer');
+    deleteUser(204, {id: 1, email: 'mail1', name: 'mario', surname: 'rossi', password: 'alz', type: 'customer'}, 'mail1', 'customer');
     deleteUser(422);
 });
 

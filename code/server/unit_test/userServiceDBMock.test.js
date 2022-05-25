@@ -59,7 +59,12 @@ describe("create a user", () => {
             type: 'customer'
         };
         await user_Service.addUser(user);
-        expect(userDAO.addUser.mock.call).toBe(user);
+        expect(userDAO.addUser.mock.call[0][0].id).toBe(user.id);
+        expect(userDAO.addUser.mock.call[0][0].email).toBe(user.email);
+        expect(userDAO.addUser.mock.call[0][0].name).toBe(user.name);
+        expect(userDAO.addUser.mock.call[0][0].surname).toBe(user.surname);
+        expect(userDAO.addUser.mock.call[0][0].password).toBe(user.password);
+        expect(userDAO.addUser.mock.call[0][0].type).toBe(user.type);
     })
 });
 
@@ -88,9 +93,9 @@ describe("modify user rights", () => {
         const oldType = 'customer';
         const newType = 'supplier';
         await user_Service.modifyUserRights(email, oldType, newType);
-        expect(userDAO.modifyUserRights.mock.calls[0]).toBe(email);
-        expect(userDAO.modifyUserRights.mock.calls[1]).toBe(oldType);
-        expect(userDAO.modifyUserRights.mock.calls[2]).toBe(newType);
+        expect(userDAO.modifyUserRights.mock.calls[0][0]).toBe(email);
+        expect(userDAO.modifyUserRights.mock.calls[0][1]).toBe(oldType);
+        expect(userDAO.modifyUserRights.mock.calls[0][2]).toBe(newType);
     });
 });
 
@@ -99,8 +104,8 @@ describe("delete a user", () => {
         const email = 'mail1';
         const type = 'customer';
         await user_Service.deleteUser(email, type);
-        expect(userDAO.deleteUser.mock.call[0]).toBe(email);
-        expect(userDAO.deleteUser.mock.call[1]).toBe(type);
+        expect(userDAO.deleteUser.mock.call[0][0]).toBe(email);
+        expect(userDAO.deleteUser.mock.call[0][1]).toBe(type);
     });
 });
 
