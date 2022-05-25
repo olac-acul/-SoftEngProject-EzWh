@@ -66,19 +66,25 @@ exports.getReturnOrders = () => {
     });
 }
 
-exports.getRestockOrderById = (id) => {
+exports.getReturnOrderById = (id) => {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM RESTOCK_ORDERS WHERE ID = ?';
+        const sql = 'SELECT * FROM RETURN_ORDERS WHERE ID = ?';
         db.get(sql, [id], (err, row) => {
             if (err) {
                 reject(err);
                 return;
             }
-            const restockOrder = row;
-            if (restockOrder == undefined)
+            const returnOrder = row;
+            if (returnOrder == undefined)
                 resolve('404');
-            else
-                resolve(restockOrder);
+            else{
+                const returnOrder = {
+                    returnDate: row.RETURN_DATE,
+                    restockOrderId: row.RESTOCK_ORDER_ID,
+                    
+                };
+                resolve(returnOrder);
+            }
         });
     });
 }

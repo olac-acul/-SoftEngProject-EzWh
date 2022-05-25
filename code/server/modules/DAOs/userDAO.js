@@ -50,8 +50,9 @@ exports.showUserDetails = (email) => {
                     surename: row.SURENAME,
                     type: row.TYPE
                 };
+                resolve(user);
             }
-            resolve(user);
+            
         });
     });
 }

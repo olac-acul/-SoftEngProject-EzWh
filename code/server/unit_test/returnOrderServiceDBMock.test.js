@@ -6,8 +6,6 @@ describe("get returnOrders", () => {
     returnOrderDAO.getReturnOrders.mockReturnValue(  [{
         id: 1,
         returnDate: "2021/11/29 09:33",
-        products: [{"SKUId":12,"description":"a product","price":10.99,"RFID":"12345678901234567890123456789016"},
-                    {"SKUId":180,"description":"another product","price":11.99,"RFID":"12345678901234567890123456789038"}],
         restockOrderId : 1
         }]
   );
@@ -16,8 +14,6 @@ describe("get returnOrders", () => {
         expect(res).toEqual([{
             id: 1,
             returnDate: "2021/11/29 09:33",
-            products: [{"SKUId":12,"description":"a product","price":10.99,"RFID":"12345678901234567890123456789016"},
-                       {"SKUId":180,"description":"another product","price":11.99,"RFID":"12345678901234567890123456789038"}],
             restockOrderId : 1
         }]);
     });
@@ -27,18 +23,13 @@ describe("get a returnOrder", () => {
     returnOrderDAO.getReturnOrderById.mockReturnValue({
         id:1,
         returnDate: "2021/11/29 09:33",
-        products: [{"SKUId":12,"description":"a product","price":10.99,"RFID":"12345678901234567890123456789016"},
-                    {"SKUId":180,"description":"another product","price":11.99,"RFID":"12345678901234567890123456789038"}],
         restockOrderId : 1
     });
     test("get a returnOrder", async () => {
         const id = 1;
         let res = await returnOrderService.getReturnOrderById(id);
         expect(res).toEqual({
-            id:1,
             returnDate: "2021/11/29 09:33",
-            products: [{"SKUId":12,"description":"a product","price":10.99,"RFID":"12345678901234567890123456789016"},
-                        {"SKUId":180,"description":"another product","price":11.99,"RFID":"12345678901234567890123456789038"}],
             restockOrderId : 1
         });
     });
@@ -49,8 +40,7 @@ describe("create a returnOrder", () => {
         const returnOrder = {
             id:1,
             returnDate: "2021/11/29 09:33",
-            products: [{"SKUId":12,"description":"a product","price":10.99,"RFID":"12345678901234567890123456789016"},
-                        {"SKUId":180,"description":"another product","price":11.99,"RFID":"12345678901234567890123456789038"}],
+            products: [],
             restockOrderId : 1
         };
         await returnOrderService.createReturnOrder(returnOrder);
