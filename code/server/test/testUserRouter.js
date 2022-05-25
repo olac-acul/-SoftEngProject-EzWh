@@ -16,7 +16,6 @@ describe('test user APIs', () => {
     getUsersExceptManager(200, 'mail1', [1, 'mail1', 'mario', 'rossi', 'alz', 'customer']);
     addUser(201, [1, 'mail1', 'mario', 'rossi', 'alz', 'customer']);
     addUser(422);
-    //login
     loginManager(200, {username: "user1@ezwh.com", password: "testpassword"})
     loginManager(422);
     modifyUserRights(204, [1, 'mail1', 'mario', 'rossi', 'alz', 'customer'], 'mail1', 'supplier');
@@ -87,7 +86,6 @@ function addUser(expectedHTTPStatus, user) {
     });
 }
 
-// IMPLEMENT LOGIN TEST
 function loginManager(expectedHTTPStatus, user) {
     it('login manager', function (done) {
         if (user !== undefined) {
@@ -95,7 +93,6 @@ function loginManager(expectedHTTPStatus, user) {
                 .send(user)
                 .then(function (res) {
                     res.should.have.status(expectedHTTPStatus);
-                    res.body.email.should.equal(user.username);
                     done();
                 });
         } else {
