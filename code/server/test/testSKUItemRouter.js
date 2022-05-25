@@ -1,6 +1,6 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const { modifySKUItem } = require('../modules/DAOs/SKUItemDAO');
+// const { modifySKUItem } = require('../modules/DAOs/SKUItemDAO');
 chai.use(chaiHttp);
 chai.should();
 

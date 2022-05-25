@@ -38,9 +38,7 @@ router.post('/position', async (req, res) => {
 // PUT
 router.put('/position/:positionID', async (req, res) => {
     try {
-        const oldPositionID = req.params.positionID;
-        const position = req.body;
-        const status = await positionService.modifyPosition(oldPositionID, position);
+        const status = await positionService.modifyPosition(req.params.positionID, req.body);
         if (status === '422')
             return res.status(422).json({ error: `Validation of request body or of positionID failed` }).end();
         if (status === '404')
@@ -54,9 +52,7 @@ router.put('/position/:positionID', async (req, res) => {
 
 router.put('/position/:positionID/changeID', async (req, res) => {
     try {
-        const oldPositionId = req.params.positionID;
-        const newPositionId = req.body;
-        const status = await positionService.changePositionId(oldPositionId, newPositionId);
+        const status = await positionService.changePositionId(req.params.positionID, req.body);
         if (status === '422')
             return res.status(422).json({ error: `Validation of request body or of positionID failed` }).end();
         if (status === '404')
@@ -72,12 +68,20 @@ router.put('/position/:positionID/changeID', async (req, res) => {
 //DELETE
 router.delete('/position/:id', async (req, res) => {
     try {
-        const id = req.params.id;
-        const status = await positionService.deletePosition(id);
+        const status = await positionService.deletePosition(req.params.id);
         if (status === '422')
             return res.status(422).json({ error: `Validation of positionID failed` }).end();
         else if (status === '204')
             res.status(204).end();
+    } catch (err) {
+        res.status(503).json({ error: `Generic error` }).end();
+    }
+});
+
+router.delete('/positions', async (req, res) => {
+    try {
+        await positionService.deletePositions();
+        res.status(204).end();
     } catch (err) {
         res.status(503).json({ error: `Generic error` }).end();
     }

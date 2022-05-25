@@ -31,6 +31,8 @@ class PositionService {
 
     modifyPosition = async (oldPositionID, position) => {
         // 401 Unauthorized (not logged in or wrong permissions)
+        if (isNaN(oldPositionID) || oldPositionID.length !== 12)
+            return '422';
         if (Object.keys(position).length !== 7)
             return '422';
         if (position.newAisleID === undefined || position.newRow === undefined || position.newCol === undefined || position.newMaxWeight === undefined || position.newMaxVolume === undefined || position.newOccupiedWeight === undefined || position.newOccupiedVolume === undefined)
@@ -53,6 +55,8 @@ class PositionService {
 
     changePositionId = async (oldPositionId, newPositionId) => {
         // 401 Unauthorized (not logged in or wrong permissions)
+        if (isNaN(oldPositionId) || oldPositionId.length !== 12)
+            return '422';
         if (Object.keys(newPositionId).length !== 1)
             return '422';
         if (newPositionId.newPositionID === undefined)
@@ -75,7 +79,7 @@ class PositionService {
 
     deletePosition = async (id) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        if (id.length !== 12)
+        if (isNaN(id) || id.length !== 12)
             return '422';
         // END OF VALIDATION
         const deletedElements = await this.dao.deletePosition(id);
@@ -83,6 +87,10 @@ class PositionService {
             return '422';
         else
             return '204';
+    }
+
+    deletePositions = async () => {
+        await this.dao.deletePositions();
     }
 }
 
