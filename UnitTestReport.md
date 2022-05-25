@@ -1915,7 +1915,8 @@ Version:
     <Report here all the created Jest test cases, and the units/classes under test >
     <For traceability write the class and method name that contains the test case>
 
-
+| Unit name | Jest test case |
+|-|-|
 |internalOrder|testInternalOrderRouter.js|
 |item|testItemRouter.js|
 |position|testPositionRouter.js|
