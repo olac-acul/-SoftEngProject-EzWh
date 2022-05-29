@@ -1,6 +1,6 @@
 const express = require('express');
 
-const TestResultService = require('../services/testResultSevice');
+const TestResultService = require('../services/testResultService');
 const db = require('../DAOs/testResultDAO');
 
 const testResultService = new TestResultService(db);
