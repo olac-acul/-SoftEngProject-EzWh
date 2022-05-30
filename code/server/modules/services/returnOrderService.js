@@ -9,12 +9,12 @@ class ReturnOrderService {
 
     getReturnOrders = async () => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        // const returnOrders = [];
-        const returnOrders = await this.dao.getReturnOrders();
-        // for (let i of orders) {
-        //     let returnOrder = await this.dao.getReturnOrderById(i.id);
-        //     returnOrders.push(returnOrder);
-        // }
+        const returnOrders = [];
+        const orders = await this.dao.getReturnOrders();
+        for (let i of orders) {
+            let returnOrder = await this.dao.getReturnOrderById(i.id);
+            returnOrders.push(returnOrder);
+        }
         return returnOrders;
     }
 
@@ -28,6 +28,7 @@ class ReturnOrderService {
             return '404';
         const filterId = {
             returnDate: returnOrder.returnDate,
+            products: returnOrder.products,
             restockOrderId: returnOrder.restockOrderId
         }
         return filterId;

@@ -105,15 +105,14 @@ exports.getInternalOrderById = (id) => {
                             reject(err);
                             return;
                         }
-                        const products = [];
-                        for (r of rows) {
-                            products.push({
+                        const products = rows.map(r => (
+                            {
                                 SKUId: r.SKU_ID,
                                 description: r.DESCRIPTION,
                                 price: r.PRICE,
-                                qty: r.QUANTITY
-                            });
-                        }
+                                RFID: r.RFID
+                            }
+                        ));
                         const internalOrder = {
                             id: preInternalOrder.id,
                             issueDate: preInternalOrder.issueDate,
@@ -136,15 +135,15 @@ exports.getInternalOrderById = (id) => {
                             reject(err);
                             return;
                         }
-                        const products = [];
-                        for (r of rows) {
-                            products.push({
+                        const products = rows.map(r => (
+                            {
+
                                 SKUId: r.SKU_ID,
                                 description: r.DESCRIPTION,
                                 price: r.PRICE,
                                 qty: r.QUANTITY
-                            });
-                        }
+                            }
+                        ));
                         const internalOrder = {
                             id: preInternalOrder.id,
                             issueDate: preInternalOrder.issueDate,
