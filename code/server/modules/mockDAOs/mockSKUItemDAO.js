@@ -1,0 +1,10 @@
+exports.dropTable = jest.fn();
+exports.newSKUItemTable = jest.fn();
+exports.getAllSKUItems = jest.fn();
+exports.getAllAvailableSKUItems = jest.fn();
+exports.getSKUItem = jest.fn();
+exports.searchSKU = jest.fn();
+exports.addSKUItem = jest.fn();
+exports.modifySKUItem = jest.fn();
+exports.deleteSKUItem = jest.fn();
+exports.deleteSKUItems = jest.fn();

@@ -1,0 +1,12 @@
+exports.newInternalOrdersTable = jest.fn();
+exports.newInternalOrder_join_productTable = jest.fn();
+exports.newSKUItemTable = jest.fn();
+exports.getInternalOrders = jest.fn();
+exports.getInternalOrderById = jest.fn();
+exports.createInternalOrder = jest.fn();
+exports.createInternalOrder_join_Product = jest.fn();
+exports.changeStateInternalOrder = jest.fn();
+exports.addSKUItem = jest.fn();
+exports.deleteInternalOrder = jest.fn();
+exports.deleteInternalOrder_join_Product = jest.fn();
+exports.deleteInternalOrders = jest.fn();

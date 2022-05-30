@@ -1,0 +1,16 @@
+exports.newRestockOrderTable = jest.fn();
+exports.newRestockOrder_join_ProductTable = jest.fn();
+exports.dropTable = jest.fn();
+exports.getRestockOrders = jest.fn();
+exports.getRestockOrderById = jest.fn();
+exports.checkTestResult = jest.fn();
+exports.createRestockOrder = jest.fn();
+exports.getItemBySKUId = jest.fn();
+exports.createRestockOrder_join_Product = jest.fn();
+exports.changeStateRestockOrder = jest.fn();
+exports.getSKUItem = jest.fn();
+exports.addSKUItem = jest.fn();
+exports.addTransportNoteRestockOrder = jest.fn();
+exports.deleteRestockOrder = jest.fn();
+exports.deleteRestockOrder_join_Product = jest.fn();
+exports.deleteRestockOrders = jest.fn();

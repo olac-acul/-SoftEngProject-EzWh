@@ -1,0 +1,13 @@
+exports.dropTable = jest.fn();
+exports.newTestResultTable = jest.fn();
+exports.newTestResult_join_SKUItemTable = jest.fn();
+exports.getTestResultsByRfid = jest.fn();
+exports.getTestResultByRfidAndId = jest.fn();
+exports.createTestResult = jest.fn();
+exports.createTestResult_join_SKUItem = jest.fn();
+exports.getSKUItem = jest.fn();
+exports.getTestDescriptorById = jest.fn();
+exports.modifyTestResult = jest.fn();
+exports.deleteTestResult = jest.fn();
+exports.deleteTestResult_join_SKUItem = jest.fn();
+exports.deleteTestResults = jest.fn();
