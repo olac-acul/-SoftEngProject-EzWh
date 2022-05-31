@@ -91,12 +91,10 @@ class ItemService {
         // 401 Unauthorized (not logged in or wrong permissions)
         if (isNaN(id))
             return '422';
-        if (Number(id) <= 0)
+        if (Number(id) < 0)
             return '422';
         const validatedId = Number(id);
-        const deletedElelements = await this.dao.deleteItem(validatedId);
-        if (deletedElelements === 0)
-            return '422';
+        await this.dao.deleteItem(validatedId);
         return;
     }
 

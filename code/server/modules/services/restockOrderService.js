@@ -103,11 +103,11 @@ class RestockOrderService {
         await this.dao.newRestockOrderTable();
         await this.dao.newRestockOrder_join_ProductTable();
         const restockOrderId = await this.dao.createRestockOrder(validatedRestockOrder);
-        for (let product of validatedRestockOrder.products) {
-            const itemId = await this.dao.getItemBySKUId(product.SKUId, validatedRestockOrder.supplierId);
-            if (itemId !== undefined)
-                await this.dao.createRestockOrder_join_Product(restockOrderId, itemId, product.qty);
-        }
+        // for (let product of validatedRestockOrder.products) {
+        //     const itemId = await this.dao.getItemBySKUId(product.SKUId, validatedRestockOrder.supplierId);
+        //     if (itemId !== undefined)
+        //         await this.dao.createRestockOrder_join_Product(restockOrderId, itemId, product.qty);
+        // }
     }
 
     changeStateRestockOrder = async (id, newState) => {

@@ -26,17 +26,17 @@ class SKUService {
             return '422';
         if (SKU.description === undefined || SKU.weight === undefined || SKU.volume === undefined || SKU.notes === undefined || SKU.price === undefined || SKU.availableQuantity === undefined)
             return '422';
-        if (typeof SKU.description != "string")
+        if (typeof SKU.description != "string" || SKU.description.length === 0)
             return '422';
-        if (typeof SKU.weight != "number" || SKU.weight <= 0)
+        if (typeof SKU.weight != "number" || SKU.weight <= 0 || !Number.isInteger(SKU.weight))
             return '422';
-        if (typeof SKU.volume != "number" || SKU.volume <= 0)
+        if (typeof SKU.volume != "number" || SKU.volume <= 0 || !Number.isInteger(SKU.volume))
             return '422';
-        if (typeof SKU.notes != "string")
+        if (typeof SKU.notes != "string" || SKU.notes.length === 0)
             return '422';
         if (typeof SKU.price != "number" || SKU.price <= 0)
             return '422';
-        if (typeof SKU.availableQuantity != "number" || SKU.availableQuantity <= 0)
+        if (typeof SKU.availableQuantity != "number" || SKU.availableQuantity <= 0 || !Number.isInteger(SKU.availableQuantity))
             return '422';
         const validatedSKU = {
             description: SKU.description,
