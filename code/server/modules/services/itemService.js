@@ -31,15 +31,15 @@ class ItemService {
             return '422';
         if (item.id === undefined || item.description === undefined || item.price === undefined || item.SKUId === undefined || item.supplierId === undefined)
             return '422';
-        if (typeof item.id != "number" || item.id <= 0)
+        if (typeof item.id != "number" || item.id < 0)
             return '422';
         if (typeof item.description != "string")
             return '422';
         if (typeof item.price != "number" || item.price <= 0)
             return '422';
-        if (typeof item.SKUId != "number" || item.SKUId <= 0)
+        if (typeof item.SKUId != "number" || item.SKUId < 0)
             return '422';
-        if (typeof item.supplierId != "number" || item.supplierId <= 0)
+        if (typeof item.supplierId != "number" || item.supplierId < 0)
             return '422';
         const validatedItem = {
             id: item.id,
