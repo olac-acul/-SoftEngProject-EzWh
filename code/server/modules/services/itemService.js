@@ -15,7 +15,7 @@ class ItemService {
         // 401 Unauthorized (not logged in or wrong permissions)
         if (isNaN(id))
             return '422';
-        if (Number(id) <= 0)
+        if (Number(id) < 0)
             return '422';
         const validatedId = Number(id);
         const item = await this.dao.getItemById(validatedId);
@@ -48,12 +48,12 @@ class ItemService {
             SKUId: item.SKUId,
             supplierId: item.supplierId
         };
-        let status = await this.dao.getItemById(validatedItem.id);
+        let status = await this.dao.getItemById_supplier(validatedItem.id, validatedItem.supplierId);
         if (status !== '404')
             return '422';
-        status = await this.dao.validateSKUId(validatedItem.SKUId, validatedItem.supplierId);
-        if (status === false)
-            return '422';
+        // status = await this.dao.validateSKUId(validatedItem.SKUId, validatedItem.supplierId);
+        // if (status === false)
+        //     return '422';
         status = await this.dao.searchSKU(validatedItem.SKUId);
         if (status === false)
             return '404';
@@ -66,7 +66,7 @@ class ItemService {
         // 401 Unauthorized (not logged in or wrong permissions)
         if (isNaN(id))
             return '422';
-        if (Number(id) <= 0)
+        if (Number(id) < 0)
             return '422';
         const validatedId = Number(id);
         if (Object.keys(newStatus).length !== 2)
