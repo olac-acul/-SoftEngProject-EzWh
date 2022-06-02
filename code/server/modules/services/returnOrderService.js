@@ -91,9 +91,7 @@ class ReturnOrderService {
         if (isNaN(id) || Number(id) < 0)
             return '422';
         const validatedId = Number(id);
-        const deletedElements = await this.dao.deleteReturnOrder(validatedId);
-        if (deletedElements === 0)
-            return '422';
+        await this.dao.deleteReturnOrder(validatedId);
         await this.dao.deleteReturnOrder_join_Product(validatedId);
         return '204';
     }

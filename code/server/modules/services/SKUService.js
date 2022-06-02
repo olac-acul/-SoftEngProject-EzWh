@@ -148,9 +148,7 @@ class SKUService {
         if (isNaN(id) || Number(id) < 0)
             return '422';
         const validatedId = Number(id);
-        const deletedElements = await this.dao.deleteSKU(validatedId);
-        if (deletedElements === 0)
-            return '422';
+        await this.dao.deleteSKU(validatedId);
     }
 
     deleteSKUs = async () => {

@@ -10,11 +10,11 @@ exports.newSKUTable = () => {
         const sql = `CREATE TABLE IF NOT EXISTS SKU (
                 ID INTEGER PRIMARY KEY AUTOINCREMENT,
                 DESCRIPTION	TEXT NOT NULL,
-                WEIGHT INTEGER NOT NULL,
-                VOLUME INTEGER NOT NULL,
-                NOTES TEXT NOT NULL,
+                WEIGHT INTEGER,
+                VOLUME INTEGER,
+                NOTES TEXT,
                 POSITION TEXT,
-                AVAILABLE_QUANTITY INTEGER NOT NULL,
+                AVAILABLE_QUANTITY INTEGER,
                 PRICE REAL NOT NULL)`;
         db.run(sql, function (err) {
             if (err) {

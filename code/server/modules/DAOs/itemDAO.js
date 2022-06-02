@@ -20,7 +20,7 @@ exports.dropTable = () => {
 
 exports.newTable = () => {
     return new Promise((resolve, reject) => {
-        const sql = `CREATE TABLE IF NOT EXISTS ITEMS(ID INTEGER PRIMARY KEY, 
+        const sql = `CREATE TABLE IF NOT EXISTS ITEMS(ID INTEGER PRIMARY KEY AUTOINCREMENT, 
                 DESCRIPTION VARCHAR(100), PRICE DOUBLE, SKU_ID INTEGER, SUPPLIER_ID INTEGER PRIMARY KEY)`;
         db.run(sql, function (err) {
             if (err) {

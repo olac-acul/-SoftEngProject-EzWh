@@ -98,9 +98,7 @@ class SKUItemService {
         if (isNaN(RFID) || RFID.length !== 32)
             return '422';
         const validatedRFID = RFID;
-        const deletedSKUItems = await this.dao.deleteSKUItem(validatedRFID);
-        if (deletedSKUItems === 0)
-            return '422';
+        await this.dao.deleteSKUItem(validatedRFID);
     }
 
     deleteSKUItems = async () => {
