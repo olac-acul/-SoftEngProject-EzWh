@@ -34,8 +34,11 @@ exports.newReturnOrderTable = () => {
 
 exports.newReturnOrder_join_ProductTable = () => {
     return new Promise((resolve, reject) => {
-        const sql = `CREATE TABLE IF NOT EXISTS RETURN_ORDERS_PRODUCTS(SKU_ID INTEGER PRIMARY KEY, 
-                RETURN_ORDER_ID INTEGER)`;
+        const sql = `CREATE TABLE IF NOT EXISTS RETURN_ORDERS_PRODUCTS(RETURN_ORDER_ID INTEGER PRIMARY KEY,
+                                                                       SKU_ID INTEGER PRIMARY KEY,
+                                                                       DESCRIPTION TEXT,
+                                                                       PRICE REAL,
+                                                                       RFID TEXT)`;
         db.run(sql, function (err) {
             if (err) {
                 reject(err);
@@ -83,28 +86,65 @@ exports.getRestockOrderById = (id) => {
     });
 }
 
-exports.getItemById = (SKUId) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM ITEMS WHERE SKU_ID = ?';
-        db.get(sql, [SKUId], (err, row) => {
-            if (err) {
-                reject(err);
-                return;
-            }
-            const item = row;
-            if (item == undefined)
-                resolve('404');
-            else
-                resolve(item);
-        });
-    });
-}
+// exports.getItemById = (SKUId) => {
+//     return new Promise((resolve, reject) => {
+//         const sql = 'SELECT * FROM ITEMS WHERE SKU_ID = ?';
+//         db.get(sql, [SKUId], (err, row) => {
+//             if (err) {
+//                 reject(err);
+//                 return;
+//             }
+//             const item = row;
+//             if (item == undefined)
+//                 resolve('404');
+//             else
+//                 resolve(item);
+//         });
+//     });
+// }
+
+// exports.getReturnOrderById = (id) => {
+//     return new Promise((resolve, reject) => {
+//         const sql = `SELECT RO.RETURN_DATE, RO.RESTOCK_ORDER_ID, P.SKU_ID, S.DESCRIPTION, S.PRICE, SI.RFID
+//                      FROM RETURN_ORDERS RO, RETURN_ORDERS_PRODUCTS P, SKU S, SKU_ITEMS SI
+//                      WHERE RO.ID = ? AND RO.ID = P.RETURN_ORDER_ID AND P.SKU_ID = S.ID AND P.SKU_ID = SI.SKU_ID`;
+//         db.all(sql, [id], (err, rows) => {
+//             if (err) {
+//                 reject(err);
+//                 return;
+//             }
+//             let returnDate;
+//             let restockOrderId;
+//             const products = rows.map(r => {
+//                 returnDate = r.RETURN_DATE;
+//                 restockOrderId = r.RESTOCK_ORDER_ID;
+//                 return (
+//                     {
+//                         SKUId: r.SKU_ID,
+//                         description: r.DESCRIPTION,
+//                         price: r.PRICE,
+//                         RFID: r.RFID
+//                     });
+//             });
+//             if (returnDate === undefined) resolve('Not Found');
+//             else if (restockOrderId === undefined) resolve('Not Found');
+//             const returnOrder =
+//             {
+//                 id: id,
+//                 returnDate: returnDate,
+//                 products: products,
+//                 restockOrderId: restockOrderId
+//             }
+//             resolve(returnOrder);
+//         });
+//     });
+// }
 
 exports.getReturnOrderById = (id) => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT RO.RETURN_DATE, RO.RESTOCK_ORDER_ID, P.SKU_ID, S.DESCRIPTION, S.PRICE, SI.RFID
-                     FROM RETURN_ORDERS RO, RETURN_ORDERS_PRODUCTS P, SKU S, SKU_ITEMS SI
-                     WHERE RO.ID = ? AND RO.ID = P.RETURN_ORDER_ID AND P.SKU_ID = S.ID AND P.SKU_ID = SI.SKU_ID`;
+        const sql = `SELECT RO.RETURN_DATE, RO.RESTOCK_ORDER_ID, P.SKU_ID, P.DESCRIPTION, P.PRICE, P.RFID
+                     FROM RETURN_ORDERS RO, RETURN_ORDERS_PRODUCTS P
+                     WHERE RO.ID = ? AND RO.ID = P.RETURN_ORDER_ID`;
         db.all(sql, [id], (err, rows) => {
             if (err) {
                 reject(err);
@@ -150,10 +190,10 @@ exports.createReturnOrder = (returnOrder) => {
     });
 }
 
-exports.createReturnOrder_join_Product = (SKUId, returnOrderId) => {
+exports.createReturnOrder_join_Product = (product, returnOrderId) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO RETURN_ORDERS_PRODUCTS(SKU_ID, RETURN_ORDER_ID) VALUES(?, ?)';
-        db.run(sql, [SKUId, returnOrderId], function (err) {
+        const sql = 'INSERT INTO RETURN_ORDERS_PRODUCTS(RETURN_ORDER_ID, SKU_ID, DESCRIPTION, PRICE, RFID) VALUES(?, ?, ?, ?, ?)';
+        db.run(sql, [returnOrderId, product.SKUId, product.description, product.price, product.RFID], function (err) {
             if (err) {
                 reject(err);
                 return;

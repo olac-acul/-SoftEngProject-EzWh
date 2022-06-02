@@ -23,7 +23,7 @@ class TestResultService {
         if (isNaN(rfid) || rfid.length !== 32)
             return '422';
         const validatedRFID = rfid;
-        if (isNaN(id) || Number(id) <= 0)
+        if (isNaN(id) || Number(id) < 0)
             return '422';
         const validatedId = Number(id);
         const testResult = await this.dao.getTestResultByRfidAndId(validatedRFID, validatedId);
@@ -41,7 +41,7 @@ class TestResultService {
         if (isNaN(testResult.rfid) || testResult.rfid.length !== 32)
             return '422';
         const validatedRFID = testResult.rfid;
-        if (typeof testResult.idTestDescriptor != "number" || testResult.idTestDescriptor <= 0)
+        if (typeof testResult.idTestDescriptor != "number" || testResult.idTestDescriptor < 0)
             return '422';
         if (!dayjs(testResult.Date).isValid() || testResult.Date.length !== 10)
             return '422';
@@ -69,14 +69,14 @@ class TestResultService {
         if (isNaN(rfid) || rfid.length !== 32)
             return '422';
         const validatedRFID = rfid;
-        if (isNaN(id) || Number(id) <= 0)
+        if (isNaN(id) || Number(id) < 0)
             return '422';
         const validatedId = Number(id);
         if (Object.keys(newState).length !== 3)
             return '422';
         if (newState.newIdTestDescriptor === undefined || newState.newDate === undefined || newState.newResult === undefined)
             return '422';
-        if (typeof newState.newIdTestDescriptor != "number" || newState.newIdTestDescriptor <= 0)
+        if (typeof newState.newIdTestDescriptor != "number" || newState.newIdTestDescriptor < 0)
             return '422';
         if (!dayjs(newState.newDate).isValid() || newState.newDate.length !== 10)
             return '422';
@@ -104,7 +104,7 @@ class TestResultService {
         if (isNaN(rfid) || rfid.length !== 32)
             return '422';
         const validatedRFID = rfid;
-        if (isNaN(id) || Number(id) <= 0)
+        if (isNaN(id) || Number(id) < 0)
             return '422';
         const validatedId = Number(id);
         const deletedTestResult = await this.dao.deleteTestResult(validatedId);

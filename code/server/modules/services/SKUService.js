@@ -13,7 +13,7 @@ class SKUService {
 
     getSKU = async (id) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        if (isNaN(id) || Number(id) <= 0)
+        if (isNaN(id) || Number(id) < 0)
             return '422';
         const validatedId = Number(id);
         const SKU = await this.dao.getSKU(validatedId);
@@ -53,7 +53,7 @@ class SKUService {
 
     modifySKU = async (id, newState) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        if (isNaN(id) || Number(id) <= 0)
+        if (isNaN(id) || Number(id) < 0)
             return '422';
         const validatedId = Number(id);
         if (Object.keys(newState).length !== 6)
@@ -101,7 +101,7 @@ class SKUService {
 
     modifySKUPosition = async (id, newPosition) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        if (isNaN(id) || Number(id) <= 0)
+        if (isNaN(id) || Number(id) < 0)
             return '422';
         const validatedId = Number(id);
         if (Object.keys(newPosition).length !== 1)
@@ -145,7 +145,7 @@ class SKUService {
 
     deleteSKU = async (id) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        if (isNaN(id) || Number(id) <= 0)
+        if (isNaN(id) || Number(id) < 0)
             return '422';
         const validatedId = Number(id);
         const deletedElements = await this.dao.deleteSKU(validatedId);
