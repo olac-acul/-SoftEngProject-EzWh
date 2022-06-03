@@ -105,6 +105,46 @@ exports.createTestDescriptor = (testDescriptor) => {
     });
 }
 
+exports.getRFIDsBySKUId = (SKUId) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT RFID FROM SKU_ITEMS WHERE SKU_ID = ?';
+        db.all(sql, [SKUId], (err, rows) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            const RFIDs = rows.map(r => r.RFID);
+            resolve(RFIDs);
+        });
+    });
+}
+
+exports.createTestResult = (testDescriptorId) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO TEST_RESULT(ID_TEST_DESCRIPTOR) VALUES(?)';
+        db.run(sql, [testDescriptorId], function (err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(this.lastID);
+        });
+    });
+}
+
+exports.createTestResult_join_SKUItem = (id, RFID) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO TEST_RESULT_SKUITEM(ID_TEST_RESULT, RFID) VALUES(?, ?)';
+        db.run(sql, [id, RFID], function (err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(this.lastID);
+        });
+    });
+}
+
 exports.modifyTestDescriptor = (id, newStatus) => {
     return new Promise((resolve, reject) => {
         const sql = `UPDATE TEST_DESCRIPTORS

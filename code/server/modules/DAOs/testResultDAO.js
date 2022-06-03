@@ -61,7 +61,7 @@ exports.getTestResultsByRfid = (RFID) => {
                 return;
             }
             if (rows.length === 0)
-                resolve('404');
+                resolve([]);
             else {
                 const testResults = rows.map(r => (
                     {

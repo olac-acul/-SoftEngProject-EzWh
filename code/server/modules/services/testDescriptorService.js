@@ -43,7 +43,14 @@ class TestDescriptorService {
         if (status === false)
             return '404';
         await this.dao.newTable();
-        await this.dao.createTestDescriptor(validatedTestDescriptor);
+        const lastId = await this.dao.createTestDescriptor(validatedTestDescriptor);
+
+        // added for tests
+        const RFIDs = await this.dao.getRFIDsBySKUId(validatedTestDescriptor.idSKU);
+        for (let rfid of RFIDs) {
+            const testResultId = await this.dao.createTestResult(lastId);
+            await this.dao.createTestResult_join_SKUItem(testResultId, rfid);
+        }
     }
 
     modifyTestDescriptor = async (id, newStatus) => {

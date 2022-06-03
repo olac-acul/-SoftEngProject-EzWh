@@ -12,9 +12,12 @@ class TestResultService {
         if (isNaN(rfid) || rfid.length !== 32)
             return '422';
         const validatedRFID = rfid;
-        const testResults = await this.dao.getTestResultsByRfid(validatedRFID);
-        if (testResults === '404')
+        const rfidValid = await this.dao.getSKUItem(validatedRFID);
+        if (rfidValid === '404')
             return '404';
+        const testResults = await this.dao.getTestResultsByRfid(validatedRFID);
+        // if (testResults === '404')
+        //     return '404';
         return testResults;
     }
 
@@ -108,12 +111,12 @@ class TestResultService {
             return '422';
         const validatedId = Number(id);
         await this.dao.deleteTestResult(validatedId);
-        await this.dao.deleteTestResult_join_SKUItem(validatedRFID, validatedId);
+        await this.dao.deleteTestResult_join_SKUItem(validatedRFID, validatedId);       
     }
 
     deleteTestResults = async () => {
         await this.dao.deleteTestResults();
-        }
+    }
 }
 
 module.exports = TestResultService;
