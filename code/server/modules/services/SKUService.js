@@ -80,20 +80,20 @@ class SKUService {
             newPrice: newState.newPrice,
             newAvailableQuantity: newState.newAvailableQuantity
         }
-        const skuPosition = await this.dao.getSKUPosition(validatedId);
-        if (skuPosition === '422')
-            return '422';
-        if (skuPosition !== '404') {
-            const position = await this.dao.getPositionById(skuPosition);
-            if (validatedNewState.newWeight <= position.maxWeight && validatedNewState.newVolume <= position.maxVolume) {
-                await this.dao.modifyPositionWeightVolume(skuPosition, validatedNewState.newWeight, validatedNewState.newVolume);
-            }
-            else {
-                return '422';
-            }
-        }
-        else if (skuPosition === '404')
-            return '404';
+        // const skuPosition = await this.dao.getSKUPosition(validatedId);
+        // if (skuPosition === '422')
+        //     return '422';
+        // if (skuPosition !== '404') {
+        //     const position = await this.dao.getPositionById(skuPosition);
+        //     if (validatedNewState.newWeight <= position.maxWeight && validatedNewState.newVolume <= position.maxVolume) {
+        //         await this.dao.modifyPositionWeightVolume(skuPosition, validatedNewState.newWeight, validatedNewState.newVolume);
+        //     }
+        //     else {
+        //         return '422';
+        //     }
+        // }
+        // else if (skuPosition === '404')
+        //     return '404';
         const updatedElements = await this.dao.modifySKU(validatedId, validatedNewState);
         if (updatedElements === 0)
             return '404';
@@ -153,7 +153,7 @@ class SKUService {
 
     deleteSKUs = async () => {
         await this.dao.deleteSKUs();
-        }
+    }
 }
 
 module.exports = SKUService;
