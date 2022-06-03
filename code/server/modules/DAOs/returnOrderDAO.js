@@ -150,29 +150,33 @@ exports.getReturnOrderById = (id) => {
                 reject(err);
                 return;
             }
-            let returnDate;
-            let restockOrderId;
-            const products = rows.map(r => {
-                returnDate = r.RETURN_DATE;
-                restockOrderId = r.RESTOCK_ORDER_ID;
-                return (
-                    {
-                        SKUId: r.SKU_ID,
-                        description: r.DESCRIPTION,
-                        price: r.PRICE,
-                        RFID: r.RFID
-                    });
-            });
-            if (returnDate === undefined) resolve('Not Found');
-            else if (restockOrderId === undefined) resolve('Not Found');
-            const returnOrder =
-            {
-                id: id,
-                returnDate: returnDate,
-                products: products,
-                restockOrderId: restockOrderId
+            if (rows.length === 0)
+                resolve('Not Found');
+            else {
+                let returnDate;
+                let restockOrderId;
+                const products = rows.map(r => {
+                    returnDate = r.RETURN_DATE;
+                    restockOrderId = r.RESTOCK_ORDER_ID;
+                    return (
+                        {
+                            SKUId: r.SKU_ID,
+                            description: r.DESCRIPTION,
+                            price: r.PRICE,
+                            RFID: r.RFID
+                        });
+                });
+                // if (returnDate === undefined) resolve('Not Found');
+                // else if (restockOrderId === undefined) resolve('Not Found');
+                const returnOrder =
+                {
+                    id: id,
+                    returnDate: returnDate,
+                    products: products,
+                    restockOrderId: restockOrderId
+                }
+                resolve(returnOrder);
             }
-            resolve(returnOrder);
         });
     });
 }

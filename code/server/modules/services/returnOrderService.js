@@ -75,6 +75,11 @@ class ReturnOrderService {
             if (isNaN(i.RFID) || i.RFID.length !== 32)
                 return '422';
         }
+        if (typeof returnOrder.restockOrderId !== "number" || returnOrder.restockOrderId < 0)
+            return '422';
+        const restockOrder = await this.dao.getRestockOrderById(returnOrder.restockOrderId);
+        if (restockOrder === '404')
+            return '404';
         // END OF VALIDATION
         await this.dao.newReturnOrderTable();
         const returnOrderId = await this.dao.createReturnOrder(returnOrder);
@@ -98,7 +103,7 @@ class ReturnOrderService {
 
     deleteReturnOrders = async () => {
         await this.dao.deleteReturnOrders();
-        }
+    }
 }
 
 module.exports = ReturnOrderService;
