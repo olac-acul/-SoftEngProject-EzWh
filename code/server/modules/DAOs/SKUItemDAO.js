@@ -44,8 +44,8 @@ exports.getAllSKUItems = () => {
                 {
                     RFID: r.RFID,
                     SKUId: r.SKU_ID,
-                    available: r.AVAILABLE,
-                    dateOfStock: r.DATE_OF_STOCK
+                    Available: r.AVAILABLE,
+                    DateOfStock: r.DATE_OF_STOCK
                 }
             ));
             resolve(SKUItems);
@@ -67,7 +67,7 @@ exports.getAllAvailableSKUItems = (id) => {
                 {
                     RFID: r.RFID,
                     SKUId: r.SKU_ID,
-                    dateOfStock: r.DATE_OF_STOCK
+                    DateOfStock: r.DATE_OF_STOCK
                 }
             ));
             if (SKUItems.length === 0)
@@ -92,8 +92,8 @@ exports.getSKUItem = (RFID) => {
                 const SKUItem = {
                     RFID: row.RFID,
                     SKUId: row.SKU_ID,
-                    available: row.AVAILABLE,
-                    dateOfStock: row.DATE_OF_STOCK
+                    Available: row.AVAILABLE,
+                    DateOfStock: row.DATE_OF_STOCK
                 };
                 resolve(SKUItem);
             }
@@ -111,7 +111,7 @@ exports.searchSKU = (id) => {
             }
             if (row == undefined)
                 resolve(false);
-            else 
+            else
                 resolve(true);
         });
     });
