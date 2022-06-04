@@ -5,7 +5,7 @@ const db = new sqlite.Database('EzWh', (err) => {
     if (err) throw err;
 });
 
-db.get('PRAGMA busy_timeout = 10000');
+db.get('PRAGMA busy_timeout = 30000');
 
 exports.dropTable = () => {
     return new Promise((resolve, reject) => {
