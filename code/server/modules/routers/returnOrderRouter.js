@@ -24,7 +24,7 @@ router.get('/returnOrders/:id', async (req, res) => {
         if (status === '422')
             return res.status(422).json({ error: `validation of id failed` }).end();
         else if (status === '404')
-            return res.status(422).json({ error: `no return order associated to id` }).end();
+            return res.status(404).json({ error: `no return order associated to id` }).end();
         else
             res.status(200).json(status);
     } catch (err) {
@@ -36,23 +36,26 @@ router.get('/returnOrders/:id', async (req, res) => {
 //POST
 router.post('/returnOrder', async (req, res) => {
     try {
-        const restockOrder = await returnOrderService.getRestockOrderById(req.body.restockOrderId);
-        if (restockOrder === '422')
-            return res.status(422).json({ error: `Validation of request body failed` }).end();
-        if (restockOrder === '404')
-            res.status(404).json({ error: `No restock order associated to restockOrderId` }).end();
-        for (let i of req.body.products) {
-            const item = await returnOrderService.getItemById(i.SKUId);
-            if (item === '404')
-                return res.status(422).json({ error: `Validation of request body failed` }).end();
-        }
+        // const restockOrder = await returnOrderService.getRestockOrderById(req.body.restockOrderId);
+        // if (restockOrder === '422')
+        //     return res.status(422).json({ error: `Validation of request body failed` }).end();
+        // if (restockOrder === '404')
+        //     res.status(404).json({ error: `No restock order associated to restockOrderId` }).end();
+        // for (let i of req.body.products) {
+        //     const item = await returnOrderService.getItemById(i.SKUId);
+        //     if (item === '404')
+        //         return res.status(422).json({ error: `Validation of request body failed` }).end();
+        // }
         const returnOrder = req.body;
         const returnOrderId = await returnOrderService.createReturnOrder(returnOrder);
         if (returnOrderId === '422')
             return res.status(422).json({ error: `Validation of request body failed` }).end();
+        if (returnOrderId === '404')
+            res.status(404).json({ error: `No restock order associated to restockOrderId` }).end();    
         for (let i of returnOrder.products) {
             // Better to check SKUID
-            await returnOrderService.createReturnOrder_join_Product(i.SKUId, returnOrderId)
+            // await returnOrderService.createReturnOrder_join_Product(i.SKUId, returnOrderId)
+            await returnOrderService.createReturnOrder_join_Product(i, returnOrderId)
         }
         return res.status(201).end();
     } catch (err) {

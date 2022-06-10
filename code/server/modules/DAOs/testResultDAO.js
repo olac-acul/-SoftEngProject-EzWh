@@ -5,6 +5,8 @@ const db = new sqlite.Database('EzWh', (err) => {
     if (err) throw err;
 });
 
+db.get('PRAGMA busy_timeout = 30000');
+
 exports.dropTable = () => {
     return new Promise((resolve, reject) => {
         const sql = 'DROP TABLE IF EXISTS TEST_RESULT';
@@ -61,7 +63,7 @@ exports.getTestResultsByRfid = (RFID) => {
                 return;
             }
             if (rows.length === 0)
-                resolve('404');
+                resolve([]);
             else {
                 const testResults = rows.map(r => (
                     {

@@ -94,12 +94,8 @@ class UserService {
             return '422';
         const validatedUsername = username;
         const validatedType = type;
-        const deletedUsers = await this.dao.deleteUser(validatedUsername, validatedType);
-        if (deletedUsers === 0)
-            return '422';
-        // END OF VALIDATION
-        else
-            return '204';
+        await this.dao.deleteUser(validatedUsername, validatedType);
+        return '204';
     }
 
     deleteUsers = async () => {

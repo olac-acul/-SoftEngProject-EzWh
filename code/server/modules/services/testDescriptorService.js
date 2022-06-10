@@ -13,7 +13,7 @@ class TestDescriptorService {
 
     getTestDescriptorById = async (id) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        if (isNaN(id) || Number(id) <= 0)
+        if (isNaN(id) || Number(id) < 0)
             return '422';
         const validatedId = Number(id);
         const testDescriptor = await this.dao.getTestDescriptorById(validatedId);
@@ -32,7 +32,7 @@ class TestDescriptorService {
             return '422';
         if (typeof testDescriptor.procedureDescription != "string")
             return '422';
-        if (typeof testDescriptor.idSKU != "number" || testDescriptor.idSKU <= 0)
+        if (typeof testDescriptor.idSKU != "number" || testDescriptor.idSKU < 0)
             return '422';
         const validatedTestDescriptor = {
             name: testDescriptor.name,
@@ -43,12 +43,19 @@ class TestDescriptorService {
         if (status === false)
             return '404';
         await this.dao.newTable();
-        await this.dao.createTestDescriptor(validatedTestDescriptor);
+        const lastId = await this.dao.createTestDescriptor(validatedTestDescriptor);
+
+        // added for tests
+        const RFIDs = await this.dao.getRFIDsBySKUId(validatedTestDescriptor.idSKU);
+        for (let rfid of RFIDs) {
+            const testResultId = await this.dao.createTestResult(lastId);
+            await this.dao.createTestResult_join_SKUItem(testResultId, rfid);
+        }
     }
 
     modifyTestDescriptor = async (id, newStatus) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        if (isNaN(id) || Number(id) <= 0)
+        if (isNaN(id) || Number(id) < 0)
             return '422';
         const validatedId = Number(id);
         if (Object.keys(newStatus).length !== 3)
@@ -59,7 +66,7 @@ class TestDescriptorService {
             return '422';
         if (typeof newStatus.newProcedureDescription != "string")
             return '422';
-        if (typeof newStatus.newIdSKU != "number" || newStatus.newIdSKU <= 0)
+        if (typeof newStatus.newIdSKU != "number" || newStatus.newIdSKU < 0)
             return '422';
         const validatedNewStatus = {
             newName: newStatus.newName,
@@ -77,12 +84,10 @@ class TestDescriptorService {
 
     deleteTestDescriptor = async (id) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        if (isNaN(id) || Number(id) <= 0)
+        if (isNaN(id) || Number(id) < 0)
             return '422';
         const validatedId = Number(id);
-        const deletedElelements = await this.dao.deleteTestDescriptor(validatedId);
-        if (deletedElelements === 0)
-            return '422';
+        await this.dao.deleteTestDescriptor(validatedId);
         return;
     }
 

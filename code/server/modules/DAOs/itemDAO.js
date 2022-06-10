@@ -5,6 +5,8 @@ const db = new sqlite.Database('EzWh', (err) => {
     if (err) throw err;
 });
 
+db.get('PRAGMA busy_timeout = 30000');
+
 exports.dropTable = () => {
     return new Promise((resolve, reject) => {
         const sql = 'DROP TABLE IF EXISTS ITEMS';
@@ -20,8 +22,8 @@ exports.dropTable = () => {
 
 exports.newTable = () => {
     return new Promise((resolve, reject) => {
-        const sql = `CREATE TABLE IF NOT EXISTS ITEMS(ID INTEGER PRIMARY KEY, 
-                DESCRIPTION VARCHAR(100), PRICE DOUBLE, SKU_ID INTEGER, SUPPLIER_ID INTEGER)`;
+        const sql = `CREATE TABLE IF NOT EXISTS ITEMS(ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+                DESCRIPTION VARCHAR(100), PRICE DOUBLE, SKU_ID INTEGER, SUPPLIER_ID INTEGER PRIMARY KEY)`;
         db.run(sql, function (err) {
             if (err) {
                 reject(err);
@@ -58,6 +60,30 @@ exports.getItemById = (id) => {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM ITEMS WHERE ITEMS.ID = ?';
         db.get(sql, [id], (err, row) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            if (row == undefined)
+                resolve('404');
+            else {
+                const item = {
+                    id: row.ID,
+                    description: row.DESCRIPTION,
+                    price: row.PRICE,
+                    SKUId: row.SKU_ID,
+                    supplierId: row.SUPPLIER_ID
+                };
+                resolve(item);
+            }
+        });
+    });
+}
+
+exports.getItemById_supplier = (id, supplierId) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM ITEMS WHERE ITEMS.ID = ? AND ITEMS.SUPPLIER_ID = ?';
+        db.get(sql, [id, supplierId], (err, row) => {
             if (err) {
                 reject(err);
                 return;

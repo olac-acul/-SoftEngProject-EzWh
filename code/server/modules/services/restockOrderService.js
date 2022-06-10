@@ -21,7 +21,7 @@ class RestockOrderService {
 
     getRestockOrderById = async (id) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        if (isNaN(id) || Number(id) <= 0)
+        if (isNaN(id) || Number(id) < 0)
             return '422';
         const validatedId = Number(id);
         const restockOrder = await this.dao.getRestockOrderById(validatedId);
@@ -52,7 +52,7 @@ class RestockOrderService {
 
     getSKUItemsToBeReturned = async (id) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        if (isNaN(id) || Number(id) <= 0)
+        if (isNaN(id) || Number(id) < 0)
             return '422';
         const validatedId = Number(id);
         const restockOrder = await this.dao.getRestockOrderById(validatedId);
@@ -84,7 +84,7 @@ class RestockOrderService {
                 return '422';
             if (i.SKUId === undefined || i.description === undefined || i.price === undefined || i.qty === undefined)
                 return '422';
-            if (typeof i.SKUId != "number" || i.SKUId <= 0)
+            if (typeof i.SKUId != "number" || i.SKUId < 0)
                 return '422';
             if (typeof i.description != "string")
                 return '422';
@@ -93,7 +93,7 @@ class RestockOrderService {
             if (typeof i.qty != "number" || i.qty <= 0)
                 return '422';
         }
-        if (typeof RestockOrder.supplierId != "number" || RestockOrder.supplierId <= 0)
+        if (typeof RestockOrder.supplierId != "number" || RestockOrder.supplierId < 0)
             return '422';
         const validatedRestockOrder = {
             issueDate: RestockOrder.issueDate,
@@ -102,17 +102,25 @@ class RestockOrderService {
         };
         await this.dao.newRestockOrderTable();
         await this.dao.newRestockOrder_join_ProductTable();
+        await this.dao.resetAutoincrement();
         const restockOrderId = await this.dao.createRestockOrder(validatedRestockOrder);
+        // await this.dao.resetAutoincrement();
+        // for (let product of validatedRestockOrder.products) {
+        //     let SKUId = await this.dao.getSKUById(product.SKUId);
+        //     if (SKUId === '404') 
+        //         await this.dao.createNewSKU(product);
+        //     await this.dao.createRestockOrder_join_Product(restockOrderId, product.SKUId, product.qty);
+        // }
+
         for (let product of validatedRestockOrder.products) {
-            const itemId = await this.dao.getItemBySKUId(product.SKUId, validatedRestockOrder.supplierId);
-            if (itemId !== undefined)
-                await this.dao.createRestockOrder_join_Product(restockOrderId, itemId, product.qty);
+            // if (itemId !== undefined)
+            await this.dao.createRestockOrder_join_Product(restockOrderId, product);
         }
     }
 
     changeStateRestockOrder = async (id, newState) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        if (isNaN(id) || Number(id) <= 0)
+        if (isNaN(id) || Number(id) < 0)
             return '422';
         const validatedId = Number(id);
         if (Object.keys(newState).length !== 1)
@@ -129,7 +137,7 @@ class RestockOrderService {
 
     addSkuItemsList = async (id, skuItems) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        if (isNaN(id) || Number(id) <= 0)
+        if (isNaN(id) || Number(id) < 0)
             return '422';
         const validatedId = Number(id);
         if (Object.keys(skuItems).length !== 1)
@@ -143,7 +151,7 @@ class RestockOrderService {
                 return '422';
             if (i.SKUId === undefined || i.rfid === undefined)
                 return '422';
-            if (typeof i.SKUId != "number" || i.SKUId <= 0)
+            if (typeof i.SKUId != "number" || i.SKUId < 0)
                 return '422';
             if (isNaN(i.rfid) || i.rfid.length !== 32)
                 return '422';
@@ -161,13 +169,14 @@ class RestockOrderService {
         }
         for (let i of validatedSKUItems) {
             if (await this.dao.getSKUItem(i.rfid) === '404')
-                await this.dao.addSKUItem(i.rfid, i.SKUId);
+                await this.dao.createSKUItem(i.rfid, i.SKUId);
+            // await this.dao.addSKUItem(validatedId, i.rfid, i.SKUId);
         }
     }
 
     addTransportNoteRestockOrder = async (id, transportNote) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        if (isNaN(id) || Number(id) <= 0)
+        if (isNaN(id) || Number(id) < 0)
             return '422';
         const validatedId = Number(id);
         if (Object.keys(transportNote).length !== 1)
@@ -178,7 +187,7 @@ class RestockOrderService {
             return '422';
         if (transportNote.transportNote.deliveryDate === undefined)
             return '422';
-        if (!dayjs(transportNote.transportNote.deliveryDate).isValid() || transportNote.transportNote.deliveryDate.length !== 10)
+        if (!dayjs(transportNote.transportNote.deliveryDate).isValid() || (transportNote.transportNote.deliveryDate.length !== 10 && transportNote.transportNote.deliveryDate.length !== 16))
             return '422';
         const validatedDeliveryDate = transportNote.transportNote.deliveryDate;
         const restockOrder = await this.dao.getRestockOrderById(validatedId);
@@ -193,12 +202,11 @@ class RestockOrderService {
 
     deleteRestockOrder = async (id) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        if (isNaN(id) || Number(id) <= 0)
+        if (isNaN(id) || Number(id) < 0)
             return '422';
         const validatedId = Number(id);
-        const deletedElements = await this.dao.deleteRestockOrder(validatedId);
-        if (deletedElements === 0)
-            return '422';
+        await this.dao.deleteRestockOrder(validatedId);
+        await this.dao.resetAutoincrement();
         await this.dao.deleteRestockOrder_join_Product(validatedId);
     }
 

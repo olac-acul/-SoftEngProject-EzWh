@@ -13,7 +13,7 @@ class SKUService {
 
     getSKU = async (id) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        if (isNaN(id) || Number(id) <= 0)
+        if (isNaN(id) || Number(id) < 0)
             return '422';
         const validatedId = Number(id);
         const SKU = await this.dao.getSKU(validatedId);
@@ -26,17 +26,17 @@ class SKUService {
             return '422';
         if (SKU.description === undefined || SKU.weight === undefined || SKU.volume === undefined || SKU.notes === undefined || SKU.price === undefined || SKU.availableQuantity === undefined)
             return '422';
-        if (typeof SKU.description != "string")
+        if (typeof SKU.description != "string" || SKU.description.length === 0)
             return '422';
-        if (typeof SKU.weight != "number" || SKU.weight <= 0)
+        if (typeof SKU.weight != "number" || SKU.weight <= 0 || !Number.isInteger(SKU.weight))
             return '422';
-        if (typeof SKU.volume != "number" || SKU.volume <= 0)
+        if (typeof SKU.volume != "number" || SKU.volume <= 0 || !Number.isInteger(SKU.volume))
             return '422';
-        if (typeof SKU.notes != "string")
+        if (typeof SKU.notes != "string" || SKU.notes.length === 0)
             return '422';
         if (typeof SKU.price != "number" || SKU.price <= 0)
             return '422';
-        if (typeof SKU.availableQuantity != "number" || SKU.availableQuantity <= 0)
+        if (typeof SKU.availableQuantity != "number" || SKU.availableQuantity <= 0 || !Number.isInteger(SKU.availableQuantity))
             return '422';
         const validatedSKU = {
             description: SKU.description,
@@ -53,7 +53,7 @@ class SKUService {
 
     modifySKU = async (id, newState) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        if (isNaN(id) || Number(id) <= 0)
+        if (isNaN(id) || Number(id) < 0)
             return '422';
         const validatedId = Number(id);
         if (Object.keys(newState).length !== 6)
@@ -80,20 +80,20 @@ class SKUService {
             newPrice: newState.newPrice,
             newAvailableQuantity: newState.newAvailableQuantity
         }
-        const skuPosition = await this.dao.getSKUPosition(validatedId);
-        if (skuPosition === '422')
-            return '422';
-        if (skuPosition !== '404') {
-            const position = await this.dao.getPositionById(skuPosition);
-            if (validatedNewState.newWeight <= position.maxWeight && validatedNewState.newVolume <= position.maxVolume) {
-                await this.dao.modifyPositionWeightVolume(skuPosition, validatedNewState.newWeight, validatedNewState.newVolume);
-            }
-            else {
-                return '422';
-            }
-        }
-        else if (skuPosition === '404')
-            return '404';
+        // const skuPosition = await this.dao.getSKUPosition(validatedId);
+        // if (skuPosition === '422')
+        //     return '422';
+        // if (skuPosition !== '404') {
+        //     const position = await this.dao.getPositionById(skuPosition);
+        //     if (validatedNewState.newWeight <= position.maxWeight && validatedNewState.newVolume <= position.maxVolume) {
+        //         await this.dao.modifyPositionWeightVolume(skuPosition, validatedNewState.newWeight, validatedNewState.newVolume);
+        //     }
+        //     else {
+        //         return '422';
+        //     }
+        // }
+        // else if (skuPosition === '404')
+        //     return '404';
         const updatedElements = await this.dao.modifySKU(validatedId, validatedNewState);
         if (updatedElements === 0)
             return '404';
@@ -101,7 +101,7 @@ class SKUService {
 
     modifySKUPosition = async (id, newPosition) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        if (isNaN(id) || Number(id) <= 0)
+        if (isNaN(id) || Number(id) < 0)
             return '422';
         const validatedId = Number(id);
         if (Object.keys(newPosition).length !== 1)
@@ -145,17 +145,15 @@ class SKUService {
 
     deleteSKU = async (id) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        if (isNaN(id) || Number(id) <= 0)
+        if (isNaN(id) || Number(id) < 0)
             return '422';
         const validatedId = Number(id);
-        const deletedElements = await this.dao.deleteSKU(validatedId);
-        if (deletedElements === 0)
-            return '422';
+        await this.dao.deleteSKU(validatedId);
     }
 
     deleteSKUs = async () => {
         await this.dao.deleteSKUs();
-        }
+    }
 }
 
 module.exports = SKUService;

@@ -47,9 +47,9 @@ class SKUItemService {
             return '422';
         if (SKUItem.RFID === undefined || SKUItem.SKUId === undefined || SKUItem.DateOfStock === undefined)
             return '422';
-        if (isNaN(SKUItem.RFID) || SKUItem.RFID.length !== 32)
+        if (SKUItem.RFID === null || isNaN(SKUItem.RFID) || SKUItem.RFID.length !== 32)
             return '422';
-        if (typeof SKUItem.SKUId != "number" || SKUItem.SKUId <= 0)
+        if (SKUItem.SKUId === null || typeof SKUItem.SKUId != "number" || SKUItem.SKUId <= 0)
             return '422';
         if (SKUItem.DateOfStock !== null) {
             if (!dayjs(SKUItem.DateOfStock).isValid() || (SKUItem.DateOfStock.length !== 10 && SKUItem.DateOfStock.length !== 16))
@@ -98,9 +98,7 @@ class SKUItemService {
         if (isNaN(RFID) || RFID.length !== 32)
             return '422';
         const validatedRFID = RFID;
-        const deletedSKUItems = await this.dao.deleteSKUItem(validatedRFID);
-        if (deletedSKUItems === 0)
-            return '422';
+        await this.dao.deleteSKUItem(validatedRFID);
     }
 
     deleteSKUItems = async () => {

@@ -13,7 +13,7 @@ class PositionService {
 
     createPosition = async (position) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        if (Object.keys(position).length !== 6)
+        if (Object.keys(position).length !== 8)
             return '422';
         if (position.positionID === undefined || position.aisleID === undefined || position.row === undefined || position.col === undefined || position.maxWeight === undefined || position.maxVolume === undefined)
             return '422';
@@ -39,7 +39,7 @@ class PositionService {
             return '422';
         if (position.newAisleID.length !== 4 || position.newRow.length !== 4 || position.newCol.length !== 4)
             return '422';
-        if (typeof position.newMaxWeight !== "number" || typeof position.newMaxVolume !== "number" || typeof position.newOccupiedWeight !== "number" || typeof position.newOccupiedVolume !== "number")
+        if (typeof position.newMaxWeight !== "number" || position.newMaxWeight < 0 || typeof position.newMaxVolume !== "number" || position.newMaxVolume < 0 || typeof position.newOccupiedWeight !== "number" || position.newOccupiedWeight < 0 || typeof position.newOccupiedVolume !== "number" || position.newOccupiedVolume < 0)
             return '422';
         if (isNaN(oldPositionID) || oldPositionID.length !== 12)
             return '422';
@@ -82,11 +82,8 @@ class PositionService {
         if (isNaN(id) || id.length !== 12)
             return '422';
         // END OF VALIDATION
-        const deletedElements = await this.dao.deletePosition(id);
-        if (deletedElements === 0)
-            return '422';
-        else
-            return '204';
+        await this.dao.deletePosition(id);
+        return '204';
     }
 
     deletePositions = async () => {
