@@ -38,6 +38,7 @@ exports.newReturnOrder_join_ProductTable = () => {
     return new Promise((resolve, reject) => {
         const sql = `CREATE TABLE IF NOT EXISTS RETURN_ORDERS_PRODUCTS(RETURN_ORDER_ID INTEGER PRIMARY KEY,
                                                                        SKU_ID INTEGER PRIMARY KEY,
+                                                                       ITEM_ID INTEGER,
                                                                        DESCRIPTION TEXT,
                                                                        PRICE REAL,
                                                                        RFID TEXT)`;
@@ -144,7 +145,7 @@ exports.getRestockOrderById = (id) => {
 
 exports.getReturnOrderById = (id) => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT RO.RETURN_DATE, RO.RESTOCK_ORDER_ID, P.SKU_ID, P.DESCRIPTION, P.PRICE, P.RFID
+        const sql = `SELECT RO.RETURN_DATE, RO.RESTOCK_ORDER_ID, P.SKU_ID, P.ITEM_ID, P.DESCRIPTION, P.PRICE, P.RFID
                      FROM RETURN_ORDERS RO, RETURN_ORDERS_PRODUCTS P
                      WHERE RO.ID = ? AND RO.ID = P.RETURN_ORDER_ID`;
         db.all(sql, [id], (err, rows) => {
@@ -163,6 +164,7 @@ exports.getReturnOrderById = (id) => {
                     return (
                         {
                             SKUId: r.SKU_ID,
+                            itemId: r.ITEM_ID,
                             description: r.DESCRIPTION,
                             price: r.PRICE,
                             RFID: r.RFID
@@ -198,8 +200,8 @@ exports.createReturnOrder = (returnOrder) => {
 
 exports.createReturnOrder_join_Product = (product, returnOrderId) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO RETURN_ORDERS_PRODUCTS(RETURN_ORDER_ID, SKU_ID, DESCRIPTION, PRICE, RFID) VALUES(?, ?, ?, ?, ?)';
-        db.run(sql, [returnOrderId, product.SKUId, product.description, product.price, product.RFID], function (err) {
+        const sql = 'INSERT INTO RETURN_ORDERS_PRODUCTS(RETURN_ORDER_ID, SKU_ID, ITEM_ID, DESCRIPTION, PRICE, RFID) VALUES(?, ?, ?, ?, ?, ?)';
+        db.run(sql, [returnOrderId, product.SKUId, product.itemId, product.description, product.price, product.RFID], function (err) {
             if (err) {
                 reject(err);
                 return;

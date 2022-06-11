@@ -62,7 +62,7 @@ router.post('/restockOrder', async (req, res) => {
     try {
         const status = await restockOrderService.createRestockOrder(req.body);
         if (status === '422')
-            res.status(422).json({ error: `validation of request body failed` }).end();
+            res.status(422).json({ error: `validation of request body failed, supplier doesn't sell a product with a certain itemId or supplier itemId doesn't correspond to SKUId` }).end();
         else
             return res.status(201).end();
     } catch (err) {
