@@ -56,10 +56,10 @@ exports.getItems = () => {
     });
 }
 
-exports.getItemById = (id) => {
+exports.getItemById = (id, supplierId) => {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM ITEMS WHERE ITEMS.ID = ?';
-        db.get(sql, [id], (err, row) => {
+        const sql = 'SELECT * FROM ITEMS WHERE ID = ? AND SUPPLIER_ID = ?';
+        db.get(sql, [id, supplierId], (err, row) => {
             if (err) {
                 reject(err);
                 return;
@@ -149,12 +149,12 @@ exports.createItem = (item) => {
     });
 }
 
-exports.modifyItem = (id, newStatus) => {
+exports.modifyItem = (id, supplierId, newStatus) => {
     return new Promise((resolve, reject) => {
         const sql = `UPDATE ITEMS
                      SET DESCRIPTION = ?, PRICE = ?
-                     WHERE ID = ?`;
-        db.run(sql, [newStatus.newDescription, newStatus.newPrice, id], function (err) {
+                     WHERE ID = ? AND SUPPLIER_ID = ?`;
+        db.run(sql, [newStatus.newDescription, newStatus.newPrice, id, supplierId], function (err) {
             if (err) {
                 reject(err);
                 return;
@@ -164,10 +164,10 @@ exports.modifyItem = (id, newStatus) => {
     });
 }
 
-exports.deleteItem = (id) => {
+exports.deleteItem = (id, supplierId) => {
     return new Promise((resolve, reject) => {
-        const sql = 'DELETE FROM ITEMS WHERE ITEMS.ID = ?';
-        db.run(sql, [id], function (err) {
+        const sql = 'DELETE FROM ITEMS WHERE ID = ? AND SUPPLIER_ID = ?';
+        db.run(sql, [id, supplierId], function (err) {
             if (err) {
                 reject(err);
                 return;
