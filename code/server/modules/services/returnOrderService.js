@@ -62,11 +62,13 @@ class ReturnOrderService {
         if (validatedReturnOrder.products.length == 0)
             return '422';
         for (let i of validatedReturnOrder.products) {
-            if (Object.keys(i).length !== 4)
+            if (Object.keys(i).length !== 5)
                 return '422';
-            if (i.SKUId === undefined || i.description === undefined || i.price === undefined || i.RFID === undefined)
+            if (i.SKUId === undefined || i.itemId === undefined || i.description === undefined || i.price === undefined || i.RFID === undefined)
                 return '422';
             if (typeof i.SKUId != "number" || i.SKUId < 0)
+                return '422';
+            if (typeof i.itemId !== "number" || i.itemId < 0)
                 return '422';
             if (typeof i.description != "string")
                 return '422';

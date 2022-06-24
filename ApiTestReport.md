@@ -129,7 +129,6 @@ Report also for each of the scenarios the (one or more) API Mocha tests that cov
 |2-3|3.1.1|modifyPosition()|
 |2-4|3.1.1|modifyPosition()|
 |2-5|3.1.2|deletePosition()|
-|3-1|5.1 5.2 5.3 5.5 5.6|createRestockOrder() addSkuItemList() changeStateRestockOrder()|
 |3-2|5.1 5.2 5.3 5.5 5.6|createRestockOrder() addSkuItemList() changeStateRestockOrder()|
 |4-1|1.1|createUser()|
 |4-2|1.1|modifyUser()|

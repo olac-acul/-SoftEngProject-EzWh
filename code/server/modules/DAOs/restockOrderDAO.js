@@ -64,7 +64,7 @@ exports.newRestockOrderTable = () => {
 
 exports.newRestockOrder_join_ProductTable = () => {
     return new Promise((resolve, reject) => {
-        const sql = `CREATE TABLE IF NOT EXISTS RESTOCK_ORDER_SKU(RESTOCK_ORDER_ID INTEGER, SKU_ID INTEGER, DESCRIPTION TEXT, PRICE REAL, QUANTITY INTEGER, RFID VARCHAR(32), PRIMARY KEY(RESTOCK_ORDER_ID, SKU_ID, RFID))`;
+        const sql = `CREATE TABLE IF NOT EXISTS RESTOCK_ORDER_SKU(RESTOCK_ORDER_ID INTEGER, SKU_ID INTEGER, DESCRIPTION TEXT, PRICE REAL, QUANTITY INTEGER,, ITEM_ID INTEGER, RFID VARCHAR(32), PRIMARY KEY(RESTOCK_ORDER_ID, SKU_ID, RFID))`;
         db.run(sql, function (err) {
             if (err) {
                 reject(err);
@@ -250,7 +250,7 @@ exports.getRestockOrders = () => {
 exports.getRestockOrderById = (id) => {
     return new Promise((resolve, reject) => {
         const sql = `SELECT RO.ISSUE_DATE, RO.ID, RO.STATE, RO.SUPPLIER_ID, RO.TRANSPORT_NOTE,
-                    ROS.QUANTITY, ROS.DESCRIPTION, ROS.PRICE, ROS.SKU_ID, ROS.RFID
+                    ROS.QUANTITY, ROS.DESCRIPTION, ROS.PRICE, ROS.SKU_ID, ROS.ITEM_ID, ROS.RFID
                     FROM RESTOCK_ORDERS RO, RESTOCK_ORDER_SKU ROS
                     WHERE RO.ID = ? AND RO.ID = ROS.RESTOCK_ORDER_ID`;
         db.all(sql, [id], (err, rows) => {
@@ -287,6 +287,7 @@ exports.getRestockOrderById = (id) => {
                     if (rows[r].RFID !== null) {
                         skuItems.push({
                             SKUId: rows[r].SKU_ID,
+                            itemId: rows[r].ITEM_ID,
                             rfid: rows[r].RFID
                         });
                     }
@@ -428,8 +429,8 @@ exports.createNewSKU = (product) => {
 
 exports.createRestockOrder_join_Product = (restockOrderId, product) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO RESTOCK_ORDER_SKU(RESTOCK_ORDER_ID, SKU_ID, DESCRIPTION, PRICE, QUANTITY) VALUES(?, ?, ?, ?, ?)'
-        db.run(sql, [restockOrderId, product.SKUId, product.description, product.price, product.qty], (err) => {
+        const sql = 'INSERT INTO RESTOCK_ORDER_SKU(RESTOCK_ORDER_ID, SKU_ID, DESCRIPTION, PRICE, ITEM_ID, QUANTITY) VALUES(?, ?, ?, ?, ?, ?)'
+        db.run(sql, [restockOrderId, product.SKUId, product.description, product.price, product.itemId, product.qty], (err) => {
             if (err) {
                 reject(err);
                 return;

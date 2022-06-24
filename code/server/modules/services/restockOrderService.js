@@ -80,11 +80,13 @@ class RestockOrderService {
         if (RestockOrder.products.length == 0)
             return '422';
         for (let i of RestockOrder.products) {
-            if (Object.keys(i).length !== 4)
+            if (Object.keys(i).length !== 5)
                 return '422';
-            if (i.SKUId === undefined || i.description === undefined || i.price === undefined || i.qty === undefined)
+            if (i.SKUId === undefined || i.itemId === undefined || i.description === undefined || i.price === undefined || i.qty === undefined)
                 return '422';
             if (typeof i.SKUId != "number" || i.SKUId < 0)
+                return '422';
+            if (typeof i.itemId !== "number" || i.itemId < 0)
                 return '422';
             if (typeof i.description != "string")
                 return '422';
@@ -147,11 +149,13 @@ class RestockOrderService {
         if (skuItems.skuItems.length === 0)
             return '422';
         for (let i of skuItems.skuItems) {
-            if (Object.keys(i).length !== 2)
+            if (Object.keys(i).length !== 3)
                 return '422';
-            if (i.SKUId === undefined || i.rfid === undefined)
+            if (i.SKUId === undefined || i.itemId === undefined || i.rfid === undefined)
                 return '422';
             if (typeof i.SKUId != "number" || i.SKUId < 0)
+                return '422';
+            if (typeof i.itemId !== "number" || i.itemId < 0)
                 return '422';
             if (isNaN(i.rfid) || i.rfid.length !== 32)
                 return '422';

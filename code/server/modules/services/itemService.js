@@ -11,14 +11,15 @@ class ItemService {
         return items;
     }
 
-    getItemById = async (id) => {
+    getItemById = async (id, supplierId) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        if (isNaN(id))
+        if (isNaN(id) || Number(id) < 0)
             return '422';
-        if (Number(id) < 0)
+        if (isNaN(supplierId) || Number(supplierId) < 0)
             return '422';
         const validatedId = Number(id);
-        const item = await this.dao.getItemById(validatedId);
+        const validatedSupplierId = Number(supplierId);
+        const item = await this.dao.getItemById(validatedId, validatedSupplierId);
         if (item === '404')
             return '404';
         else
@@ -62,13 +63,14 @@ class ItemService {
         return;
     }
 
-    modifyItem = async (id, newStatus) => {
+    modifyItem = async (id, supplierId, newStatus) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        if (isNaN(id))
+        if (isNaN(id) || Number(id) < 0)
             return '422';
-        if (Number(id) < 0)
+        if (isNaN(supplierId) || Number(supplierId) < 0)
             return '422';
         const validatedId = Number(id);
+        const validatedSupplierId = Number(supplierId);
         if (Object.keys(newStatus).length !== 2)
             return '422';
         if (newStatus.newDescription === undefined || newStatus.newPrice === undefined)
@@ -81,20 +83,21 @@ class ItemService {
             newDescription: newStatus.newDescription,
             newPrice: newStatus.newPrice
         };
-        const updatedElements = await this.dao.modifyItem(validatedId, validatedNewStatus);
+        const updatedElements = await this.dao.modifyItem(validatedId, validatedSupplierId, validatedNewStatus);
         if (updatedElements === 0)
             return '404';
         return;
     }
 
-    deleteItem = async (id) => {
+    deleteItem = async (id, supplierId) => {
         // 401 Unauthorized (not logged in or wrong permissions)
-        if (isNaN(id))
+        if (isNaN(id) || Number(id) < 0)
             return '422';
-        if (Number(id) < 0)
+        if (isNaN(supplierId) || Number(supplierId) < 0)
             return '422';
         const validatedId = Number(id);
-        await this.dao.deleteItem(validatedId);
+        const validatedSupplierId = Number(supplierId);
+        await this.dao.deleteItem(validatedId, validatedSupplierId);
         return;
     }
 

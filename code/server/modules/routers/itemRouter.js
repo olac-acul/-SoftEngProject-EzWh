@@ -19,9 +19,9 @@ router.get('/items', async (req, res) => {
 });
 
 
-router.get('/items/:id', async (req, res) => {
+router.get('/items/:id/:supplierId', async (req, res) => {
     try {
-        const item = await itemService.getItemById(req.params.id);
+        const item = await itemService.getItemById(req.params.id, req.params.supplierId);
         if (item === '422')
             res.status(422).json({ error: `Validation of ID failed` }).end();
         else if (item === '404')
@@ -51,9 +51,9 @@ router.post('/item', async (req, res) => {
 
 
 // PUT
-router.put('/item/:id', async (req, res) => {
+router.put('/item/:id/:supplierId', async (req, res) => {
     try {
-        const status = await itemService.modifyItem(req.params.id, req.body);
+        const status = await itemService.modifyItem(req.params.id, req.params.supplierId, req.body);
         if (status === '422')
             res.status(422).json({ error: `Validation of request body failed` }).end();
         else if (status === '404')
@@ -67,9 +67,9 @@ router.put('/item/:id', async (req, res) => {
 
 
 //DELETE
-router.delete('/items/:id', async (req, res) => {
+router.delete('/items/:id/:supplierId', async (req, res) => {
     try {
-        const status = await itemService.deleteItem(req.params.id);
+        const status = await itemService.deleteItem(req.params.id, req.params.supplierId);
         if (status === '422')
             res.status(422).json({ error: `validation of id failed` }).end();
         else
